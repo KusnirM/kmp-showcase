@@ -1,25 +1,22 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.parcelize)
-//    id("com.google.devtools.ksp")
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.kotlin.serialization)
-//    alias(libs.plugins.kmmbridge)
-}
-
-configureCompilerOptions()
-
-dependencies {
-//    implementation(platform(libs.firebase.bom))
 }
 
 kotlin {
-    androidTarget()
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -40,89 +37,87 @@ kotlin {
             optIn("androidx.compose.runtime.ExperimentalComposeApi")
             optIn("com.arkivanov.decompose.ExperimentalDecomposeApi")
             optIn("com.arkivanov.decompose.DelicateDecomposeApi")
+            optIn("kotlin.ExperimentalMultiplatform")
+            enableLanguageFeature("ExpectActualClasses")
+
         }
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
         common {
-            group("mobile") {
-                withIos()
-                withAndroidTarget()
-            }
+            withIos()
+            withAndroidTarget()
         }
     }
 
     sourceSets {
         @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-        commonMain {
-            dependencies {
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlinx.serialization)
-                api(libs.kotlinx.datetime)
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            api(libs.kotlinx.datetime)
 
-                api(libs.koin.core)
-                api(libs.koin.compose)
-                api(libs.koin.compose.vm)
+            api(libs.koin.core)
+            api(libs.koin.compose)
+            api(libs.koin.compose.vm)
 
-                api(libs.decompose.decompose)
-                api(libs.decompose.extensions.compose)
-                api(libs.decompose.extensions.compose.experimental)
+            api(libs.decompose.decompose)
+            api(libs.decompose.extensions.compose)
+            api(libs.decompose.extensions.compose.experimental)
 
-                api(libs.essenty.lifecycle)
-                api(libs.essenty.backhandler)
+            api(libs.essenty.lifecycle)
+            api(libs.essenty.backhandler)
 
-                implementation(compose.ui)
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.materialIconsExtended)
+            implementation(compose.ui)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.materialIconsExtended)
 
-                api(compose.components.resources)
-                implementation(libs.coil3.compose)
-                implementation(libs.coil3.network.ktor)
-            }
-        }
-        commonTest {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
 
-        val mobileMain by getting {
-            dependencies {
-//                api(libs.firebase.mpp.auth)
-
-                implementation(libs.permissions)
-                implementation(libs.permissions.notifications)
-                implementation(libs.permissions.compose)
-            }
+            api(compose.components.resources)
+            implementation(libs.coil3.compose)
+            implementation(libs.coil3.svg)
+            implementation(libs.coil3.network.ktor)
         }
 
-        iosMain {
-            dependsOn(mobileMain)
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
 
-        androidMain {
-            dependsOn(mobileMain)
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+        }
 
-            dependencies {
-                implementation(libs.okhttp)
-                implementation(libs.okhttp.coroutines)
-                implementation(libs.okhttp.logging.interceptor)
-                api(libs.coil.base)
-                api(libs.koin.android)
-                api(libs.koin.compose)
-                api(libs.okio)
-                implementation(libs.coil.svg)
+        androidMain.dependencies {
+//            koin
+            api(libs.koin.android)
 
-                api(libs.androidx.datastore)
-                api(libs.androidx.datastore.preferences)
-                api(libs.multiplatform.settings.datastore)
-                implementation(libs.googleid)
-            }
+            implementation(libs.ktor.client.okhttp)
+
+            implementation(libs.android.material)
+            implementation(libs.activity.ktx)
+            implementation(libs.activity.compose)
+            implementation(libs.compose.ui.tooling)
+
+
+
+        }
+
+        androidUnitTest.dependencies {
+            implementation(libs.junit.jupiter)
+            implementation(libs.mockk)
+            implementation(libs.coroutines.test)
+            implementation(libs.slf4j.simple)
         }
     }
+
+    jvmToolchain(17)
 }
 
 compose.resources {
@@ -131,62 +126,124 @@ compose.resources {
 
 
 android {
-    compileSdk = AndroidSdk.compile
-    namespace = "mk.digital.kmpsample.common"
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    namespace = "mk.digital.kmpsample.shared"
 
     defaultConfig {
-        minSdk = AndroidSdk.min
-    }
-
-    buildFeatures {
-        buildConfig = true
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugar)
+    debugImplementation(compose.uiTooling)
 }
 
-tasks.register("assembleXCFramework") {
-    group = "build"
-    description = "Assembles an XCFramework for the shared module."
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+if (project.hasProperty("configuration")) {
+    tasks.register("assembleXCFramework") {
+        group = "build"
+        description =
+            "📦 Assembles an XCFramework for iOS. Use -Pconfiguration=Debug|Release|Internal (default: Debug)"
 
-    dependsOn(
-        "linkDebugFrameworkIosArm64",
-        "linkDebugFrameworkIosX64",
-    )
+        val config = (project.findProperty("configuration") as String?)
+            ?.replaceFirstChar(Char::uppercaseChar)
+            ?: throw GradleException("❌ Missing -Pconfiguration=BuildType (e.g., Debug, Release, Internal)")
 
-    doLast {
-        val outputDir = layout.buildDirectory.dir("xcframework").get().asFile
-        val outputFramework = outputDir.resolve("shared.xcframework")
+        val effectiveBuildType = if (config == "Internal") "Debug" else config
 
-//        clean up previous framework
-        if (outputFramework.exists()) {
-            println("Removing existing built XCFramework: $outputFramework")
-            outputFramework.deleteRecursively()
-        }
-
-        outputDir.mkdirs()
-
-        val frameworks = listOf(
-            layout.buildDirectory.dir("bin/iosArm64/debugFramework/shared.framework").get().asFile,
-            layout.buildDirectory.dir("bin/iosX64/debugFramework/shared.framework").get().asFile,
+        dependsOn(
+            "link${effectiveBuildType}FrameworkIosArm64",
+            "link${effectiveBuildType}FrameworkIosX64"
         )
 
-        exec {
-            this.commandLine(
-                "xcodebuild", "-create-xcframework",
-                "-framework", frameworks[0].absolutePath,
-                "-framework", frameworks[1].absolutePath,
-                "-output", outputDir.resolve("shared.xcframework").absolutePath
+        doLast {
+            val outputDir = layout.buildDirectory.dir("xcframework/$config").get().asFile
+            val outputFramework = outputDir.resolve("shared-$config.xcframework")
+
+
+            if (outputFramework.exists()) {
+                println("🗑 Removing existing XCFramework: $outputFramework")
+                outputFramework.deleteRecursively()
+            }
+
+            outputDir.mkdirs()
+
+            val frameworks = listOf(
+                layout.buildDirectory.dir("bin/iosArm64/${effectiveBuildType.lowercase()}Framework/shared.framework")
+                    .get().asFile,
+                layout.buildDirectory.dir("bin/iosX64/${effectiveBuildType.lowercase()}Framework/shared.framework")
+                    .get().asFile
             )
+
+            println("✅ Assembling shared-$config.xcframework (effective build: $effectiveBuildType)")
+
+            project.exec {
+                commandLine(
+                    "xcodebuild",
+                    "-create-xcframework",
+                    "-framework", frameworks[0].absolutePath,
+                    "-framework", frameworks[1].absolutePath,
+                    "-output", outputFramework.absolutePath
+                )
+            }
         }
     }
+
+    tasks.register<Copy>("linkXCFrameworkToIosApp") {
+        dependsOn("assembleXCFramework")
+        outputs.upToDateWhen { false }
+
+        val config = (project.findProperty("configuration") as String?)?.lowercase()
+            ?: throw GradleException("❌ Missing -Pconfiguration=Debug|Internal|Release")
+
+        val configCapitalized = config.replaceFirstChar(Char::uppercaseChar)
+        val frameworkName = "shared-$configCapitalized.xcframework"
+
+        val sourceDir = layout.buildDirectory.dir("xcframework/$configCapitalized/$frameworkName")
+        val targetDir = rootProject.layout.projectDirectory.dir("iosApp/Frameworks/$frameworkName")
+
+        println("📦 Source dir: ${sourceDir.get().asFile.absolutePath}")
+        println("📂 Target dir: ${targetDir.asFile.absolutePath}")
+
+        targetDir.asFile.parentFile.mkdirs()
+        targetDir.asFile.mkdirs()
+
+        println("🔗 Copying $frameworkName to iosApp/Frameworks/$frameworkName")
+
+        from(sourceDir)
+        into(targetDir)
+    }
+
+    tasks.register<Copy>("linkXCFrameworkToIosAppForArchive") {
+        dependsOn("assembleXCFramework")
+        val config = (project.findProperty("configuration") as String?)?.lowercase()
+            ?: throw GradleException("❌ Missing -Pconfiguration=Debug|Internal|Release")
+
+        val configCapitalized = config.replaceFirstChar(Char::uppercaseChar)
+        val frameworkName = "shared-$configCapitalized.xcframework"
+
+        val sourceDir = layout.buildDirectory.dir("xcframework/$configCapitalized/$frameworkName")
+        val targetDir =
+            rootProject.layout.projectDirectory.dir("iosApp/$frameworkName") // do root iosApp
+
+        println("🔗 Copying $frameworkName to iosApp/$frameworkName (for Archive)")
+
+        from(sourceDir)
+        into(targetDir)
+    }
 }
+

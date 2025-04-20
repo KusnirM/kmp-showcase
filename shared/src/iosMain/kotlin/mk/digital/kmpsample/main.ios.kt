@@ -9,8 +9,8 @@ import androidx.compose.ui.window.ComposeUIViewController
 import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.PredictiveBackGestureIcon
 import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.PredictiveBackGestureOverlay
 import com.arkivanov.essenty.backhandler.BackDispatcher
-import mk.digital.kmpsample.ui.base.DefaultAppComponent
-import mk.digital.kmpsample.ui.components.ShowCase
+import mk.digital.kmpsample.presentation.base.DefaultAppComponent
+import mk.digital.kmpsample.presentation.component.ShowCase
 import platform.UIKit.UIViewController
 
 actual fun getPlatformName(): String = "iOS"

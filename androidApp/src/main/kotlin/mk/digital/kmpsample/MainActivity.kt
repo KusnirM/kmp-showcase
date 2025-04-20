@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.defaultComponentContext
-import mk.digital.kmpsample.ui.base.DefaultAppComponent
+import mk.digital.kmpsample.presentation.base.DefaultAppComponent
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,4 +21,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

@@ -1,19 +1,17 @@
 pluginManagement {
-    listOf(repositories, dependencyResolutionManagement.repositories).forEach {
-        it.apply {
-            google {
-                content {
-                    includeGroupByRegex(".*google.*")
-                    includeGroupByRegex(".*android.*")
-                }
-            }
-            mavenCentral()
-        }
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
 
 rootProject.name = "KMPSample"
-include(":androidApp")
-include(":shared")
-includeBuild("build-logic")
-
+include(":shared", ":androidApp", ":iosApp")

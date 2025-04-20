@@ -1,0 +1,42 @@
+package mk.digital.kmpsample.presentation.component.image
+
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
+import mk.digital.kmpsample.presentation.foundation.iconSize
+
+
+@Composable
+fun AppIcon(
+    imageVector: ImageVector,
+    size: Dp = iconSize,
+    tint: Color = LocalContentColor.current,
+    contentDescription: String = imageVector.name,
+) {
+    Icon(
+        modifier = Modifier.size(size),
+        imageVector = imageVector,
+        contentDescription = contentDescription,
+        tint = tint,
+    )
+}
+
+@Composable
+fun AppIconPrimary(
+    imageVector: ImageVector,
+    size: Dp = iconSize,
+    contentDescription: String = imageVector.name,
+) {
+    AppIcon(
+        size = size,
+        imageVector = imageVector,
+        contentDescription = contentDescription,
+        tint = MaterialTheme.colors.primary,
+    )
+}

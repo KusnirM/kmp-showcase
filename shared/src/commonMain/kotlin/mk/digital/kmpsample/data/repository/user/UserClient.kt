@@ -1,0 +1,26 @@
+package mk.digital.kmpsample.data.repository.user
+
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import kotlinx.coroutines.delay
+import mk.digital.kmpsample.data.dto.UserDTO
+
+interface UserClient {
+
+    suspend fun fetchUser(id: Int): UserDTO
+    suspend fun fetchUsers(): List<UserDTO>
+}
+
+class UserClientImpl(
+    private val client: HttpClient
+) : UserClient {
+    override suspend fun fetchUser(id: Int): UserDTO {
+        return client.get("users/$id").body()
+    }
+
+    override suspend fun fetchUsers(): List<UserDTO> {
+        delay(1000)
+        return client.get("users").body()
+    }
+}
