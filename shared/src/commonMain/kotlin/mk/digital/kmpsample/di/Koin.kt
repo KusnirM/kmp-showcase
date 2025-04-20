@@ -1,10 +1,8 @@
 package mk.digital.kmpsample.di
 
-import mk.digital.kmpsample.domain.LoadHomeDataUseCase
-import mk.digital.kmpsample.domain.TrackButtonClickUseCase
+import mk.digital.kmpsample.data.di.dataModule
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
@@ -20,8 +18,12 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 fun initKoin() = initKoin {}
 
 fun commonModule() = module {
-    includes(platformModule())
-    singleOf(::LoadHomeDataUseCase)
-    singleOf(::TrackButtonClickUseCase)
+    includes(
+        listOf(
+            platformModule(),
+            domainModule,
+            dataModule
+        )
+    )
 }
 
