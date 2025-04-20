@@ -1,30 +1,23 @@
 package mk.digital.kmpsample
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import mk.digital.kmpsample.ui.screens.Screen
+import com.arkivanov.decompose.extensions.compose.stack.Children
+import mk.digital.kmpsample.ui.base.AppComponent
+import mk.digital.kmpsample.ui.foundation.AppTheme
 import mk.digital.kmpsample.ui.screens.detail.DetailScreen
 import mk.digital.kmpsample.ui.screens.home.HomeScreen
-import mk.digital.kmpsample.ui.foundation.AppTheme
+
 
 @Composable
-fun App() {
+fun MainView(component: AppComponent) {
     AppTheme {
-        var screen by remember { mutableStateOf<Screen>(Screen.Home) }
-
-        when (screen) {
-            is Screen.Home -> HomeScreen(
-                onNavigateToDetail = { screen = Screen.Detail }
-            )
-            is Screen.Detail -> DetailScreen(
-                onBack = { screen = Screen.Home }
-            )
+        Children(stack = component.childStack) {
+            when (val child = it.instance) {
+                is AppComponent.Child.Home -> HomeScreen(child.component)
+                is AppComponent.Child.Detail -> DetailScreen(child.component)
+            }
         }
     }
-
 }
 
 expect fun getPlatformName(): String

@@ -1,13 +1,14 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
-    id("org.jetbrains.compose")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.parcelize)
 //    id("com.google.devtools.ksp")
-    id("maven-publish")
-//    id("kotlinx-serialization")
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.kotlin.serialization)
 //    alias(libs.plugins.kmmbridge)
 }
 
@@ -29,6 +30,16 @@ kotlin {
             isStatic = true
 
             export(libs.decompose.decompose)
+            export(libs.essenty.lifecycle)
+            export(libs.essenty.backhandler)
+        }
+    }
+
+    sourceSets.all {
+        languageSettings {
+            optIn("androidx.compose.runtime.ExperimentalComposeApi")
+            optIn("com.arkivanov.decompose.ExperimentalDecomposeApi")
+            optIn("com.arkivanov.decompose.DelicateDecomposeApi")
         }
     }
 
@@ -57,8 +68,9 @@ kotlin {
                 api(libs.decompose.decompose)
                 api(libs.decompose.extensions.compose)
                 api(libs.decompose.extensions.compose.experimental)
-//                api(libs.essenty.lifecycle)
-//                api(libs.essenty.backhandler)
+
+                api(libs.essenty.lifecycle)
+                api(libs.essenty.backhandler)
 
                 implementation(compose.ui)
                 implementation(compose.runtime)
@@ -95,7 +107,6 @@ kotlin {
             dependsOn(mobileMain)
 
             dependencies {
-//                api(libs.androidx.lifecycle.viewmodel.ktx)
                 implementation(libs.okhttp)
                 implementation(libs.okhttp.coroutines)
                 implementation(libs.okhttp.logging.interceptor)
@@ -123,8 +134,7 @@ android {
     compileSdk = AndroidSdk.compile
     namespace = "mk.digital.kmpsample.common"
 
-    sourceSets["main"].manifest.srcFile("src/main/AndroidManifest.xml")
-//    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {

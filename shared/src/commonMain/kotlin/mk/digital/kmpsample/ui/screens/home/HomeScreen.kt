@@ -11,21 +11,22 @@ import mk.digital.kmpsample.ui.components.buttons.ContainedButton
 import mk.digital.kmpsample.ui.components.spacers.ColumnSpacer.Spacer4
 import mk.digital.kmpsample.ui.components.text.body1.TextBody1Neutral80
 import mk.digital.kmpsample.ui.foundation.space4
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(
-    onNavigateToDetail: () -> Unit,
-    viewModel: HomeViewModel = koinViewModel()
-) {
-    val message by viewModel.state.collectAsState()
+fun HomeScreen(component: HomeComponent) {
+    val state by component.state.collectAsState()
     Column {
         TopAppBar(title = "Home", backIcon = null)
         Column(Modifier.padding(space4)) {
             Spacer4()
-            TextBody1Neutral80(message)
+            TextBody1Neutral80(state.title)
             Spacer4()
-            ContainedButton(text = "Go to Details", onClick = onNavigateToDetail)
+            ContainedButton(
+                text = "Go to Details",
+                onClick = {
+                    component.navigateToDetails("Details button")
+                },
+            )
         }
     }
 }
