@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
 fun TextBodyMediumNeutral80(
@@ -18,7 +18,7 @@ fun TextBodyMediumNeutral80(
     TextBodyMedium(
         text = text,
         modifier = modifier,
-        color = MaterialTheme.appColors.neutral80,
+        color = MaterialTheme.appColorScheme.neutral80,
         textAlign = textAlign,
         fontWeight = FontWeight.Normal,
         lineHeight = lineHeight,

@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
-import mk.digital.kmpshowcase.presentation.base.Navigation
+import mk.digital.kmpshowcase.presentation.base.Route
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.foundation.space8
 
@@ -33,17 +33,17 @@ fun HomeScreen(viewModel: HomeViewModel) {
 @Composable
 fun HomeNavEvents(
     viewModel: HomeViewModel,
-    router: NavRouter<Navigation>
+    router: NavRouter<Route>
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) {
         if (it !is HomeNavEvent) return@CollectNavEvents
         when (it) {
             is HomeNavEvent.ToFeature -> {
                 when (it.featureId) {
-                    FeatureId.UI_COMPONENTS -> router.navigateTo(Navigation.HomeSection.UiComponents)
-                    FeatureId.NETWORKING -> router.navigateTo(Navigation.HomeSection.Networking)
-                    FeatureId.STORAGE -> router.navigateTo(Navigation.HomeSection.Storage)
-                    FeatureId.PLATFORM_APIS -> router.navigateTo(Navigation.HomeSection.PlatformApis)
+                    FeatureId.UI_COMPONENTS -> router.navigateTo(Route.HomeSection.UiComponents)
+                    FeatureId.NETWORKING -> router.navigateTo(Route.HomeSection.Networking)
+                    FeatureId.STORAGE -> router.navigateTo(Route.HomeSection.Storage)
+                    FeatureId.PLATFORM_APIS -> router.navigateTo(Route.HomeSection.PlatformApis)
                 }
             }
         }

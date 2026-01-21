@@ -3,6 +3,19 @@
     <string name="welcome">Welcome in the Application</string>
     <string name="loading">Loading…</string>
 
+    <!-- Common -->
+    <string name="content_description_back">Back</string>
+    <string name="button_ok">OK</string>
+    <string name="detail_format">Detail: %1$d</string>
+
+    <!-- Screen Titles -->
+    <string name="screen_home">KMP Showcase</string>
+    <string name="screen_ui_components">UI Components</string>
+    <string name="screen_networking">Networking</string>
+    <string name="screen_storage">Storage</string>
+    <string name="screen_platform_apis">Platform APIs</string>
+    <string name="screen_settings">Settings</string>
+
     <!-- Home Screen Features -->
     <string name="feature_ui_components_title">UI Components</string>
     <string name="feature_ui_components_subtitle">Buttons, Cards, Dialogs, Typography</string>
