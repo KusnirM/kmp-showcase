@@ -260,7 +260,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 
 ### Build & CI
 - [ ] Release build variant, signing config
-- [ ] CI: GitHub Actions (assemble, tests)
+- [x] CI: GitHub Actions (tests + detekt)
 - [ ] Fastlane integration
 - [x] Detekt + Compose rules
 - [ ] Test coverage reports
