@@ -11,8 +11,8 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 fun TextBodyLarge(
     text: String,
-    modifier: Modifier = Modifier,
     color: Color,
+    modifier: Modifier = Modifier,
     fontWeight: FontWeight = FontWeight.Normal,
     textAlign: TextAlign? = null,
 ) {

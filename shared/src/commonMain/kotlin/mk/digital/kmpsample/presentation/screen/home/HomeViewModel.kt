@@ -9,7 +9,6 @@ import mk.digital.kmpsample.domain.useCase.base.invoke
 import mk.digital.kmpsample.presentation.base.BaseViewModel
 import mk.digital.kmpsample.presentation.base.NavEvent
 
-
 class HomeViewModel(
     private val loadHomeDataUseCase: LoadHomeDataUseCase,
     private val trackButtonClickUseCase: TrackButtonClickUseCase,

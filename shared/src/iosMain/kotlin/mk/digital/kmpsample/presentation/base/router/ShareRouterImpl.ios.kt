@@ -1,5 +1,6 @@
 package mk.digital.kmpsample.presentation.base.router
 
+import mk.digital.kmpsample.util.Logger
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 import platform.UIKit.popoverPresentationController
@@ -22,6 +23,7 @@ actual class ShareRouterImpl : ShareRouter {
                     it.sourceRect = vc.view.bounds
                 }
             } catch (e: Exception) {
+                Logger.d("ShareRouter: Failed to setup popover presentation: ${e.message}")
             }
 
             vc.presentViewController(

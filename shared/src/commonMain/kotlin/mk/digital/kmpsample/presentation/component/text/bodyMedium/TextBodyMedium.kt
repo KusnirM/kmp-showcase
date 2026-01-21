@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.TextUnit
 @Composable
 fun TextBodyMedium(
     text: String,
-    modifier: Modifier = Modifier,
     color: Color,
+    modifier: Modifier = Modifier,
     fontWeight: FontWeight? = null,
     textAlign: TextAlign? = null,
     lineHeight: TextUnit = TextUnit.Unspecified,

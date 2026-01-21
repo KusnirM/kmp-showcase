@@ -8,8 +8,8 @@ import mk.digital.kmpsample.presentation.component.text.labelLarge.TextButtonPri
 @Composable
 fun AppTextButton(
     text: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
 ) {
     TextButton(
         modifier = modifier,
