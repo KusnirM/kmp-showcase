@@ -12,8 +12,8 @@ import mk.digital.kmpsample.presentation.foundation.appColors
 @Composable
 internal fun TextLabelLarge(
     text: String,
-    modifier: Modifier = Modifier,
     color: Color,
+    modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
     Text(

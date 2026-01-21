@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import mk.digital.kmpsample.data.base.TransformToDomainModel
 import mk.digital.kmpsample.domain.model.Address
 
-
 @Serializable
 data class AddressDTO(
     val city: String,
@@ -13,11 +12,4 @@ data class AddressDTO(
     val zipcode: String
 ) : TransformToDomainModel<Address> {
     override fun transform(): Address = Address(city = city, street = street, suite = suite, zipcode = zipcode)
-
-    constructor(address: Address) : this(
-        city = address.city,
-        street = address.street,
-        suite = address.suite,
-        zipcode = address.zipcode
-    )
 }

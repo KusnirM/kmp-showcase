@@ -9,9 +9,9 @@ import mk.digital.kmpsample.presentation.component.text.headlineMedium.TextHeadl
 
 @Composable
 fun AppAlertDialog(
+    text: String,
     onDismissRequest: () -> Unit,
     title: String? = null,
-    text: String,
     dismissButton: @Composable (() -> Unit)? = null,
     confirmButton: @Composable () -> Unit,
 ) {
@@ -27,9 +27,9 @@ fun AppAlertDialog(
 
 @Composable
 fun AppConfirmDialog(
-    onDismissRequest: () -> Unit,
-    title: String? = null,
     text: String,
+    title: String? = null,
+    onDismissRequest: () -> Unit,
 ) {
     AppAlertDialog(
         onDismissRequest = onDismissRequest,

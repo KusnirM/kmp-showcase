@@ -2,7 +2,6 @@ package mk.digital.kmpsample
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -174,9 +173,7 @@ fun BottomBarNavigation(
     current: Navigation,
     onNavigate: (Navigation) -> Unit
 ) {
-    NavigationBar(
-        modifier = Modifier.navigationBarsPadding()
-    ) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         AppBottomNavigationItem(
             selected = current is HomeSection.Home,
             onClick = { onNavigate(HomeSection.Home) },

@@ -39,6 +39,7 @@ Serves as a living reference for KMP features: device APIs, UI components, stora
 - **Date/Time**: kotlinx-datetime
 - **Images**: Coil 3
 - **Testing**: kotlin.test + Mokkery + kotlinx-coroutines-test
+- **Code Quality**: Detekt + Compose rules
 
 See `gradle/libs.versions.toml` for current versions.
 
@@ -55,7 +56,6 @@ root
       ├─ commonMain/     # Shared code (UI, domain, data, DI, navigation)
       ├─ commonTest/     # Shared unit tests
       ├─ androidMain/    # Android-specific implementations
-      ├─ androidHostTest/# Android JVM tests
       └─ iosMain/        # iOS-specific implementations
 ```
 
@@ -107,6 +107,24 @@ Run tests:
 ```bash
 ./gradlew :shared:testDebugUnitTest
 ```
+
+---
+
+## Code Quality
+
+Static analysis with **Detekt** + **Compose rules**.
+
+Run analysis:
+```bash
+./gradlew detekt
+```
+
+Run with auto-correct:
+```bash
+./gradlew detekt --auto-correct
+```
+
+Configuration: `config/detekt/detekt.yml`
 
 ---
 
@@ -244,7 +262,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Release build variant, signing config
 - [ ] CI: GitHub Actions (assemble, tests)
 - [ ] Fastlane integration
-- [ ] Detekt / Ktlint code style
+- [x] Detekt + Compose rules
 - [ ] Test coverage reports
 
 ### Code Quality

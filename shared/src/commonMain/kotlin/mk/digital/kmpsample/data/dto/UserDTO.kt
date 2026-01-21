@@ -12,5 +12,4 @@ data class UserDTO(
     val name: String,
 ) : TransformToDomainModel<User> {
     override fun transform(): User = User(address = address.transform(), email = email, id = id, name = name)
-    
 }

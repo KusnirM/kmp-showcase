@@ -10,8 +10,8 @@ import androidx.compose.ui.text.style.TextAlign
 @Composable
 internal fun TextHeadlineMedium(
     text: String,
-    modifier: Modifier = Modifier,
     color: Color,
+    modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
     Text(

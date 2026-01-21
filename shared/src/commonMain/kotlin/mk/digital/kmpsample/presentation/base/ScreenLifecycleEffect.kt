@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import kotlinx.coroutines.flow.Flow
 
 /**
  * A composable that provides lifecycle hooks for screens in Navigation 3 pattern.
@@ -117,17 +118,18 @@ fun ScreenLifecycleEffect(viewModel: ScreenLifecycle) {
 }
 
 /**
- * Collects navigation events from a ViewModel and performs actual navigation.
+ * Collects navigation events from a Flow and performs actual navigation.
  * Caller is responsible for handling specific event types via when expression.
  */
 @Composable
 fun CollectNavEvents(
-    viewModel: BaseViewModel<*>,
+    navEventFlow: Flow<NavEvent>,
     onEvent: (NavEvent) -> Unit
 ) {
-    LaunchedEffect(viewModel) {
-        viewModel.navEvent.collect { event ->
-            onEvent(event)
+    val currentOnEvent by rememberUpdatedState(onEvent)
+    LaunchedEffect(navEventFlow) {
+        navEventFlow.collect { event ->
+            currentOnEvent(event)
         }
     }
 }
