@@ -26,7 +26,7 @@ import mk.digital.kmpsample.presentation.foundation.space6
 fun TopAppBar(
     modifier: Modifier = Modifier,
     title: String? = null,
-    backIcon: ImageVector? = Icons.AutoMirrored.Filled.ArrowBack,
+    navIcon: ImageVector? = Icons.AutoMirrored.Filled.ArrowBack,
     backClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
@@ -35,10 +35,10 @@ fun TopAppBar(
         title = { title?.let { TextTitleLargeNeutral80(text = title) } },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
         navigationIcon = {
-            backIcon?.let {
+            navIcon?.let {
                 Icon(
                     modifier = Modifier.size(space6).noRippleClickable(backClick),
-                    imageVector = backIcon,
+                    imageVector = navIcon,
                     contentDescription = "Back Arrow",
                     tint = MaterialTheme.appColors.neutral80,
                 )

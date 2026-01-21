@@ -1,15 +1,12 @@
 package mk.digital.kmpsample.presentation.screen.detail
 
-import com.arkivanov.decompose.ComponentContext
+import androidx.compose.runtime.Composable
+import mk.digital.kmpsample.presentation.base.BaseComponentContext
 
 
-interface DetailComponent {
-    val id: Int
-    val onBack: () -> Unit
+class DetailComponent(
+    val id: Int,
+) : BaseComponentContext<Unit>(Unit) {
+    @Composable
+    override fun toolbarTitle(): String = id.toString()
 }
-
-class DetailComponentImpl(
-    componentContext: ComponentContext,
-    override val id: Int,
-    override val onBack: () -> Unit
-) : DetailComponent, ComponentContext by componentContext
