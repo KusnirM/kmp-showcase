@@ -58,6 +58,7 @@ private val LightColorPalette = AppColors(
         surfaceVariant = Neutral80Light,
     ),
     neutral0 = Neutral0Light,
+    neutral20 = Neutral20Light,
     neutral80 = Neutral80Light,
     neutral100 = Neutral100Light,
 )

@@ -23,6 +23,7 @@ internal val Transparent: Color = Color(0x00)
 data class AppColors(
     val material: ColorScheme,
     val neutral0: Color,
+    val neutral20: Color,
     val neutral80: Color,
     val neutral100: Color,
     val transparent: Color = Transparent,

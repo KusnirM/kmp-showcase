@@ -6,7 +6,7 @@ Out of the box you get **bottom bar navigation**, **safe-area / edge‑to‑edge
 
 ## TL;DR
 
-- **KMP shared**: UI (Compose Multiplatform), navigation (Decompose), DI (Koin), networking (Ktor 3), JSON (kotlinx-serialization), coroutines, datetime.
+- **KMP shared**: UI (Compose Multiplatform), navigation3, DI (Koin), networking (Ktor 3), JSON (kotlinx-serialization), coroutines, datetime.
 - **Android**: Material 3, Activity Compose, edge‑to‑edge, previews.
 - **iOS**: Compose MPP UI hosted in Swift/SwiftUI shell, safe‑area support, Darwin HTTP engine.
 - **Ready for feature screens** in bottom bar and simple per‑screen DI.
@@ -15,7 +15,7 @@ Out of the box you get **bottom bar navigation**, **safe-area / edge‑to‑edge
 
 ## Features
 
-- ✅ **Bottom bar** navigation (tabs) with `Decompose` child stacks
+- ✅ **Bottom bar** navigation (tabs) with `Navigation3`
 - ✅ **Safe area / edge‑to‑edge** paddings handled for both Android & iOS
 - ✅ **Koin** modules for easy dependency wiring
 - ✅ **Ktor 3** client with ContentNegotiation(JSON), Logging, Timeouts
@@ -28,39 +28,34 @@ Out of the box you get **bottom bar navigation**, **safe-area / edge‑to‑edge
 ## Tech Stack (from `libs.versions.toml`)
 
 **Kotlin / Compose**
-- Kotlin: `2.1.20`
-- Compose (Android): `1.7.8`
-- Compose Multiplatform: `1.7.3`
-- Activity Compose: `1.10.1`
-- Material3 (Android): `1.3.2`
+- Kotlin
+- Compose (Android)
+- Compose Multiplatform
+- Activity Compose
+- Material3 (Android)
 
 **Navigation / Lifecycle**
-- Decompose: `3.3.0`
-- Essenty: `2.5.0`
+- Navigation3
 
 **DI**
-- Koin: `4.0.0` (`core`, `android`, `compose`, `compose-viewmodel`)
+- Koin:  (`core`, `android`, `compose`, `compose-viewmodel`)
 
 **Networking / Serialization**
-- Ktor: `3.0.0` (`client-core`, `okhttp`, `darwin`, `content-negotiation`, `logging`, `serialization-kotlinx-json`)
-- kotlinx-serialization-json: `1.8.0`
+- Ktor: (`client-core`, `okhttp`, `darwin`, `content-negotiation`, `logging`, `serialization-kotlinx-json`)
 
 **Concurrency / Time**
-- kotlinx-coroutines: `1.10.1`
-- kotlinx-datetime: `0.6.2`
+- kotlinx-coroutines
+- kotlinx-datetime
 
 **Images**
-- Coil 3: `3.1.0` (`coil-compose`, `coil-svg`, `coil-network-ktor3`)
+- Coil 3
 
 **Testing**
-- JUnit 5: `5.10.2`
-- MockK: `1.13.10`
+- JUnit 5
+- MockK
 
 **Misc**
-- SLF4J simple: `2.0.9`
-- Android Gradle Plugin: `8.11.2`
-- Android SDKs: min `26`, target/compile `36`
-
+- SLF4J simple
 ---
 
 ## Module Structure
@@ -73,7 +68,7 @@ root
 ```
 
 - **shared** contains:
-    - UI screens (Compose MPP) wired via **Decompose**
+    - UI screens (Compose MPP) wired via **Compose Navigation 3**
     - DI modules with **Koin**
     - **Ktor client** config (JSON, logging, timeouts)
     - Common models, use‑cases, resources
@@ -83,7 +78,7 @@ root
 ## Architecture & Conventions
 
 - **UI**: Compose MPP with M3 styling on Android; safe‑area courtesy of Compose Insets/WindowInsets APIs and platform wrappers.
-- **Navigation**: `Decompose` child stacks per tab. Each tab has its own router & component state.
+- **Navigation**: `Navigation3` tabs. Each tab has its own router & component state.
 - **DI**: `Koin` modules in `shared` (feature‑scoped modules if needed). Android initializes Koin in `Application`, iOS during app launch.
 - **Networking**: `Ktor 3`
     - Android → OkHttp engine

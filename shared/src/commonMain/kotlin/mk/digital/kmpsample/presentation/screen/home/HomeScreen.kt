@@ -7,13 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpsample.domain.model.User
-import mk.digital.kmpsample.getPlatformName
+import mk.digital.kmpsample.presentation.base.CollectNavEvents
+import mk.digital.kmpsample.presentation.base.NavRouter
+import mk.digital.kmpsample.presentation.base.Navigation
 import mk.digital.kmpsample.presentation.component.LoadingView
-import mk.digital.kmpsample.presentation.component.TopAppBar
 import mk.digital.kmpsample.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer4
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer8
@@ -23,10 +24,8 @@ import mk.digital.kmpsample.presentation.foundation.space4
 
 @Composable
 fun HomeScreen(component: HomeComponent) {
-    val state by component.state.collectAsState()
+    val state by component.state.collectAsStateWithLifecycle()
     Column {
-        TopAppBar(title = "Home from ${getPlatformName()}", backIcon = null)
-
         if (state.loading) {
             LoadingView()
         } else {
@@ -37,7 +36,7 @@ fun HomeScreen(component: HomeComponent) {
                 state.users.forEach {
                     Spacer4()
                     UserCard(it) {
-                        component.navigateToDetails(it.id)
+                        component.onUserCard(it.id)
                     }
                 }
                 Spacer8()
@@ -52,5 +51,18 @@ private fun UserCard(user: User, onClick: () -> Unit) {
         TextBodyLargeNeutral80(user.name)
         Spacer4()
         TextBodyMediumNeutral80(user.email)
+    }
+}
+
+@Composable
+fun HomeNavEvents(
+    viewModel: HomeComponent,
+    router: NavRouter<Navigation>
+) {
+    CollectNavEvents(component = viewModel) {
+        if (it !is HomeNavEvent) return@CollectNavEvents
+        when (it) {
+            is HomeNavEvent.ToDetail -> router.navigateTo(Navigation.HomeSection.Detail(it.id))
+        }
     }
 }

@@ -9,7 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-internal fun TextBodyLarge(
+fun TextBodyLarge(
     text: String,
     modifier: Modifier = Modifier,
     color: Color,
@@ -19,7 +19,7 @@ internal fun TextBodyLarge(
     Text(
         text = text,
         style = MaterialTheme.typography.bodyLarge,
-        color = color,
+        color = { color },
         fontWeight = fontWeight,
         modifier = modifier,
         textAlign = textAlign

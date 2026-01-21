@@ -3,6 +3,7 @@ package mk.digital.kmpsample.domain
 import io.mockk.MockKAnnotations
 import org.junit.jupiter.api.BeforeEach
 
+//todo -> move to common
 abstract class BaseTest<ClassUnderTest> {
     abstract var classUnderTest: ClassUnderTest
 

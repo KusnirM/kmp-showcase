@@ -1,6 +1,7 @@
 package mk.digital.kmpsample.di
 
 import mk.digital.kmpsample.data.di.dataModule
+import mk.digital.kmpsample.presentation.di.presentationModule
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -21,6 +22,7 @@ fun commonModule() = module {
     includes(
         listOf(
             platformModule(),
+            presentationModule,
             domainModule,
             dataModule
         )

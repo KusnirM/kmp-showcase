@@ -17,8 +17,6 @@ kotlin {
         namespace = "mk.digital.kmpsample.shared"
         minSdk = libs.versions.androidMinSdk.get().toInt()
 
-//        withJava()
-
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -40,10 +38,6 @@ kotlin {
             baseName = "shared"
             freeCompilerArgs += listOf("-Xbinary=bundleId=mk.digital.kmpsample.shared")
             isStatic = true
-
-            export(libs.decompose.decompose)
-            export(libs.essenty.lifecycle)
-            export(libs.essenty.backhandler)
         }
     }
 
@@ -74,17 +68,10 @@ kotlin {
             api(libs.koin.compose)
             api(libs.koin.compose.vm)
 
-            // Navigation 3 for Compose Multiplatform
-//            api(libs.navigation3.compose)
-//            api(libs.lifecycle.viewmodel.navigation3)
+            // Navigation
+            api(libs.navigation3.compose)
+            api(libs.lifecycle.viewmodel.navigation3)
 
-
-            //decompose
-            api(libs.decompose.decompose)
-            api(libs.decompose.extensions.compose)
-            api(libs.decompose.extensions.compose.experimental)
-            api(libs.essenty.lifecycle)
-            api(libs.essenty.backhandler)
 
             implementation(libs.compose.ui)
             implementation(libs.compose.runtime)
