@@ -74,7 +74,6 @@ object DataErrorCode {
     const val UNKNOWN = "3000"
     const val PARSING = "3001"
     const val SERIALIZATION = "3002"
-    const val TRANSFORMATION = "3003"
 }
 
 /**

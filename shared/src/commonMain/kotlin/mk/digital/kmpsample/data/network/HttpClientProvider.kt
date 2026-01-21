@@ -40,7 +40,10 @@ fun HttpClientConfig<*>.applyCommonConfig() {
     }
 
     install(HttpTimeout) {
-        requestTimeoutMillis = 30_000
-        connectTimeoutMillis = 30_000
+        requestTimeoutMillis = REQUEST_TIME_OUT_MILLIS
+        connectTimeoutMillis = CONNECT_TIME_OUT_MILLIS
     }
 }
+
+private const val REQUEST_TIME_OUT_MILLIS: Long = 30_000
+private const val CONNECT_TIME_OUT_MILLIS: Long = 30_000

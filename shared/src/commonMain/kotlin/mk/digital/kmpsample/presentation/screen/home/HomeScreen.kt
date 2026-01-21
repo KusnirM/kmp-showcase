@@ -59,7 +59,7 @@ fun HomeNavEvents(
     viewModel: HomeViewModel,
     router: NavRouter<Navigation>
 ) {
-    CollectNavEvents(viewModel = viewModel) {
+    CollectNavEvents(navEventFlow = viewModel.navEvent) {
         if (it !is HomeNavEvent) return@CollectNavEvents
         when (it) {
             is HomeNavEvent.ToDetail -> router.navigateTo(Navigation.HomeSection.Detail(it.id))
