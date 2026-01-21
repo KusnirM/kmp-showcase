@@ -102,11 +102,8 @@ private fun ScreenLifecycleEffect(
 }
 
 /**
- * A composable that connects a BaseComponent to lifecycle events.
- * This provides a drop-in replacement for the Decompose lifecycle callbacks.
- *
+ * A composable that connects a BaseComponent to lifecycle events.*
  * Uses the component's hashCode as key to properly track each screen instance separately.
- *
  * @param screen The BaseComponent instance (typically a ViewModel) to connect to lifecycle
  */
 @Composable
