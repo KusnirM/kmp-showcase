@@ -1,12 +1,9 @@
 package mk.digital.kmpsample
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -17,47 +14,132 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import mk.digital.kmpsample.presentation.base.AppComponent
-import mk.digital.kmpsample.presentation.base.NavConfig
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
+import androidx.savedstate.serialization.SavedStateConfiguration
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
+import mk.digital.kmpsample.presentation.base.NavRouter
+import mk.digital.kmpsample.presentation.base.Navigation
+import mk.digital.kmpsample.presentation.base.Navigation.HomeSection
+import mk.digital.kmpsample.presentation.base.ScreenWrapper
+import mk.digital.kmpsample.presentation.base.Toolbar
+import mk.digital.kmpsample.presentation.base.insets.rememberScreenInsets
+import mk.digital.kmpsample.presentation.base.rememberNavEntryDecorators
+import mk.digital.kmpsample.presentation.base.rememberNavRouter
+import mk.digital.kmpsample.presentation.component.TopAppBar
 import mk.digital.kmpsample.presentation.component.image.AppIcon
-import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
+import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLarge
 import mk.digital.kmpsample.presentation.foundation.AppTheme
 import mk.digital.kmpsample.presentation.foundation.appColors
+import mk.digital.kmpsample.presentation.screen.detail.DetailComponent
 import mk.digital.kmpsample.presentation.screen.detail.DetailScreen
+import mk.digital.kmpsample.presentation.screen.explore.ExploreComponent
 import mk.digital.kmpsample.presentation.screen.explore.ExploreScreen
+import mk.digital.kmpsample.presentation.screen.home.HomeComponent
+import mk.digital.kmpsample.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpsample.presentation.screen.home.HomeScreen
+import mk.digital.kmpsample.presentation.screen.profile.ProfileComponent
 import mk.digital.kmpsample.presentation.screen.profile.ProfileScreen
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
+
+private val saveStateConfiguration = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(HomeSection.Home.serializer())
+            subclass(HomeSection.Detail.serializer())
+            subclass(Navigation.Explore.serializer())
+            subclass(Navigation.Profile.serializer())
+        }
+    }
+}
 
 @Composable
-fun MainView(component: AppComponent) {
-    val stack by component.childStack.subscribeAsState()
+fun MainView() {
+    val router: NavRouter<Navigation> = rememberNavRouter(saveStateConfiguration, HomeSection.Home)
+    val currentRoute: Navigation = router.backStack.last()
+    val currentToolbar = remember { mutableStateOf<Toolbar?>(null) }
 
     AppTheme {
         Scaffold(
+            contentWindowInsets = WindowInsets(0),
+            topBar = {
+                currentToolbar.value?.let { toolbar ->
+                    TopAppBar(
+                        title = toolbar.toolbarTitle(),
+                        navIcon = toolbar.navIcon,
+                        backClick = router::onBack,
+                    )
+                }
+            },
             bottomBar = {
                 BottomBarNavigation(
-                    current = stack.active.configuration,
-                    onNavigate = component::navigateTo
+                    current = currentRoute,
+                    onNavigate = { nav ->
+                        val shouldNavigate = currentRoute != nav
+                        if (shouldNavigate) {
+                            val includeHome = nav is HomeSection.Home
+                            router.navigateTo(
+                                page = nav,
+                                popUpTo = HomeSection.Home::class,
+                                inclusive = includeHome
+                            )
+                        }
+                    }
                 )
             },
         ) { contentPadding ->
-            Box(
-                Modifier
-                    .padding(contentPadding)
-                    .windowInsetsPadding(WindowInsets.ime)
-            ) {
-                when (val child = stack.active.instance) {
-                    is AppComponent.Child.Home -> HomeScreen(child.component)
-                    is AppComponent.Child.Detail -> DetailScreen(child.component)
-                    is AppComponent.Child.Profile -> ProfileScreen()
-                    is AppComponent.Child.Explore -> ExploreScreen()
-                }
+            val screenInsets = rememberScreenInsets()
+
+            // Callback for entries to set toolbar
+            val onScreenChange: (Toolbar?) -> Unit = { toolbar ->
+                currentToolbar.value = toolbar
             }
+
+            NavDisplay(
+                modifier = Modifier.padding(contentPadding),
+                backStack = router.backStack,
+                onBack = router::onBack,
+                entryDecorators = rememberNavEntryDecorators(),
+                entryProvider = entryProvider {
+                    entry<HomeSection.Home> {
+                        val viewModel = koinViewModel<HomeComponent>()
+                        HomeNavEvents(viewModel, router)
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            HomeScreen(viewModel)
+                        }
+                    }
+                    entry<HomeSection.Detail> {
+                        val viewModel = koinViewModel<DetailComponent> {
+                            parametersOf(it.id)
+                        }
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            DetailScreen(viewModel)
+                        }
+                    }
+                    entry<Navigation.Explore> {
+                        val viewModel = koinViewModel<ExploreComponent>()
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            ExploreScreen()
+                        }
+                    }
+                    entry<Navigation.Profile> {
+                        val viewModel = koinViewModel<ProfileComponent>()
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            ProfileScreen()
+                        }
+                    }
+                }
+            )
         }
     }
 }
@@ -69,50 +151,52 @@ private fun RowScope.AppBottomNavigationItem(
     icon: ImageVector,
     label: String
 ) {
+    val selectedColor = MaterialTheme.colorScheme.primary
+    val unselectedColor = MaterialTheme.appColors.neutral80
     NavigationBarItem(
         selected = selected,
         colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.secondary,
-            unselectedIconColor = MaterialTheme.colorScheme.secondary,
-            indicatorColor = MaterialTheme.appColors.transparent
+            selectedIconColor = selectedColor,
+            selectedTextColor = selectedColor,
+            unselectedIconColor = unselectedColor,
+            unselectedTextColor = unselectedColor,
+            indicatorColor = MaterialTheme.appColors.neutral20
         ),
         onClick = onClick,
         icon = {
             AppIcon(imageVector = icon)
         },
         label = {
-            TextBodyLargeNeutral80(text = label)
+            TextBodyLarge(text = label, color = Color.Unspecified)
         }
     )
 }
 
 @Composable
 fun BottomBarNavigation(
-    current: NavConfig,
-    onNavigate: (NavConfig) -> Unit
+    current: Navigation,
+    onNavigate: (Navigation) -> Unit
 ) {
     NavigationBar(
         modifier = Modifier.navigationBarsPadding()
     ) {
         AppBottomNavigationItem(
-            selected = current is NavConfig.HomeSection.Home,
-            onClick = { onNavigate(NavConfig.HomeSection.Home) },
+            selected = current is HomeSection.Home,
+            onClick = { onNavigate(HomeSection.Home) },
             icon = Icons.Filled.Home,
             label = "Home"
         )
         AppBottomNavigationItem(
-            selected = current is NavConfig.Explore,
-            onClick = { onNavigate(NavConfig.Explore) },
+            selected = current is Navigation.Explore,
+            onClick = { onNavigate(Navigation.Explore) },
             icon = Icons.Outlined.Search,
             label = "Explore"
         )
         AppBottomNavigationItem(
-            selected = current is NavConfig.Profile,
-            onClick = { onNavigate(NavConfig.Profile) },
+            selected = current is Navigation.Profile,
+            onClick = { onNavigate(Navigation.Profile) },
             icon = Icons.Filled.Person,
             label = "Profile"
         )
     }
 }
-
-expect fun getPlatformName(): String
