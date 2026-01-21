@@ -1,23 +1,26 @@
-package mk.digital.kmpsample.presentation.component.text.h4
+package mk.digital.kmpsample.presentation.component.text.bodyLarge
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-internal fun TextH4(
+internal fun TextBodyLarge(
     text: String,
     modifier: Modifier = Modifier,
     color: Color,
+    fontWeight: FontWeight = FontWeight.Normal,
     textAlign: TextAlign? = null,
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.h4,
+        style = MaterialTheme.typography.bodyLarge,
         color = color,
+        fontWeight = fontWeight,
         modifier = modifier,
         textAlign = textAlign
     )

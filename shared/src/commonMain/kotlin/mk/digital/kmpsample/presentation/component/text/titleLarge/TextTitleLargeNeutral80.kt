@@ -1,20 +1,21 @@
-package mk.digital.kmpsample.presentation.component.text.h4
+package mk.digital.kmpsample.presentation.component.text.titleLarge
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import mk.digital.kmpsample.presentation.foundation.appColors
 
 @Composable
-fun TextH4Primary(
+fun TextTitleLargeNeutral80(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
-    TextH4(
+    TextTitleLarge(
         text = text,
         modifier = modifier,
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.appColors.neutral80,
         textAlign = textAlign
     )
 }

@@ -1,14 +1,14 @@
-package mk.digital.kmpsample.presentation.component.text.h6
+package mk.digital.kmpsample.presentation.component.text.titleLarge
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-internal fun TextH6(
+internal fun TextTitleLarge(
     text: String,
     modifier: Modifier = Modifier,
     color: Color,
@@ -16,7 +16,7 @@ internal fun TextH6(
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.h6,
+        style = MaterialTheme.typography.titleLarge,
         color = color,
         modifier = modifier,
         textAlign = textAlign

@@ -1,24 +1,23 @@
 package mk.digital.kmpsample.presentation.component
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import mk.digital.kmpsample.presentation.component.text.h6.TextNeutral80
+import mk.digital.kmpsample.presentation.component.ext.noRippleClickable
+import mk.digital.kmpsample.presentation.component.text.titleLarge.TextTitleLargeNeutral80
 import mk.digital.kmpsample.presentation.foundation.appColors
 import mk.digital.kmpsample.presentation.foundation.space6
 
@@ -33,17 +32,12 @@ fun TopAppBar(
 ) {
     TopAppBar(
         modifier = modifier.fillMaxWidth().statusBarsPadding(),
-        title = { title?.let { TextNeutral80(text = title) } },
+        title = { title?.let { TextTitleLargeNeutral80(text = title) } },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
         navigationIcon = {
             backIcon?.let {
                 Icon(
-                    modifier = Modifier
-                        .size(space6)
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = backClick
-                        ),
+                    modifier = Modifier.size(space6).noRippleClickable(backClick),
                     imageVector = backIcon,
                     contentDescription = "Back Arrow",
                     tint = MaterialTheme.appColors.neutral80,
@@ -57,6 +51,5 @@ fun TopAppBar(
                 content = actions
             )
         },
-        contentColor = MaterialTheme.appColors.transparent
     )
 }

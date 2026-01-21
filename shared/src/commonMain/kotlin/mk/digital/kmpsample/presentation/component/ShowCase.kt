@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,12 +16,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import mk.digital.kmpsample.presentation.component.buttons.AppTextButton
 import mk.digital.kmpsample.presentation.component.buttons.ContainedButton
 import mk.digital.kmpsample.presentation.component.buttons.OutlinedButton
-import mk.digital.kmpsample.presentation.component.cards.AppCard
+import mk.digital.kmpsample.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpsample.presentation.component.dividers.AppDividerPrimary
 import mk.digital.kmpsample.presentation.component.image.AppImage
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer4
-import mk.digital.kmpsample.presentation.component.text.button.TextButtonPrimary
-import mk.digital.kmpsample.presentation.component.text.h4.TextH4Primary
+import mk.digital.kmpsample.presentation.component.text.headlineMedium.TextHeadlineMediumPrimary
+import mk.digital.kmpsample.presentation.component.text.labelLarge.TextButtonPrimary
 import mk.digital.kmpsample.presentation.foundation.AppTheme
 import mk.digital.kmpsample.presentation.foundation.space4
 
@@ -46,19 +46,19 @@ fun ShowCase() {
                 OutlinedButton(text = "Outlined Button", onClick = {})
                 Spacer4()
                 val showDialog = remember { mutableStateOf(false) }
-                AppCard(
+                AppElevatedCard(
                     modifier = Modifier.fillMaxWidth().clickable {
                         showDialog.value = !showDialog.value
                     }.padding(space4),
                 ) {
-                    TextH4Primary("Text H4 Primary")
+                    TextHeadlineMediumPrimary("Text H4 Primary")
                     Spacer4()
                     TextButtonPrimary("App card - Text Button Primary")
                 }
                 Spacer4()
                 AppImage(
                     imageVector = Icons.AutoMirrored.Filled.AddToHomeScreen,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                 )
                 Spacer4()
                 CircularProgress()
@@ -75,7 +75,7 @@ fun ShowCase() {
                             showDialog.value = false
                         },
                         title = "Title",
-                        message = "body"
+                        text = "body"
                     )
                 }
             }

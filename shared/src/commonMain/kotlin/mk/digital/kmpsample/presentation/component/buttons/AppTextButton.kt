@@ -1,9 +1,9 @@
 package mk.digital.kmpsample.presentation.component.buttons
 
-import androidx.compose.material.TextButton
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import mk.digital.kmpsample.presentation.component.text.button.TextButtonPrimary
+import mk.digital.kmpsample.presentation.component.text.labelLarge.TextButtonPrimary
 
 @Composable
 fun AppTextButton(

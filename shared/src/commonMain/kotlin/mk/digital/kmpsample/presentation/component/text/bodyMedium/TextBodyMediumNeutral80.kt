@@ -1,6 +1,6 @@
-package mk.digital.kmpsample.presentation.component.text.body2
+package mk.digital.kmpsample.presentation.component.text.bodyMedium
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -9,13 +9,13 @@ import androidx.compose.ui.unit.TextUnit
 import mk.digital.kmpsample.presentation.foundation.appColors
 
 @Composable
-fun TextBody2Neutral80(
+fun TextBodyMediumNeutral80(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
     lineHeight: TextUnit = TextUnit.Unspecified,
 ) {
-    TextBody2(
+    TextBodyMedium(
         text = text,
         modifier = modifier,
         color = MaterialTheme.appColors.neutral80,

@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import mk.digital.kmpsample.presentation.component.TopAppBar
 import mk.digital.kmpsample.presentation.component.image.AppIconPrimary
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer4
-import mk.digital.kmpsample.presentation.component.text.body1.TextBody1Neutral80
+import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
 import mk.digital.kmpsample.presentation.foundation.AppIcons
 import mk.digital.kmpsample.presentation.foundation.space4
 
@@ -19,7 +19,7 @@ fun ExploreScreen() {
         Column(Modifier.padding(space4)) {
             Spacer4()
             Row {
-                TextBody1Neutral80("Svg Builder test: ")
+                TextBodyLargeNeutral80("Svg Builder test: ")
                 AppIconPrimary(AppIcons.ArrowRight)
             }
         }

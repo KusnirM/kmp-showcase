@@ -2,7 +2,6 @@ package mk.digital.kmpsample.presentation.screen.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -15,12 +14,11 @@ import mk.digital.kmpsample.domain.model.User
 import mk.digital.kmpsample.getPlatformName
 import mk.digital.kmpsample.presentation.component.LoadingView
 import mk.digital.kmpsample.presentation.component.TopAppBar
-import mk.digital.kmpsample.presentation.component.buttons.ContainedButton
-import mk.digital.kmpsample.presentation.component.cards.AppCard
+import mk.digital.kmpsample.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer4
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer8
-import mk.digital.kmpsample.presentation.component.text.body1.TextBody1Neutral80
-import mk.digital.kmpsample.presentation.component.text.body2.TextBody2Neutral80
+import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
+import mk.digital.kmpsample.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpsample.presentation.foundation.space4
 
 @Composable
@@ -34,7 +32,7 @@ fun HomeScreen(component: HomeComponent) {
         } else {
             Column(Modifier.verticalScroll(rememberScrollState()).padding(space4)) {
                 Spacer4()
-                TextBody1Neutral80("users")
+                TextBodyLargeNeutral80("users")
                 Spacer4()
                 state.users.forEach {
                     Spacer4()
@@ -50,9 +48,9 @@ fun HomeScreen(component: HomeComponent) {
 
 @Composable
 private fun UserCard(user: User, onClick: () -> Unit) {
-    AppCard(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(space4)) {
-        TextBody1Neutral80(user.name)
+    AppElevatedCard(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(space4)) {
+        TextBodyLargeNeutral80(user.name)
         Spacer4()
-        TextBody2Neutral80(user.email)
+        TextBodyMediumNeutral80(user.email)
     }
 }

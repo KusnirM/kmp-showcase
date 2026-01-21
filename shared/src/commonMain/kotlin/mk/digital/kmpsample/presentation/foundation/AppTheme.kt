@@ -1,9 +1,9 @@
 package mk.digital.kmpsample.presentation.foundation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -15,12 +15,12 @@ fun AppTheme(content: @Composable () -> Unit) {
     val colors = LightColorPalette
     CompositionLocalProvider(LocalColors provides colors) {
         MaterialTheme(
-            colors = colors.material,
+            colorScheme = colors.material,
             typography = Typography,
             shapes = MaterialTheme.shapes,
             content = {
                 Surface(
-                    color = MaterialTheme.colors.background,
+                    color = MaterialTheme.colorScheme.background,
                     modifier = Modifier.fillMaxSize(),
                     content = content
                 )
@@ -37,20 +37,25 @@ val MaterialTheme.appColors: AppColors
     get() = LocalColors.current
 
 private val LightColorPalette = AppColors(
-    material = lightColors(
+    material = lightColorScheme(
         primary = PrimaryLight,
-        primaryVariant = PrimaryVariantLight,
-        secondary = SecondaryLight,
-        secondaryVariant = SecondaryVariantLight,
-        background = BackgroundLight,
-        surface = SurfaceLight,
-        error = ErrorLight,
-
         onPrimary = Neutral0Light,
+        primaryContainer = PrimaryContainerLight,
+        onPrimaryContainer = Neutral0Light,
+        secondary = SecondaryLight,
         onSecondary = Neutral0Light,
+        secondaryContainer = SecondaryContainerLight,
+        onSecondaryContainer = Neutral0Light,
+        background = BackgroundLight,
         onBackground = Neutral100Light,
+        surface = SurfaceLight,
         onSurface = Neutral100Light,
+        error = ErrorLight,
         onError = Neutral0Light,
+        errorContainer = ErrorContainerLight,
+        onErrorContainer = Neutral0Light,
+        surfaceTint = Neutral0Light,
+        surfaceVariant = Neutral80Light,
     ),
     neutral0 = Neutral0Light,
     neutral80 = Neutral80Light,
