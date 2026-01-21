@@ -105,7 +105,7 @@ Tests are located in `shared/src/commonTest/` and run on JVM via `androidHostTes
 
 Run tests:
 ```bash
-./gradlew :shared:testDebugUnitTest
+./gradlew :shared:testAndroidHostTest
 ```
 
 ---

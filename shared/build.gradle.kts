@@ -1,4 +1,3 @@
-import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -164,14 +163,16 @@ if (project.hasProperty("configuration")) {
 
             println("✅ Assembling shared-$config.xcframework (effective build: $effectiveBuildType)")
 
-            project.exec {
-                commandLine(
-                    "xcodebuild",
-                    "-create-xcframework",
-                    "-framework", frameworks[0].absolutePath,
-                    "-framework", frameworks[1].absolutePath,
-                    "-output", outputFramework.absolutePath
-                )
+            val process = ProcessBuilder(
+                "xcodebuild",
+                "-create-xcframework",
+                "-framework", frameworks[0].absolutePath,
+                "-framework", frameworks[1].absolutePath,
+                "-output", outputFramework.absolutePath
+            ).inheritIO().start()
+            val exitCode = process.waitFor()
+            if (exitCode != 0) {
+                throw GradleException("xcodebuild failed with exit code $exitCode")
             }
         }
     }
