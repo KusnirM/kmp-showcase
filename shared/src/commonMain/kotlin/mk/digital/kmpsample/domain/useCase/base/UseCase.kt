@@ -1,22 +1,32 @@
 package mk.digital.kmpsample.domain.useCase.base
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+/**
+ * Base class for all use cases.
+ * Encapsulates a single business logic operation.
+ *
+ * @param Params Input parameters for the use case
+ * @param Result Output result from the use case
+ */
+abstract class UseCase<in Params, out Result> {
 
-abstract class UseCase<Params, Result> {
+    /**
+     * Executes the use case logic.
+     * Override this in concrete implementations.
+     */
+    protected abstract suspend fun run(params: Params): Result
 
-    abstract suspend fun run(params: Params): Result
-
-    suspend operator fun invoke(params: Params, isAsync: Boolean = true): Result = coroutineScope {
-        return@coroutineScope if (isAsync) {
-            val job = async { run(params) }
-            job.await()
-        } else {
-            run(params)
-        }
-    }
+    /**
+     * Invokes the use case.
+     */
+    suspend operator fun invoke(params: Params): Result = run(params)
 }
 
-suspend operator fun <T> UseCase<None, T>.invoke(isAsync: Boolean = true): T = invoke(None, isAsync)
+/**
+ * Extension for use cases that don't require parameters.
+ */
+suspend operator fun <T> UseCase<None, T>.invoke(): T = invoke(None)
 
+/**
+ * Marker object for use cases without parameters.
+ */
 object None
