@@ -21,8 +21,9 @@ io-coil3-kt = "3.3.0"
 
 mokkery = "3.1.1"
 detekt = "1.23.8"
-detektCompose = "0.4.22"
+detektCompose = "0.5.3"
 
+datastore = "1.2.0"
 koin = "4.1.1"
 ktor = "3.3.3"
 activityKtx = "1.12.2"
@@ -36,6 +37,8 @@ material3Android = "1.4.0"
 android-material = { module = "com.google.android.material:material", version = "1.13.0" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 coil3-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "io-coil3-kt" }
 coil3-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "io-coil3-kt" }

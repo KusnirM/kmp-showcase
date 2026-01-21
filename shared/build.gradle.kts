@@ -104,6 +104,9 @@ kotlin {
             implementation(libs.activity.ktx)
             implementation(libs.activity.compose)
             implementation(libs.compose.ui.tooling)
+
+            //            local storage
+            implementation(libs.datastore.preferences)
         }
 
         commonTest.dependencies {
