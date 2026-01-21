@@ -1,12 +1,12 @@
 package mk.digital.kmpsample.presentation.component
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import mk.digital.kmpsample.presentation.foundation.space8
 
 @Composable
@@ -16,9 +16,7 @@ fun CircularProgress(
 ) {
     CircularProgressIndicator(
         modifier = modifier.size(size),
-        color = MaterialTheme.colors.primary,
-        strokeWidth = circularProgressStrokeWidth
+        color = MaterialTheme.colorScheme.primary,
+        strokeWidth = ProgressIndicatorDefaults.CircularStrokeWidth
     )
 }
-
-private val circularProgressStrokeWidth = 3.dp

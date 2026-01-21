@@ -1,12 +1,19 @@
 package mk.digital.kmpsample.presentation.component.dividers
 
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+
+
+@Composable
+private fun AppDivider(color: Color) {
+    HorizontalDivider(color = color)
+}
 
 @Composable
 fun AppDividerPrimary() {
-    Divider(color = MaterialTheme.colors.primary)
+    AppDivider(color = MaterialTheme.colorScheme.primary)
 }
 
 

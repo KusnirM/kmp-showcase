@@ -1,20 +1,20 @@
 package mk.digital.kmpsample.presentation.foundation
 
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 val Typography = Typography(
-    h4 = TextStyle(
+    headlineMedium = TextStyle(
         fontSize = 30.sp,
         fontWeight = FontWeight.Bold
     ),
-    body1 = TextStyle(
+    bodyLarge = TextStyle(
         fontSize = 16.sp
     ),
-    button = TextStyle(
+    labelLarge = TextStyle(
         fontSize = 14.sp,
         fontWeight = FontWeight.Medium
     )

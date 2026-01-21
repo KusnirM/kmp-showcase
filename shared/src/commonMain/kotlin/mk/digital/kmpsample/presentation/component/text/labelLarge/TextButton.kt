@@ -1,7 +1,7 @@
-package mk.digital.kmpsample.presentation.component.text.button
+package mk.digital.kmpsample.presentation.component.text.labelLarge
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import mk.digital.kmpsample.presentation.foundation.appColors
 
 @Composable
-internal fun TextButton(
+internal fun TextLabelLarge(
     text: String,
     modifier: Modifier = Modifier,
     color: Color,
@@ -19,7 +19,7 @@ internal fun TextButton(
     Text(
         modifier = modifier,
         text = text.uppercase(),
-        style = MaterialTheme.typography.button,
+        style = MaterialTheme.typography.labelLarge,
         color = color,
         fontWeight = FontWeight.Medium,
         textAlign = textAlign
@@ -32,10 +32,10 @@ internal fun TextButtonPrimary(
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
-    TextButton(
+    TextLabelLarge(
         modifier = modifier,
         text = text.uppercase(),
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colorScheme.primary,
         textAlign = textAlign
     )
 }
@@ -46,7 +46,7 @@ internal fun TextButtonNeutral0(
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
-    TextButton(
+    TextLabelLarge(
         modifier = modifier,
         text = text.uppercase(),
         color = MaterialTheme.appColors.neutral0,

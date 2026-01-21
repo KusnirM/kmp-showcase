@@ -3,12 +3,12 @@ package mk.digital.kmpsample.presentation.component.buttons
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import mk.digital.kmpsample.presentation.component.text.button.TextButtonNeutral0
+import mk.digital.kmpsample.presentation.component.text.labelLarge.TextButtonNeutral0
 import mk.digital.kmpsample.presentation.foundation.cardCornerRadius6
 import mk.digital.kmpsample.presentation.foundation.space4
 
@@ -26,7 +26,7 @@ fun ContainedButton(
         modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(space4),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.primary,
+            containerColor = MaterialTheme.colorScheme.primary,
         ),
         enabled = enabled,
         shape = RoundedCornerShape(cardCornerRadius6)
