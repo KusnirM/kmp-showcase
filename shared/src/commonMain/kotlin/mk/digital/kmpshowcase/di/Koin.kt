@@ -3,11 +3,9 @@ package mk.digital.kmpshowcase.di
 import mk.digital.kmpshowcase.data.di.dataModule
 import mk.digital.kmpshowcase.presentation.di.presentationModule
 import org.koin.core.context.startKoin
-import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
-expect fun platformModule(): Module
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
@@ -16,12 +14,13 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     }
 
 // called by iOS client
+@Suppress("unused")
 fun initKoin() = initKoin {}
 
 fun commonModule() = module {
     includes(
         listOf(
-            platformModule(),
+            platformModule,
             presentationModule,
             domainModule,
             dataModule
