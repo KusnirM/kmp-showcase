@@ -1,3 +1,3 @@
 package mk.digital.kmpsample
 
-actual fun getPlatformName(): String = "Android"
+fun getPlatformName(): String = "Android"

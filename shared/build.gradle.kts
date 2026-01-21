@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.mokkery)
 }
 
 kotlin {
@@ -25,7 +26,7 @@ kotlin {
             enable = true
         }
 
-//        todo replace hostUnittests -> commonTest
+        // for Unit tests to run on JVM
         withHostTest {}
     }
 
@@ -68,7 +69,7 @@ kotlin {
             api(libs.koin.compose)
             api(libs.koin.compose.vm)
 
-            // Navigation
+            // Navigation & Lifecycle
             api(libs.navigation3.compose)
             api(libs.lifecycle.viewmodel.navigation3)
 
@@ -93,6 +94,12 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+            implementation(libs.coroutines.test)
+        }
+
+        // androidHostTest inherits from commonTest, runs on JVM without device
+        getByName("androidHostTest").dependencies {
+            implementation(kotlin("test-junit"))
         }
 
         iosMain.dependencies {
@@ -100,7 +107,6 @@ kotlin {
         }
 
         androidMain.dependencies {
-//            koin
             api(libs.koin.android)
 
             implementation(libs.ktor.client.okhttp)
@@ -109,21 +115,6 @@ kotlin {
             implementation(libs.activity.ktx)
             implementation(libs.activity.compose)
             implementation(libs.compose.ui.tooling)
-
-
-        }
-
-        getByName("androidHostTest") {
-            dependencies {
-                implementation(libs.junit.jupiter)
-                implementation(libs.mockk)
-                implementation(libs.coroutines.test)
-                implementation(libs.slf4j.simple)
-            }
-
-            kotlin.setSrcDirs(
-                kotlin.srcDirs.filterNot { it.path.contains("build/generated/compose/resourceGenerator") }
-            )
         }
     }
 
@@ -133,12 +124,6 @@ kotlin {
 compose.resources {
     publicResClass = true
 }
-
-//JUnit 5 androidHostTest
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 
 //todo - delete?
 if (project.hasProperty("configuration")) {
