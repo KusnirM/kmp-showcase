@@ -1,4 +1,5 @@
 import SwiftUI
+import shared
 
 @main
 struct iOSApp: App {
@@ -6,26 +7,27 @@ struct iOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self)
     var appDelegate: AppDelegate
 
-      init() {
-            // Firebase initialization
-//             FirebaseApp.configure()
+    var body: some Scene {
+        WindowGroup {
+            IosAppView(appDelegate: appDelegate)
         }
-
-	var body: some Scene {
-		WindowGroup {
-			IosAppView(
-			appDelegate: appDelegate
-			)
-		}
-	}
+    }
 }
 
-struct IosAppView : View {
+struct IosAppView: View {
     @ObservedObject
     var appDelegate: AppDelegate
 
-
     var body: some View {
-        ContentView(component: appDelegate.appComponent,backDispatcher: appDelegate.backDispatcher)
+        ComposeView()
+            .ignoresSafeArea(.keyboard)
     }
+}
+
+struct ComposeView: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        Main_iosKt.MainViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
