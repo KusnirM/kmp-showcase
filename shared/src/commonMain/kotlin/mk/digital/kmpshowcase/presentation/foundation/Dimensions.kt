@@ -11,10 +11,12 @@ val space3: Dp = 12.dp
 val space4: Dp = 16.dp
 val space6: Dp = 24.dp
 val space8: Dp = 32.dp
+val space10: Dp = 40.dp
 val space12: Dp = 48.dp
+val space16: Dp = 52.dp
 val space18: Dp = 72.dp
 
-val iconSize = space6
+val defaultIconSize = space6
 
 
 val cardElevation: Dp = 6.dp

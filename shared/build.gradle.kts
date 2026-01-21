@@ -124,7 +124,7 @@ kotlin {
 }
 
 compose.resources {
-    publicResClass = true
+    packageOfResClass = "mk.digital.kmpshowcase.shared.generated.resources"
 }
 
 //todo - delete?

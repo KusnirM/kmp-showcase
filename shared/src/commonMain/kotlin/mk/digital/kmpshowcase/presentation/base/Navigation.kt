@@ -12,7 +12,16 @@ sealed interface Navigation : NavKey {
         data object Home : HomeSection
 
         @Serializable
-        data class Detail(val id: Int) : HomeSection
+        data object UiComponents : HomeSection
+
+        @Serializable
+        data object Networking : HomeSection
+
+        @Serializable
+        data object Storage : HomeSection
+
+        @Serializable
+        data object PlatformApis : HomeSection
     }
 
     @Serializable

@@ -37,24 +37,32 @@ import mk.digital.kmpshowcase.presentation.component.image.AppIcon
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLarge
 import mk.digital.kmpshowcase.presentation.foundation.AppTheme
 import mk.digital.kmpshowcase.presentation.foundation.appColors
-import mk.digital.kmpshowcase.presentation.screen.detail.DetailScreen
-import mk.digital.kmpshowcase.presentation.screen.detail.DetailViewModel
 import mk.digital.kmpshowcase.presentation.screen.explore.ExploreScreen
 import mk.digital.kmpshowcase.presentation.screen.explore.ExploreViewModel
+import mk.digital.kmpshowcase.presentation.screen.feature.NetworkingScreen
+import mk.digital.kmpshowcase.presentation.screen.feature.NetworkingViewModel
+import mk.digital.kmpshowcase.presentation.screen.feature.PlatformApisScreen
+import mk.digital.kmpshowcase.presentation.screen.feature.PlatformApisViewModel
+import mk.digital.kmpshowcase.presentation.screen.feature.StorageScreen
+import mk.digital.kmpshowcase.presentation.screen.feature.StorageViewModel
+import mk.digital.kmpshowcase.presentation.screen.feature.UiComponentsScreen
+import mk.digital.kmpshowcase.presentation.screen.feature.UiComponentsViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
 import mk.digital.kmpshowcase.presentation.screen.profile.ProfileScreen
 import mk.digital.kmpshowcase.presentation.screen.profile.ProfileViewModel
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
 
 
 private val saveStateConfiguration = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
             subclass(HomeSection.Home.serializer())
-            subclass(HomeSection.Detail.serializer())
+            subclass(HomeSection.UiComponents.serializer())
+            subclass(HomeSection.Networking.serializer())
+            subclass(HomeSection.Storage.serializer())
+            subclass(HomeSection.PlatformApis.serializer())
             subclass(Navigation.Explore.serializer())
             subclass(Navigation.Profile.serializer())
         }
@@ -114,12 +122,28 @@ fun MainView() {
                             HomeScreen(viewModel)
                         }
                     }
-                    entry<HomeSection.Detail> {
-                        val viewModel = koinViewModel<DetailViewModel> {
-                            parametersOf(it.id)
-                        }
+                    entry<HomeSection.UiComponents> {
+                        val viewModel = koinViewModel<UiComponentsViewModel>()
                         ScreenWrapper(viewModel, onScreenChange) {
-                            DetailScreen(viewModel)
+                            UiComponentsScreen()
+                        }
+                    }
+                    entry<HomeSection.Networking> {
+                        val viewModel = koinViewModel<NetworkingViewModel>()
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            NetworkingScreen()
+                        }
+                    }
+                    entry<HomeSection.Storage> {
+                        val viewModel = koinViewModel<StorageViewModel>()
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            StorageScreen()
+                        }
+                    }
+                    entry<HomeSection.PlatformApis> {
+                        val viewModel = koinViewModel<PlatformApisViewModel>()
+                        ScreenWrapper(viewModel, onScreenChange) {
+                            PlatformApisScreen()
                         }
                     }
                     entry<Navigation.Explore> {
@@ -175,7 +199,7 @@ fun BottomBarNavigation(
 ) {
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         AppBottomNavigationItem(
-            selected = current is HomeSection.Home,
+            selected = current is HomeSection,
             onClick = { onNavigate(HomeSection.Home) },
             icon = Icons.Filled.Home,
             label = "Home"
