@@ -102,31 +102,31 @@ private fun ScreenLifecycleEffect(
 }
 
 /**
- * A composable that connects a BaseComponent to lifecycle events.*
- * Uses the component's hashCode as key to properly track each screen instance separately.
- * @param screen The BaseComponent instance (typically a ViewModel) to connect to lifecycle
+ * A composable that connects a ScreenLifecycle to lifecycle events.
+ * Uses the viewModel's hashCode as key to properly track each screen instance separately.
+ * @param viewModel The ScreenLifecycle instance (typically a ViewModel) to connect to lifecycle
  */
 @Composable
-fun ScreenLifecycleEffect(screen: BaseComponent) {
+fun ScreenLifecycleEffect(viewModel: ScreenLifecycle) {
     ScreenLifecycleEffect(
-        key = screen,
-        onCreate = screen::onCreated,
-        onResume = screen::onResumed,
-        onPause = screen::onPaused
+        key = viewModel,
+        onCreate = viewModel::onCreated,
+        onResume = viewModel::onResumed,
+        onPause = viewModel::onPaused
     )
 }
 
 /**
- * Collects navigation events from a component and performs actual navigation.
+ * Collects navigation events from a ViewModel and performs actual navigation.
  * Caller is responsible for handling specific event types via when expression.
  */
 @Composable
 fun CollectNavEvents(
-    component: BaseComponentContext<*>,
+    viewModel: BaseViewModel<*>,
     onEvent: (NavEvent) -> Unit
 ) {
-    LaunchedEffect(component) {
-        component.navEvent.collect { event ->
+    LaunchedEffect(viewModel) {
+        viewModel.navEvent.collect { event ->
             onEvent(event)
         }
     }

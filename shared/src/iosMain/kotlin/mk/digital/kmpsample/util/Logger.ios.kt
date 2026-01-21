@@ -11,6 +11,10 @@ actual object Logger {
         NSLog("$TAG ❗️ ${e.message ?: e.toString()}\n${e.stackTraceToString()}")
     }
 
+    actual fun e(log: String, e: Throwable) {
+        NSLog("$TAG ❗️ $log\n${e.message ?: e.toString()}\n${e.stackTraceToString()}")
+    }
+
     actual fun d(log: String) {
         NSLog("$TAG ❗️ $log")
     }
