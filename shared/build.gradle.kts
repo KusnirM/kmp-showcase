@@ -92,16 +92,6 @@ kotlin {
             implementation(libs.coil3.network.ktor)
         }
 
-        commonTest.dependencies {
-            implementation(kotlin("test"))
-            implementation(libs.coroutines.test)
-        }
-
-        // androidHostTest inherits from commonTest, runs on JVM without device
-        getByName("androidHostTest").dependencies {
-            implementation(kotlin("test-junit"))
-        }
-
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
@@ -115,6 +105,16 @@ kotlin {
             implementation(libs.activity.ktx)
             implementation(libs.activity.compose)
             implementation(libs.compose.ui.tooling)
+        }
+
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.coroutines.test)
+        }
+
+        // androidHostTest inherits from commonTest, runs on JVM without device
+        getByName("androidHostTest").dependencies {
+            implementation(kotlin("test-junit"))
         }
     }
 
