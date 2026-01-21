@@ -9,11 +9,11 @@ import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLargeN
 import mk.digital.kmpsample.presentation.foundation.space4
 
 @Composable
-fun DetailScreen(component: DetailComponent) {
+fun DetailScreen(viewModel: DetailViewModel) {
     Column {
         Column(Modifier.padding(space4)) {
             Spacer4()
-            TextBodyLargeNeutral80("Detail: ${component.id}")
+            TextBodyLargeNeutral80("Detail: ${viewModel.id}")
         }
     }
 }

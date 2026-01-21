@@ -30,8 +30,7 @@ import mk.digital.kmpsample.presentation.base.NavRouter
 import mk.digital.kmpsample.presentation.base.Navigation
 import mk.digital.kmpsample.presentation.base.Navigation.HomeSection
 import mk.digital.kmpsample.presentation.base.ScreenWrapper
-import mk.digital.kmpsample.presentation.base.Toolbar
-import mk.digital.kmpsample.presentation.base.insets.rememberScreenInsets
+import mk.digital.kmpsample.presentation.base.ToolbarConfig
 import mk.digital.kmpsample.presentation.base.rememberNavEntryDecorators
 import mk.digital.kmpsample.presentation.base.rememberNavRouter
 import mk.digital.kmpsample.presentation.component.TopAppBar
@@ -39,15 +38,15 @@ import mk.digital.kmpsample.presentation.component.image.AppIcon
 import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLarge
 import mk.digital.kmpsample.presentation.foundation.AppTheme
 import mk.digital.kmpsample.presentation.foundation.appColors
-import mk.digital.kmpsample.presentation.screen.detail.DetailComponent
 import mk.digital.kmpsample.presentation.screen.detail.DetailScreen
-import mk.digital.kmpsample.presentation.screen.explore.ExploreComponent
+import mk.digital.kmpsample.presentation.screen.detail.DetailViewModel
 import mk.digital.kmpsample.presentation.screen.explore.ExploreScreen
-import mk.digital.kmpsample.presentation.screen.home.HomeComponent
+import mk.digital.kmpsample.presentation.screen.explore.ExploreViewModel
 import mk.digital.kmpsample.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpsample.presentation.screen.home.HomeScreen
-import mk.digital.kmpsample.presentation.screen.profile.ProfileComponent
+import mk.digital.kmpsample.presentation.screen.home.HomeViewModel
 import mk.digital.kmpsample.presentation.screen.profile.ProfileScreen
+import mk.digital.kmpsample.presentation.screen.profile.ProfileViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -67,7 +66,7 @@ private val saveStateConfiguration = SavedStateConfiguration {
 fun MainView() {
     val router: NavRouter<Navigation> = rememberNavRouter(saveStateConfiguration, HomeSection.Home)
     val currentRoute: Navigation = router.backStack.last()
-    val currentToolbar = remember { mutableStateOf<Toolbar?>(null) }
+    val currentToolbar = remember { mutableStateOf<ToolbarConfig?>(null) }
 
     AppTheme {
         Scaffold(
@@ -98,10 +97,8 @@ fun MainView() {
                 )
             },
         ) { contentPadding ->
-            val screenInsets = rememberScreenInsets()
-
             // Callback for entries to set toolbar
-            val onScreenChange: (Toolbar?) -> Unit = { toolbar ->
+            val onScreenChange: (ToolbarConfig?) -> Unit = { toolbar ->
                 currentToolbar.value = toolbar
             }
 
@@ -112,14 +109,14 @@ fun MainView() {
                 entryDecorators = rememberNavEntryDecorators(),
                 entryProvider = entryProvider {
                     entry<HomeSection.Home> {
-                        val viewModel = koinViewModel<HomeComponent>()
+                        val viewModel = koinViewModel<HomeViewModel>()
                         HomeNavEvents(viewModel, router)
                         ScreenWrapper(viewModel, onScreenChange) {
                             HomeScreen(viewModel)
                         }
                     }
                     entry<HomeSection.Detail> {
-                        val viewModel = koinViewModel<DetailComponent> {
+                        val viewModel = koinViewModel<DetailViewModel> {
                             parametersOf(it.id)
                         }
                         ScreenWrapper(viewModel, onScreenChange) {
@@ -127,13 +124,13 @@ fun MainView() {
                         }
                     }
                     entry<Navigation.Explore> {
-                        val viewModel = koinViewModel<ExploreComponent>()
+                        val viewModel = koinViewModel<ExploreViewModel>()
                         ScreenWrapper(viewModel, onScreenChange) {
                             ExploreScreen()
                         }
                     }
                     entry<Navigation.Profile> {
-                        val viewModel = koinViewModel<ProfileComponent>()
+                        val viewModel = koinViewModel<ProfileViewModel>()
                         ScreenWrapper(viewModel, onScreenChange) {
                             ProfileScreen()
                         }

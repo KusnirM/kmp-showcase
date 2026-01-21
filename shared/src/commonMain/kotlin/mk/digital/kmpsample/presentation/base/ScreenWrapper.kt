@@ -4,29 +4,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 
 /**
- * Callback type for screen configuration changes (toolbar and background).
+ * Callback type for screen configuration changes (toolbar).
  */
-typealias OnScreenChange = (Toolbar?) -> Unit
+typealias OnScreenChange = (ToolbarConfig?) -> Unit
 
 /**
  * Wrapper composable that handles lifecycle and screen config callback.
- * Automatically extracts Toolbar and background from viewModel.
+ * Automatically extracts ToolbarConfig from viewModel.
  *
- * @param viewModel The component/viewModel for the screen
- * @param onScreenChange Callback to notify parent about toolbar/background changes
+ * @param viewModel The ViewModel for the screen
+ * @param onScreenChange Callback to notify parent about toolbar changes
  * @param content The screen content
  */
 @Composable
 fun ScreenWrapper(
-    viewModel: BaseComponentContext<*>,
+    viewModel: BaseViewModel<*>,
     onScreenChange: OnScreenChange,
     content: @Composable () -> Unit
 ) {
-    // SideEffect runs after successful composition - proper way to sync state
     SideEffect {
-        onScreenChange(viewModel as? Toolbar)
+        onScreenChange(viewModel as? ToolbarConfig)
     }
 
-    (viewModel as? BaseComponent)?.let { ScreenLifecycleEffect(it) }
+    (viewModel as? ScreenLifecycle)?.let { ScreenLifecycleEffect(it) }
     content()
 }

@@ -23,8 +23,8 @@ import mk.digital.kmpsample.presentation.component.text.bodyMedium.TextBodyMediu
 import mk.digital.kmpsample.presentation.foundation.space4
 
 @Composable
-fun HomeScreen(component: HomeComponent) {
-    val state by component.state.collectAsStateWithLifecycle()
+fun HomeScreen(viewModel: HomeViewModel) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
     Column {
         if (state.loading) {
             LoadingView()
@@ -36,7 +36,7 @@ fun HomeScreen(component: HomeComponent) {
                 state.users.forEach {
                     Spacer4()
                     UserCard(it) {
-                        component.onUserCard(it.id)
+                        viewModel.onUserCard(it.id)
                     }
                 }
                 Spacer8()
@@ -56,10 +56,10 @@ private fun UserCard(user: User, onClick: () -> Unit) {
 
 @Composable
 fun HomeNavEvents(
-    viewModel: HomeComponent,
+    viewModel: HomeViewModel,
     router: NavRouter<Navigation>
 ) {
-    CollectNavEvents(component = viewModel) {
+    CollectNavEvents(viewModel = viewModel) {
         if (it !is HomeNavEvent) return@CollectNavEvents
         when (it) {
             is HomeNavEvent.ToDetail -> router.navigateTo(Navigation.HomeSection.Detail(it.id))
