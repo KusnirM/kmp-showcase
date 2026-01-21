@@ -7,8 +7,7 @@ androidCompileSdk = "36"
 androidTargetSdk = "36"
 
 
-#todo -> 9
-agp = "8.13.2"
+agp = "9.0.0"
 kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
