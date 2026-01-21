@@ -1,21 +1,22 @@
-package mk.digital.kmpsample.presentation.component.text.h6
+package mk.digital.kmpsample.presentation.component.text.bodyLarge
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import mk.digital.kmpsample.presentation.foundation.appColors
 
+
 @Composable
-fun TextNeutral80(
+fun TextBodyLargeNeutral80(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
-    TextH6(
+    TextBodyLarge(
         text = text,
         modifier = modifier,
         color = MaterialTheme.appColors.neutral80,
-        textAlign = textAlign
+        textAlign = textAlign,
     )
 }

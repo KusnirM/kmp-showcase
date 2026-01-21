@@ -1,9 +1,10 @@
+import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
@@ -11,10 +12,23 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
+    androidLibrary {
+        compileSdk = libs.versions.androidCompileSdk.get().toInt()
+        namespace = "mk.digital.kmpsample.shared"
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+
+//        withJava()
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
+
+        androidResources {
+            enable = true
+        }
+
+//        todo replace hostUnittests -> commonTest
+        withHostTest {}
     }
 
     listOf(
@@ -24,6 +38,7 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
+            freeCompilerArgs += listOf("-Xbinary=bundleId=mk.digital.kmpsample.shared")
             isStatic = true
 
             export(libs.decompose.decompose)
@@ -32,27 +47,24 @@ kotlin {
         }
     }
 
-    sourceSets.all {
-        languageSettings {
-            optIn("androidx.compose.runtime.ExperimentalComposeApi")
-            optIn("com.arkivanov.decompose.ExperimentalDecomposeApi")
-            optIn("com.arkivanov.decompose.DelicateDecomposeApi")
-            optIn("kotlin.ExperimentalMultiplatform")
-            enableLanguageFeature("ExpectActualClasses")
-
-        }
-    }
-
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     applyDefaultHierarchyTemplate {
         common {
             withIos()
-            withAndroidTarget()
         }
     }
 
     sourceSets {
-        @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+        all {
+            languageSettings {
+                optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+                optIn("kotlin.uuid.ExperimentalUuidApi")
+                optIn("kotlinx.cinterop.ExperimentalForeignApi")
+                optIn("kotlinx.cinterop.BetaInteropApi")
+                enableLanguageFeature("ExpectActualClasses")
+            }
+        }
+
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
@@ -62,25 +74,31 @@ kotlin {
             api(libs.koin.compose)
             api(libs.koin.compose.vm)
 
+            // Navigation 3 for Compose Multiplatform
+//            api(libs.navigation3.compose)
+//            api(libs.lifecycle.viewmodel.navigation3)
+
+
+            //decompose
             api(libs.decompose.decompose)
             api(libs.decompose.extensions.compose)
             api(libs.decompose.extensions.compose.experimental)
-
             api(libs.essenty.lifecycle)
             api(libs.essenty.backhandler)
 
-            implementation(compose.ui)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.materialIconsExtended)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.material.icons.extended)
+
+            api(libs.compose.components.resources)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
 
-            api(compose.components.resources)
             implementation(libs.coil3.compose)
             implementation(libs.coil3.svg)
             implementation(libs.coil3.network.ktor)
@@ -106,14 +124,19 @@ kotlin {
             implementation(libs.compose.ui.tooling)
 
 
-
         }
 
-        androidUnitTest.dependencies {
-            implementation(libs.junit.jupiter)
-            implementation(libs.mockk)
-            implementation(libs.coroutines.test)
-            implementation(libs.slf4j.simple)
+        getByName("androidHostTest") {
+            dependencies {
+                implementation(libs.junit.jupiter)
+                implementation(libs.mockk)
+                implementation(libs.coroutines.test)
+                implementation(libs.slf4j.simple)
+            }
+
+            kotlin.setSrcDirs(
+                kotlin.srcDirs.filterNot { it.path.contains("build/generated/compose/resourceGenerator") }
+            )
         }
     }
 
@@ -124,35 +147,13 @@ compose.resources {
     publicResClass = true
 }
 
-
-android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    namespace = "mk.digital.kmpsample.shared"
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        vectorDrawables.useSupportLibrary = true
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile>().configureEach {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
-}
-
+//JUnit 5 androidHostTest
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+
+//todo - delete?
 if (project.hasProperty("configuration")) {
     tasks.register("assembleXCFramework") {
         group = "build"
@@ -246,4 +247,3 @@ if (project.hasProperty("configuration")) {
         into(targetDir)
     }
 }
-

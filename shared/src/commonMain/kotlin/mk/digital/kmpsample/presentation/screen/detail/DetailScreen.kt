@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import mk.digital.kmpsample.presentation.component.TopAppBar
 import mk.digital.kmpsample.presentation.component.spacers.ColumnSpacer.Spacer4
-import mk.digital.kmpsample.presentation.component.text.body1.TextBody1Neutral80
+import mk.digital.kmpsample.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
 import mk.digital.kmpsample.presentation.foundation.space4
 
 @Composable
@@ -15,7 +15,7 @@ fun DetailScreen(component: DetailComponent) {
         TopAppBar(title = "Details", backClick = component.onBack)
         Column(Modifier.padding(space4)) {
             Spacer4()
-            TextBody1Neutral80("PassedId: ${component.id}")
+            TextBodyLargeNeutral80("PassedId: ${component.id}")
         }
     }
 }
