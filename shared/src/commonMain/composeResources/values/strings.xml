@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome">Vitaj v aplikácii</string>
-    <string name="loading">Načítava…</string>
+    <string name="welcome">Welcome in the Application</string>
+    <string name="loading">Loading…</string>
+
+    <!-- Home Screen Features -->
+    <string name="feature_ui_components_title">UI Components</string>
+    <string name="feature_ui_components_subtitle">Buttons, Cards, Dialogs, Typography</string>
+    <string name="feature_networking_title">Networking</string>
+    <string name="feature_networking_subtitle">Ktor HTTP Client, REST API</string>
+    <string name="feature_storage_title">Storage</string>
+    <string name="feature_storage_subtitle">DataStore, NSUserDefaults</string>
+    <string name="feature_platform_apis_title">Platform APIs</string>
+    <string name="feature_platform_apis_subtitle">Share, Dial, External Links</string>
 </resources>
