@@ -1,15 +1,12 @@
 package mk.digital.kmpsample.domain
 
-import io.mockk.MockKAnnotations
-import org.junit.jupiter.api.BeforeEach
+import kotlin.test.BeforeTest
 
-//todo -> move to common
 abstract class BaseTest<ClassUnderTest> {
     abstract var classUnderTest: ClassUnderTest
 
-    @BeforeEach
+    @BeforeTest
     fun setup() {
-        MockKAnnotations.init(this, relaxUnitFun = true)
         beforeEach()
     }
 

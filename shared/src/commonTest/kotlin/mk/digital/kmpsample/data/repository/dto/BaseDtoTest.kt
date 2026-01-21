@@ -36,4 +36,3 @@ abstract class DTOTestRunner {
         crossinline assertBlock: (T) -> Unit
     ) = create(serverJson, assertBlock).run()
 }
-
