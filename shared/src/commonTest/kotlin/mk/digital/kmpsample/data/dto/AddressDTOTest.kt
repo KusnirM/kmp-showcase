@@ -1,8 +1,8 @@
 package mk.digital.kmpsample.data.dto
 
 import mk.digital.kmpsample.data.repository.dto.DTOTestRunner
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class AddressDTOTest : DTOTestRunner() {
 
@@ -17,7 +17,7 @@ class AddressDTOTest : DTOTestRunner() {
     }
     """
     ) {
-        Assertions.assertEquals(
+        assertEquals(
             AddressDTO("city", "street", "suite", "zipcode"),
             it
         )
