@@ -1,10 +1,8 @@
 package mk.digital.kmpshowcase
 
 import android.app.Application
-import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import com.google.firebase.appcheck.appCheck
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
+
 import mk.digital.kmpshowcase.di.commonModule
 import mk.digital.kmpshowcase.di.initKoin
 import org.koin.android.ext.koin.androidContext
@@ -38,6 +36,6 @@ class App : Application() {
     }
 
     private fun initFBAppCheck() {
-        Firebase.appCheck.installAppCheckProviderFactory(DebugAppCheckProviderFactory.getInstance())
+        AppCheckInitializer.init()
     }
 }

@@ -1,17 +1,18 @@
 import SwiftUI
 import shared
 import FirebaseCore
+import FirebaseCrashlytics
 
 
 class AppDelegate : NSObject, UIApplicationDelegate, ObservableObject {
 
-    private var buildType: String {
+    private var buildTypeString: String {
         Bundle.main.object(forInfoDictionaryKey: "BuildType") as? String ?? "debug"
     }
 
     private lazy var appConfig: AppConfig = {
-        AppConfig(
-            buildType: BuildType.companion.from(name: buildType)
+        return AppConfig(
+            buildType: BuildType.companion.from(name: buildTypeString)
         )
     }()
 

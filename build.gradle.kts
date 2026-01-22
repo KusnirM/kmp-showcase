@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.fb.crashlytics) apply false
+    alias(libs.plugins.firebase.distribution) apply false
 }
 
 detekt {
