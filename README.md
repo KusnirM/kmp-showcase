@@ -210,7 +210,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Push notifications (Firebase)
 - [ ] Biometrics (fingerprint, Face ID)
 - [ ] Location / GPS
-- [ ] Permissions handling
+- [x] Permissions handling (Accompanist / native iOS)
 - [ ] File picker
 - [ ] Document scanner
 - [ ] Contacts access
@@ -315,7 +315,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 
 ### Bonus Features
 - [ ] Dark mode toggle
-- [ ] Localization (multi-language)
+- [ ] Localization (English + Slovak)
 - [ ] Connectivity monitoring (online/offline banner)
 - [ ] Material You dynamic colors (Android)
 - [ ] On-device ML (image classification / OCR)

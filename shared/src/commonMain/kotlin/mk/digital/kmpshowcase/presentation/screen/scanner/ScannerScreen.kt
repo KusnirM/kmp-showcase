@@ -31,10 +31,12 @@ import mk.digital.kmpshowcase.presentation.component.permission.PermissionType
 import mk.digital.kmpshowcase.presentation.component.permission.PermissionView
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer4
+import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer8
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.headlineMedium.TextHeadlineMediumPrimary
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
+import mk.digital.kmpshowcase.presentation.foundation.keyboardPadding
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_format_barcode
@@ -68,7 +70,7 @@ fun ScannerScreen(viewModel: ScannerViewModel) {
     )
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().keyboardPadding(),
         contentPadding = PaddingValues(
             start = space4,
             end = space4,
@@ -138,6 +140,7 @@ fun ScannerScreen(viewModel: ScannerViewModel) {
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
                         )
+                        Spacer8()
                     }
                 }
             }

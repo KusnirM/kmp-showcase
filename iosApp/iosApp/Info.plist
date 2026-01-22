@@ -46,11 +46,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera access is needed to scan QR codes and barcodes.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo library access is needed to select images.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location access is needed for this feature.</string>
 </dict>
 </plist>
