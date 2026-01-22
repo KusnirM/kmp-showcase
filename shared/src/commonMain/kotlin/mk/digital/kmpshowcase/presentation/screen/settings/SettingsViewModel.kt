@@ -69,9 +69,7 @@ class SettingsViewModel(
     private fun loadThemeMode() {
         execute(
             action = { getThemeModeUseCase() },
-            onSuccess = { themeMode ->
-                newState { it.copy(themeModeState = ThemeModeState.fromMode(themeMode)) }
-            }
+            onSuccess = { themeMode -> newState { it.copy(themeModeState = ThemeModeState.fromMode(themeMode)) } }
         )
     }
 
