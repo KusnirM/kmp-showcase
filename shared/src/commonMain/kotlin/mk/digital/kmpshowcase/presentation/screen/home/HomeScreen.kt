@@ -44,6 +44,7 @@ fun HomeNavEvents(
                     FeatureId.NETWORKING -> router.navigateTo(Route.HomeSection.Networking)
                     FeatureId.STORAGE -> router.navigateTo(Route.HomeSection.Storage)
                     FeatureId.PLATFORM_APIS -> router.navigateTo(Route.HomeSection.PlatformApis)
+                    FeatureId.SCANNER -> router.navigateTo(Route.HomeSection.Scanner)
                 }
             }
         }

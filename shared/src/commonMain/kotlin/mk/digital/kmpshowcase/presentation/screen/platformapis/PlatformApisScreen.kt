@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
@@ -53,7 +53,7 @@ private const val DEMO_EMAIL = "mir.kusnir@gmail.com"
 
 @Composable
 fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
     val copiedMessage = stringResource(Res.string.platform_apis_copied_message)
     val demoShareText = stringResource(Res.string.platform_apis_demo_share_text)
