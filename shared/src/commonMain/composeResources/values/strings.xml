@@ -134,8 +134,13 @@
     <string name="platform_apis_location_hint">Get current device location using GPS</string>
     <string name="platform_apis_location_action">Get Location</string>
     <string name="platform_apis_location_loading">Getting location…</string>
-    <string name="platform_apis_location_result">Lat: %1$.6f, Lon: %2$.6f</string>
+    <string name="platform_apis_location_result">Lat: %1$s, Lon: %2$s</string>
     <string name="platform_apis_location_error">Unable to get location</string>
+    <string name="platform_apis_location_updates_title">Location Updates</string>
+    <string name="platform_apis_location_updates_hint">Observe real-time location changes</string>
+    <string name="platform_apis_location_updates_start">Start Tracking</string>
+    <string name="platform_apis_location_updates_stop">Stop Tracking</string>
+    <string name="platform_apis_location_updates_error">Unable to track location</string>
 
     <!-- Scanner Screen -->
     <string name="scanner_title">Scanner</string>

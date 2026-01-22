@@ -123,6 +123,9 @@ kotlin {
 
             // Permissions
             implementation(libs.accompanist.permissions)
+
+            // Location
+            implementation(libs.google.services.location)
         }
 
         commonTest.dependencies {

@@ -59,7 +59,8 @@ actual fun rememberCameraManager(onResult: (ImageResult?) -> Unit): CameraManage
         CameraManager {
             imagePicker.setSourceType(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera)
             imagePicker.setAllowsEditing(true)
-            imagePicker.setCameraCaptureMode(UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto)
+            val photoMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
+            imagePicker.setCameraCaptureMode(photoMode)
             imagePicker.setDelegate(cameraDelegate)
             getRootViewController()?.presentViewController(imagePicker, true, null)
         }

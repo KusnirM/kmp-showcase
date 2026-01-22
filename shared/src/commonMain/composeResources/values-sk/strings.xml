@@ -134,8 +134,13 @@
     <string name="platform_apis_location_hint">Získať aktuálnu polohu zariadenia pomocou GPS</string>
     <string name="platform_apis_location_action">Získať polohu</string>
     <string name="platform_apis_location_loading">Získavam polohu…</string>
-    <string name="platform_apis_location_result">Lat: %1$.6f, Lon: %2$.6f</string>
+    <string name="platform_apis_location_result">Lat: %1$s, Lon: %2$s</string>
     <string name="platform_apis_location_error">Nepodarilo sa získať polohu</string>
+    <string name="platform_apis_location_updates_title">Sledovanie polohy</string>
+    <string name="platform_apis_location_updates_hint">Sledovanie zmien polohy v reálnom čase</string>
+    <string name="platform_apis_location_updates_start">Spustiť sledovanie</string>
+    <string name="platform_apis_location_updates_stop">Zastaviť sledovanie</string>
+    <string name="platform_apis_location_updates_error">Nepodarilo sa sledovať polohu</string>
 
     <!-- Scanner Screen -->
     <string name="scanner_title">Skener</string>
