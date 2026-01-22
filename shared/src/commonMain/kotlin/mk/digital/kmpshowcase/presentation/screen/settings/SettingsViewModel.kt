@@ -7,6 +7,8 @@ import mk.digital.kmpshowcase.presentation.base.BaseViewModel
 import mk.digital.kmpshowcase.presentation.base.NavEvent
 import mk.digital.kmpshowcase.util.getCurrentLanguageTag
 import androidx.compose.ui.graphics.vector.ImageVector
+import mk.digital.kmpshowcase.AppConfig
+import mk.digital.kmpshowcase.BuildType
 import mk.digital.kmpshowcase.presentation.foundation.AppIcons
 import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.shared.generated.resources.Res
@@ -20,7 +22,8 @@ import org.jetbrains.compose.resources.StringResource
 data class SettingsState(
     val themeModeState: ThemeModeState = ThemeModeState.SYSTEM,
     val currentLanguage: LanguageState = LanguageState.EN,
-    val showThemeDialog: Boolean = false
+    val showThemeDialog: Boolean = false,
+    val showCrashButton: Boolean,
 )
 
 enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
@@ -37,8 +40,9 @@ enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
 class SettingsViewModel(
     private val getThemeModeUseCase: GetThemeModeUseCase,
     private val setThemeModeUseCase: SetThemeModeUseCase,
+    appConfig: AppConfig,
     private val onThemeChanged: (ThemeMode) -> Unit,
-) : BaseViewModel<SettingsState>(SettingsState()) {
+) : BaseViewModel<SettingsState>(SettingsState(showCrashButton = appConfig.buildType.isDebug)) {
 
     override fun loadInitialData() {
         loadThemeMode()

@@ -1,0 +1,7 @@
+// Release configuration
+#include "Config.xcconfig"
+
+BUILD_TYPE = release
+BUNDLE_ID = mk.digital.kmpshowcase
+APP_NAME = KMP Showcase
+APP_DISPLAY_NAME = KMP Showcase

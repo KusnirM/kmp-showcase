@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.fb.crashlytics)
 }
 
 android {
@@ -51,4 +53,10 @@ dependencies {
 
     implementation(libs.android.material)
     implementation(libs.material3.android)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.app.check)
+    implementation(libs.firebase.analytics)
 }

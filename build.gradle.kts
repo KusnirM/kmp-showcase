@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.fb.crashlytics) apply false
 }
 
 detekt {
