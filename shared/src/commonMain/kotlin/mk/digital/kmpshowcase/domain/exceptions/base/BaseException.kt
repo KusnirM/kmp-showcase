@@ -94,3 +94,22 @@ class UnknownException(
     override val userMessage: String = "An unexpected error occurred",
     override val errorCode: String = "9000"
 ) : BaseException(cause?.message ?: "Unknown error", cause)
+
+/**
+ * Location error codes (4xxx).
+ */
+object LocationErrorCode {
+    const val UNKNOWN = "4000"
+    const val NOT_AVAILABLE = "4001"
+    const val PERMISSION_DENIED = "4002"
+}
+
+/**
+ * Exception for location-related errors.
+ */
+class LocationException(
+    message: String = "Location error occurred",
+    cause: Throwable? = null,
+    override val userMessage: String = "Unable to get location",
+    override val errorCode: String = LocationErrorCode.UNKNOWN
+) : BaseException(message, cause)

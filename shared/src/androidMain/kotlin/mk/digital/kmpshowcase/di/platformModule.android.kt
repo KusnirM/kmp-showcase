@@ -2,6 +2,8 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.data.local.preferences.Preferences
 import mk.digital.kmpshowcase.data.local.preferences.PreferencesImpl
+import mk.digital.kmpshowcase.data.location.AndroidLocationClient
+import mk.digital.kmpshowcase.data.location.LocationClient
 import mk.digital.kmpshowcase.di.Qualifiers.app
 import mk.digital.kmpshowcase.di.Qualifiers.session
 import mk.digital.kmpshowcase.presentation.base.router.ExternalRouter
@@ -18,4 +20,5 @@ actual val platformModule: Module = module {
     single<Preferences>(app) {
         PreferencesImpl(context = androidContext(), storageName = app.value)
     }
+    single<LocationClient> { AndroidLocationClient(androidContext()) }
 }

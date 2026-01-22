@@ -9,10 +9,15 @@ import androidx.exifinterface.media.ExifInterface
 
 object BitmapUtils {
 
+    private const val ROTATION_90 = 90f
+    private const val ROTATION_180 = 180f
+    private const val ROTATION_270 = 270f
+
     fun getByteArray(uri: Uri, contentResolver: ContentResolver): ByteArray {
         return contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: ByteArray(0)
     }
 
+    @Suppress("TooGenericExceptionCaught")
     fun getBitmapFromUri(
         uri: Uri,
         byteArray: ByteArray,
@@ -43,17 +48,17 @@ object BitmapUtils {
 
         val matrix = Matrix()
         when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
-            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(ROTATION_90)
+            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(ROTATION_180)
+            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(ROTATION_270)
             ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.preScale(-1f, 1f)
             ExifInterface.ORIENTATION_FLIP_VERTICAL -> matrix.preScale(1f, -1f)
             ExifInterface.ORIENTATION_TRANSPOSE -> {
-                matrix.postRotate(90f)
+                matrix.postRotate(ROTATION_90)
                 matrix.preScale(-1f, 1f)
             }
             ExifInterface.ORIENTATION_TRANSVERSE -> {
-                matrix.postRotate(270f)
+                matrix.postRotate(ROTATION_270)
                 matrix.preScale(-1f, 1f)
             }
             else -> return bitmap

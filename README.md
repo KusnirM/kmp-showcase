@@ -209,7 +209,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Local notifications
 - [ ] Push notifications (Firebase)
 - [ ] Biometrics (fingerprint, Face ID)
-- [ ] Location / GPS
+- [x] Location / GPS
 - [x] Permissions handling (Accompanist / native iOS)
 - [ ] File picker
 - [ ] Document scanner
