@@ -27,6 +27,7 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.base.Route.HomeSection
 import mk.digital.kmpshowcase.presentation.base.Route.Settings
 import mk.digital.kmpshowcase.presentation.base.WithViewModel
@@ -37,8 +38,9 @@ import mk.digital.kmpshowcase.presentation.component.AppSnackbarHost
 import mk.digital.kmpshowcase.presentation.component.FloatingNavItem
 import mk.digital.kmpshowcase.presentation.component.TopAppBar
 import mk.digital.kmpshowcase.presentation.foundation.AppTheme
-import mk.digital.kmpshowcase.presentation.screen.feature.PlatformApisScreen
 import mk.digital.kmpshowcase.presentation.screen.feature.UiComponentsScreen
+import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisScreen
+import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisViewModel
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingScreen
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingViewModel
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageScreen
@@ -80,7 +82,12 @@ fun MainView() {
         CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Scaffold(
-                    snackbarHost = { AppSnackbarHost(snackbarHostState) },
+                    snackbarHost = {
+                        AppSnackbarHost(
+                            hostState = snackbarHostState,
+                            modifier = Modifier.padding(bottom = floatingNavBarSpace)
+                        )
+                    },
                     contentWindowInsets = WindowInsets(0),
                     topBar = {
                         TopAppBar(
@@ -113,7 +120,11 @@ fun MainView() {
                                     StorageScreen(viewModel)
                                 }
                             }
-                            entry<HomeSection.PlatformApis> { PlatformApisScreen() }
+                            entry<HomeSection.PlatformApis> {
+                                WithViewModel<PlatformApisViewModel> { viewModel ->
+                                    PlatformApisScreen(viewModel)
+                                }
+                            }
                             entry<Settings> {
                                 SettingsScreen()
                             }
