@@ -2,6 +2,7 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.data.biometric.AndroidBiometricClient
 import mk.digital.kmpshowcase.data.biometric.BiometricClient
+import mk.digital.kmpshowcase.data.database.DatabaseDriverFactory
 import mk.digital.kmpshowcase.data.local.preferences.Preferences
 import mk.digital.kmpshowcase.data.local.preferences.PreferencesImpl
 import mk.digital.kmpshowcase.data.location.AndroidLocationClient
@@ -24,4 +25,5 @@ actual val platformModule: Module = module {
     }
     single<LocationClient> { AndroidLocationClient(androidContext()) }
     single<BiometricClient> { AndroidBiometricClient(androidContext()) }
+    single { DatabaseDriverFactory(androidContext()) }
 }

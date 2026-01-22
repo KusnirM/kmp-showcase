@@ -9,6 +9,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.screen_scanner
 import mk.digital.kmpshowcase.shared.generated.resources.screen_platform_apis
 import mk.digital.kmpshowcase.shared.generated.resources.screen_settings
 import mk.digital.kmpshowcase.shared.generated.resources.screen_storage
+import mk.digital.kmpshowcase.shared.generated.resources.screen_database
 import mk.digital.kmpshowcase.shared.generated.resources.screen_ui_components
 import org.jetbrains.compose.resources.StringResource
 
@@ -48,6 +49,11 @@ sealed interface Route : NavKey {
         @Serializable
         data object Scanner : HomeSection {
             override val titleRes = Res.string.screen_scanner
+        }
+
+        @Serializable
+        data object Database : HomeSection {
+            override val titleRes = Res.string.screen_database
         }
     }
 
