@@ -57,6 +57,7 @@ import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
+import mk.digital.kmpshowcase.presentation.screen.settings.SettingsNavEvents
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsScreen
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
 import mk.digital.kmpshowcase.shared.generated.resources.Res
@@ -87,7 +88,10 @@ private val saveStateConfiguration = SavedStateConfiguration {
 
 @Suppress("CognitiveComplexMethod")
 @Composable
-fun MainView() {
+fun MainView(
+    onSetLocale: ((String) -> Unit)? = null,
+    onOpenSettings: (() -> Unit)? = null,
+) {
     val router: NavRouter<Route> = rememberNavRouter(saveStateConfiguration, HomeSection.Home)
     val currentRoute: Route = router.backStack.last()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -155,6 +159,7 @@ fun MainView() {
                                 WithViewModel<SettingsViewModel>(
                                     parameters = { parametersOf({ mode: ThemeMode -> themeMode = mode }) }
                                 ) { viewModel ->
+                                    SettingsNavEvents(viewModel, onSetLocale, onOpenSettings)
                                     SettingsScreen(viewModel)
                                 }
                             }
