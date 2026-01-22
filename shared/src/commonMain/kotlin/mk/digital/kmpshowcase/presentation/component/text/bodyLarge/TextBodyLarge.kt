@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
 fun TextBodyLarge(
@@ -22,6 +23,38 @@ fun TextBodyLarge(
         color = { color },
         fontWeight = fontWeight,
         modifier = modifier,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun TextBodyLargeNeutral100(
+    text: String,
+    modifier: Modifier = Modifier,
+    fontWeight: FontWeight = FontWeight.Normal,
+    textAlign: TextAlign? = null,
+) {
+    TextBodyLarge(
+        text = text,
+        color = MaterialTheme.appColorScheme.neutral100,
+        modifier = modifier,
+        fontWeight = fontWeight,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun TextBodyLargePrimary(
+    text: String,
+    modifier: Modifier = Modifier,
+    fontWeight: FontWeight = FontWeight.Normal,
+    textAlign: TextAlign? = null,
+) {
+    TextBodyLarge(
+        text = text,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = modifier,
+        fontWeight = fontWeight,
         textAlign = textAlign
     )
 }

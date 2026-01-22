@@ -1,8 +1,10 @@
 package mk.digital.kmpshowcase.presentation.foundation
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -11,8 +13,18 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 
 @Composable
-fun AppTheme(content: @Composable () -> Unit) {
-    val colors = LightColorPalette
+fun AppTheme(
+    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    content: @Composable () -> Unit
+) {
+    val isDark = when (themeMode) {
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+    }
+
+    val colors = if (isDark) DarkColorPalette else LightColorPalette
+
     CompositionLocalProvider(LocalColors provides colors) {
         MaterialTheme(
             colorScheme = colors.material,
@@ -63,4 +75,33 @@ private val LightColorPalette = AppColors(
     neutral100 = Neutral100Light,
     success = SuccessLight,
     warning = WarningLight,
+)
+
+private val DarkColorPalette = AppColors(
+    material = darkColorScheme(
+        primary = PrimaryDark,
+        onPrimary = Neutral0Dark,
+        primaryContainer = PrimaryContainerDark,
+        onPrimaryContainer = Neutral100Dark,
+        secondary = SecondaryDark,
+        onSecondary = Neutral0Dark,
+        secondaryContainer = SecondaryContainerDark,
+        onSecondaryContainer = Neutral0Dark,
+        background = BackgroundDark,
+        onBackground = Neutral100Dark,
+        surface = SurfaceDark,
+        onSurface = Neutral100Dark,
+        error = ErrorDark,
+        onError = Neutral0Dark,
+        errorContainer = ErrorContainerDark,
+        onErrorContainer = Neutral100Dark,
+        surfaceTint = Neutral0Dark,
+        surfaceVariant = Neutral40Dark,
+    ),
+    neutral0 = Neutral0Dark,
+    neutral20 = Neutral20Dark,
+    neutral80 = Neutral80Dark,
+    neutral100 = Neutral100Dark,
+    success = SuccessDark,
+    warning = WarningDark,
 )

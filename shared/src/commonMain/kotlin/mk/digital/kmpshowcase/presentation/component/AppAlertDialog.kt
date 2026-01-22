@@ -70,3 +70,19 @@ fun AppAlertDialog(
         }
     )
 }
+
+@Composable
+fun AppAlertDialog(
+    title: String,
+    onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        modifier = Modifier.fillMaxWidth(),
+        containerColor = MaterialTheme.appColorScheme.neutral0,
+        title = { TextTitleLargePrimary(title) },
+        text = content,
+        confirmButton = {},
+    )
+}

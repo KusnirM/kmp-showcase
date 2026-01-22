@@ -2,6 +2,8 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.domain.useCase.GetUsersUseCase
 import mk.digital.kmpshowcase.domain.useCase.TrackButtonClickUseCase
+import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
+import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.ClearCacheUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.LoadStorageDataUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.ObserveStorageDataUseCase
@@ -18,4 +20,6 @@ val domainModule = module {
     singleOf(::SetSessionCounterUseCase)
     singleOf(::SetPersistentCounterUseCase)
     singleOf(::ClearCacheUseCase)
+    singleOf(::GetThemeModeUseCase)
+    singleOf(::SetThemeModeUseCase)
 }
