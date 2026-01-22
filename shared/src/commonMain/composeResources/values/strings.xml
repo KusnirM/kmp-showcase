@@ -84,4 +84,11 @@
     <string name="segment_day">Day</string>
     <string name="segment_week">Week</string>
     <string name="segment_month">Month</string>
+
+    <!-- Networking Screen -->
+    <string name="networking_title">Users</string>
+    <string name="networking_subtitle">Fetched from JSONPlaceholder API</string>
+    <string name="networking_error_title">Error</string>
+    <string name="networking_retry">Retry</string>
+    <string name="networking_empty">No users found</string>
 </resources>
