@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import mk.digital.kmpshowcase.presentation.component.text.labelLarge.TextButtonNeutral0
 import mk.digital.kmpshowcase.presentation.foundation.cardCornerRadius6
 import mk.digital.kmpshowcase.presentation.foundation.space4
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -17,7 +19,6 @@ fun ContainedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
@@ -26,9 +27,17 @@ fun ContainedButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
         ),
-        enabled = enabled,
         shape = RoundedCornerShape(cardCornerRadius6)
     ) {
         TextButtonNeutral0(text = text)
     }
+}
+
+@Composable
+fun ContainedButton(
+    id: StringResource,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ContainedButton(text = stringResource(resource = id), onClick = onClick, modifier = modifier)
 }

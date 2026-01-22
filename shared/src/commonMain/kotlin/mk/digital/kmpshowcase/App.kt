@@ -38,6 +38,8 @@ import mk.digital.kmpshowcase.presentation.component.AppSnackbarHost
 import mk.digital.kmpshowcase.presentation.component.FloatingNavItem
 import mk.digital.kmpshowcase.presentation.component.TopAppBar
 import mk.digital.kmpshowcase.presentation.foundation.AppTheme
+import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerScreen
+import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import mk.digital.kmpshowcase.presentation.screen.feature.UiComponentsScreen
 import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisScreen
 import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisViewModel
@@ -67,11 +69,13 @@ private val saveStateConfiguration = SavedStateConfiguration {
             subclass(HomeSection.Networking.serializer())
             subclass(HomeSection.Storage.serializer())
             subclass(HomeSection.PlatformApis.serializer())
+            subclass(HomeSection.Scanner.serializer())
             subclass(Settings.serializer())
         }
     }
 }
 
+@Suppress("CognitiveComplexMethod")
 @Composable
 fun MainView() {
     val router: NavRouter<Route> = rememberNavRouter(saveStateConfiguration, HomeSection.Home)
@@ -123,6 +127,11 @@ fun MainView() {
                             entry<HomeSection.PlatformApis> {
                                 WithViewModel<PlatformApisViewModel> { viewModel ->
                                     PlatformApisScreen(viewModel)
+                                }
+                            }
+                            entry<HomeSection.Scanner> {
+                                WithViewModel<ScannerViewModel> { viewModel ->
+                                    ScannerScreen(viewModel)
                                 }
                             }
                             entry<Settings> {

@@ -6,6 +6,7 @@
     <!-- Common -->
     <string name="content_description_back">Back</string>
     <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
     <string name="button_retry">Retry</string>
     <string name="error_title">Error</string>
     <string name="detail_format">Detail: %1$d</string>
@@ -20,6 +21,7 @@
     <string name="screen_networking">Networking</string>
     <string name="screen_storage">Storage</string>
     <string name="screen_platform_apis">Platform APIs</string>
+    <string name="screen_scanner">Scanner</string>
     <string name="screen_settings">Settings</string>
 
     <!-- Home Screen Features -->
@@ -31,6 +33,8 @@
     <string name="feature_storage_subtitle">DataStore, NSUserDefaults</string>
     <string name="feature_platform_apis_title">Platform APIs</string>
     <string name="feature_platform_apis_subtitle">Share, Dial, External Links</string>
+    <string name="feature_scanner_title">Scanner</string>
+    <string name="feature_scanner_subtitle">Generate and scan QR codes &amp; barcodes</string>
 
     <!-- UI Components Showcase -->
     <string name="section_buttons">Buttons</string>
@@ -126,4 +130,30 @@
     <string name="platform_apis_demo_copy_text">Copied from KMP Showcase</string>
     <string name="platform_apis_demo_email_subject">KMP Showcase</string>
     <string name="platform_apis_demo_email_body">Hello from KMP Showcase app!</string>
+
+    <!-- Scanner Screen -->
+    <string name="scanner_title">Scanner</string>
+    <string name="scanner_subtitle">Generate and scan QR codes &amp; barcodes</string>
+    <string name="scanner_mode_generate">Generate</string>
+    <string name="scanner_mode_scan">Scan</string>
+    <string name="scanner_format_qr">QR Code</string>
+    <string name="scanner_format_barcode">Barcode</string>
+    <string name="scanner_input_label">Text to encode</string>
+    <string name="scanner_input_hint">Enter text or URL...</string>
+    <string name="scanner_generate_button">Generate</string>
+    <string name="scanner_result_title">Generated Code</string>
+    <string name="scanner_hint">Point camera at a QR code or barcode</string>
+    <string name="scanner_scanned_result">Scanned Result</string>
+    <string name="scanner_scan_again">Scan Again</string>
+
+    <!-- Permissions -->
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_allow">Allow</string>
+    <string name="permission_cancel">Cancel</string>
+    <string name="camera_permission_denied">Camera access was denied. Please enable it in Settings to scan codes.</string>
+    <string name="camera_permission_rationale">Camera access is needed to scan QR codes and barcodes.</string>
+    <string name="gallery_permission_denied">Photo library access was denied. Please enable it in Settings.</string>
+    <string name="gallery_permission_rationale">Photo library access is needed to select images.</string>
+    <string name="location_permission_denied">Location access was denied. Please enable it in Settings.</string>
+    <string name="location_permission_rationale">Location access is needed for this feature.</string>
 </resources>

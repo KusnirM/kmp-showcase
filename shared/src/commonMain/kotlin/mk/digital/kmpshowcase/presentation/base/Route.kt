@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.screen_home
 import mk.digital.kmpshowcase.shared.generated.resources.screen_networking
+import mk.digital.kmpshowcase.shared.generated.resources.screen_scanner
 import mk.digital.kmpshowcase.shared.generated.resources.screen_platform_apis
 import mk.digital.kmpshowcase.shared.generated.resources.screen_settings
 import mk.digital.kmpshowcase.shared.generated.resources.screen_storage
@@ -42,6 +43,11 @@ sealed interface Route : NavKey {
         @Serializable
         data object PlatformApis : HomeSection {
             override val titleRes = Res.string.screen_platform_apis
+        }
+
+        @Serializable
+        data object Scanner : HomeSection {
+            override val titleRes = Res.string.screen_scanner
         }
     }
 

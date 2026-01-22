@@ -1,0 +1,16 @@
+package mk.digital.kmpshowcase.presentation.component.permission
+
+import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.camera_permission_denied
+import mk.digital.kmpshowcase.shared.generated.resources.camera_permission_rationale
+import mk.digital.kmpshowcase.shared.generated.resources.gallery_permission_denied
+import mk.digital.kmpshowcase.shared.generated.resources.gallery_permission_rationale
+import mk.digital.kmpshowcase.shared.generated.resources.location_permission_denied
+import mk.digital.kmpshowcase.shared.generated.resources.location_permission_rationale
+import org.jetbrains.compose.resources.StringResource
+
+enum class PermissionType(val deniedMessage: StringResource, val rationaleMessage: StringResource) {
+    CAMERA(Res.string.camera_permission_denied, Res.string.camera_permission_rationale),
+    GALLERY(Res.string.gallery_permission_denied, Res.string.gallery_permission_rationale),
+    LOCATION(Res.string.location_permission_denied, Res.string.location_permission_rationale)
+}

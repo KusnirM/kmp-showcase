@@ -77,9 +77,10 @@ root
 |--------|-------------|
 | Home | Feature catalog with cards linking to each showcase |
 | UI Components | Comprehensive component showcase (buttons, inputs, feedback, etc.) |
-| Networking | Ktor HTTP client demo (placeholder) |
-| Storage | DataStore/Preferences demo (placeholder) |
-| Platform APIs | Share, dial, external links demo (placeholder) |
+| Networking | Ktor HTTP client demo — fetches users from JSONPlaceholder API |
+| Storage | Session vs Persistent storage demo with counters |
+| Platform APIs | Share, dial, external links, email, clipboard demos |
+| Scanner | QR code &amp; barcode generator (ZXing/CoreImage) and scanner (MLKit/AVFoundation) |
 | Settings | App settings screen |
 
 ---
@@ -197,12 +198,14 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [x] Share content
 - [x] Dial phone number
 - [x] Open external links
-- [ ] Open email client
+- [x] Open email client
+- [x] Copy to clipboard
 - [ ] Open maps
 
 ### Device Features
 - [ ] Camera (photo/video capture)
-- [ ] Barcode / QR code scanner
+- [x] QR code &amp; barcode generator (ZXing / CoreImage)
+- [x] QR code &amp; barcode scanner (MLKit / AVFoundation)
 - [ ] Local notifications
 - [ ] Push notifications (Firebase)
 - [ ] Biometrics (fingerprint, Face ID)
@@ -224,7 +227,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Maps integration
 
 ### Data & Storage
-- [x] DataStore / Preferences (infrastructure ready)
+- [x] DataStore / Preferences (session vs persistent demo)
 - [ ] Local database (SQLDelight)
 - [ ] File storage
 - [ ] Encrypted storage
@@ -247,7 +250,6 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Search with debounce
 - [ ] Date/Time pickers
 - [ ] Dropdown / Spinner
-- [ ] Copy to clipboard
 
 ### Lists & Data Patterns
 - [ ] Pagination (infinite scroll)
