@@ -7,4 +7,5 @@ actual class ExternalRouter(private val context: Context) :
     LinkRouter by LinkRouterImpl(context),
     ShareRouter by ShareRouterImpl(context),
     CopyRouter by CopyRouterImpl(context),
-    EmailRouter by EmailRouterImpl(context)
+    EmailRouter by EmailRouterImpl(context),
+    SettingsRouter by SettingsRouterImpl(context)

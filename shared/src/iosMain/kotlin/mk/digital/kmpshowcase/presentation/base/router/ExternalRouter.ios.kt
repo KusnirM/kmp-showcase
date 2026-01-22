@@ -5,4 +5,5 @@ actual class ExternalRouter :
     LinkRouter by LinkRouterImpl(),
     ShareRouter by ShareRouterImpl(),
     CopyRouter by CopyRouterImpl(),
-    EmailRouter by EmailRouterImpl()
+    EmailRouter by EmailRouterImpl(),
+    SettingsRouter by SettingsRouterImpl()
