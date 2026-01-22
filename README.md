@@ -81,7 +81,7 @@ root
 | Storage | Session vs Persistent storage demo with counters |
 | Platform APIs | Share, dial, external links, email, clipboard demos |
 | Scanner | QR code &amp; barcode generator (ZXing/CoreImage) and scanner (MLKit/AVFoundation) |
-| Settings | App settings screen |
+| Settings | Theme (Light/Dark/System) and Language (EN/SK) settings |
 
 ---
 
@@ -314,8 +314,9 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Dynamic text scaling
 
 ### Bonus Features
-- [ ] Dark mode toggle
-- [ ] Localization (English + Slovak)
+- [x] Dark mode toggle (Theme: Light/Dark/System)
+- [x] Localization (English + Slovak) with per-app language settings
+- [x] App icon
 - [ ] Connectivity monitoring (online/offline banner)
 - [ ] Material You dynamic colors (Android)
 - [ ] On-device ML (image classification / OCR)
