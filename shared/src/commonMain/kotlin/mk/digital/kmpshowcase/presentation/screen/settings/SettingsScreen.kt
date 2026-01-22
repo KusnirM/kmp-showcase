@@ -11,15 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.Language
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.component.AppAlertDialog
 import mk.digital.kmpshowcase.presentation.component.AppRadioButton
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
@@ -29,23 +26,16 @@ import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLarg
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargePrimary
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
-import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.settings_appearance
-import mk.digital.kmpshowcase.shared.generated.resources.settings_language
-import mk.digital.kmpshowcase.shared.generated.resources.settings_language_value
 import mk.digital.kmpshowcase.shared.generated.resources.settings_theme
-import mk.digital.kmpshowcase.shared.generated.resources.settings_theme_dark
-import mk.digital.kmpshowcase.shared.generated.resources.settings_theme_light
-import mk.digital.kmpshowcase.shared.generated.resources.settings_theme_system
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var showThemeDialog by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -64,7 +54,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         item {
             AppElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { showThemeDialog = true }
+                onClick = { viewModel.showThemeDialog() }
             ) {
                 SettingsItem(
                     icon = {
@@ -74,42 +64,27 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                         )
                     },
                     title = stringResource(Res.string.settings_theme),
-                    value = when (state.themeMode) {
-                        ThemeMode.LIGHT -> stringResource(Res.string.settings_theme_light)
-                        ThemeMode.DARK -> stringResource(Res.string.settings_theme_dark)
-                        ThemeMode.SYSTEM -> stringResource(Res.string.settings_theme_system)
-                    }
+                    value = stringResource(state.themeModeState.textId)
                 )
             }
         }
 
         item {
-            AppElevatedCard(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { /* Language selection - not implemented yet */ }
-            ) {
-                SettingsItem(
-                    icon = {
-                        AppIconPrimary(
-                            Icons.Outlined.Language,
-                            contentDescription = stringResource(Res.string.settings_language)
-                        )
-                    },
-                    title = stringResource(Res.string.settings_language),
-                    value = stringResource(Res.string.settings_language_value)
-                )
-            }
+            LanguageSelector(
+                currentLanguage = state.currentLanguage,
+                onNavigate = viewModel::onLanguageNavEvent
+            )
         }
     }
 
-    if (showThemeDialog) {
+    if (state.showThemeDialog) {
         ThemeSelectionDialog(
-            currentTheme = state.themeMode,
-            onThemeSelected = { mode ->
-                viewModel.setThemeMode(mode)
-                showThemeDialog = false
+            currentTheme = state.themeModeState,
+            onThemeSelected = { themeModeState ->
+                viewModel.setThemeMode(themeModeState)
+                viewModel.hideThemeDialog()
             },
-            onDismiss = { showThemeDialog = false }
+            onDismiss = viewModel::hideThemeDialog
         )
     }
 }
@@ -136,8 +111,8 @@ private fun SettingsItem(
 
 @Composable
 private fun ThemeSelectionDialog(
-    currentTheme: ThemeMode,
-    onThemeSelected: (ThemeMode) -> Unit,
+    currentTheme: ThemeModeState,
+    onThemeSelected: (ThemeModeState) -> Unit,
     onDismiss: () -> Unit,
 ) {
     AppAlertDialog(
@@ -145,21 +120,13 @@ private fun ThemeSelectionDialog(
         onDismissRequest = onDismiss,
     ) {
         Column {
-            ThemeOption(
-                title = stringResource(Res.string.settings_theme_light),
-                selected = currentTheme == ThemeMode.LIGHT,
-                onClick = { onThemeSelected(ThemeMode.LIGHT) }
-            )
-            ThemeOption(
-                title = stringResource(Res.string.settings_theme_dark),
-                selected = currentTheme == ThemeMode.DARK,
-                onClick = { onThemeSelected(ThemeMode.DARK) }
-            )
-            ThemeOption(
-                title = stringResource(Res.string.settings_theme_system),
-                selected = currentTheme == ThemeMode.SYSTEM,
-                onClick = { onThemeSelected(ThemeMode.SYSTEM) }
-            )
+            ThemeModeState.entries.forEach { themeModeState ->
+                ThemeOption(
+                    title = stringResource(themeModeState.textId),
+                    selected = currentTheme == themeModeState,
+                    onClick = { onThemeSelected(themeModeState) }
+                )
+            }
         }
     }
 }
@@ -179,5 +146,20 @@ private fun ThemeOption(
     ) {
         AppRadioButton(selected = selected, onClick = onClick)
         TextBodyLargeNeutral100(title)
+    }
+}
+
+@Composable
+fun SettingsNavEvents(
+    viewModel: SettingsViewModel,
+    onSetLocale: ((String) -> Unit)?,
+    onOpenSettings: (() -> Unit)?,
+) {
+    CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
+        if (event !is SettingNavEvents) return@CollectNavEvents
+        when (event) {
+            is SettingNavEvents.SetLocaleTag -> onSetLocale?.invoke(event.tag)
+            is SettingNavEvents.ToSettings -> onOpenSettings?.invoke()
+        }
     }
 }

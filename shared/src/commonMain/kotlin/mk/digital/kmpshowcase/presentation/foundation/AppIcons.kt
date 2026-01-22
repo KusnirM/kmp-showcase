@@ -7,31 +7,83 @@ import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+data class IconPath(
+    val fill: Color,
+    val path: String,
+)
+
 object AppIcons {
-    val ArrowRight by lazy {
+
+    // Chevrons
+    val ChevronUp: ImageVector by lazy {
         buildIcon(
-            size = 330.dp,
-            name = "ArrowRight",
-            path = "M250.61,154.39l-150,-150c-5.86,-5.86 -15.35,-5.86 -21.21,0c-5.86,5.86 -5.86,15.35 0,21.21l139.39,139.39L79.39,304.39c-5.86,5.86 -5.86,15.35 0,21.21C82.32,328.54 86.16,330 90,330s7.68,-1.46 10.61,-4.39l150,-150c2.81,-2.81 4.39,-6.63 4.39,-10.61C255,161.02 253.42,157.2 250.61,154.39z"
+            name = "ChevronUp",
+            width = 24.dp,
+            height = 24.dp,
+            paths = listOf(
+                IconPath(Color.Black, "M7.41,15.41L12,10.83l4.59,4.58L18,14l-6,-6l-6,6z")
+            )
         )
     }
 
+    val ChevronDown: ImageVector by lazy {
+        buildIcon(
+            name = "ChevronDown",
+            width = 24.dp,
+            height = 24.dp,
+            paths = listOf(
+                IconPath(Color.Black, "M7.41,8.59L12,13.17l4.59,-4.58L18,10l-6,6l-6,-6z")
+            )
+        )
+    }
+
+    // Flags
+    val FlagSK: ImageVector by lazy {
+        buildIcon(
+            name = "FlagSK",
+            width = 24.dp,
+            height = 16.dp,
+            paths = listOf(
+                IconPath(Color(0xFFFFFFFF), "M0,0h24v5.33H0z"),
+                IconPath(Color(0xFF0B4EA2), "M0,5.33h24v5.33H0z"),
+                IconPath(Color(0xFFEE1C25), "M0,10.67h24v5.33H0z"),
+            )
+        )
+    }
+
+    val FlagEN: ImageVector by lazy {
+        buildIcon(
+            name = "FlagEN",
+            width = 24.dp,
+            height = 16.dp,
+            paths = listOf(
+                IconPath(Color(0xFF012169), "M0,0h24v16H0z"),
+                IconPath(Color(0xFFFFFFFF), "M0,6h24v4H0z"),
+                IconPath(Color(0xFFFFFFFF), "M10,0h4v16h-4z"),
+                IconPath(Color(0xFFC8102E), "M0,7h24v2H0z"),
+                IconPath(Color(0xFFC8102E), "M11,0h2v16h-2z"),
+            )
+        )
+    }
+
+    // Multi-path icon builder (each path has its own fill color)
     private fun buildIcon(
         name: String,
-        path: String,
-        fill: Color = Color.Black,
-        size: Dp,
-    ) =
-        ImageVector.Builder(
-            name = name,
-            defaultWidth = size,
-            defaultHeight = size,
-            viewportWidth = size.value,
-            viewportHeight = size.value
-        ).apply {
+        width: Dp,
+        height: Dp,
+        paths: List<IconPath>,
+    ): ImageVector = ImageVector.Builder(
+        name = name,
+        defaultWidth = width,
+        defaultHeight = height,
+        viewportWidth = width.value,
+        viewportHeight = height.value
+    ).apply {
+        paths.forEach { iconPath ->
             addPath(
-                fill = SolidColor(fill),
-                pathData = addPathNodes(path)
+                fill = SolidColor(iconPath.fill),
+                pathData = addPathNodes(iconPath.path)
             )
-        }.build()
+        }
+    }.build()
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import shared
 
 @main
@@ -26,8 +27,14 @@ struct IosAppView: View {
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
-        Main_iosKt.MainViewController()
+        Main_iosKt.MainViewController(onOpenSettings: openSettings)
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+
+    private func openSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
 }
