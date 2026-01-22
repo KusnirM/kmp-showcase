@@ -157,7 +157,15 @@
     <string name="location_permission_denied">Prístup k polohe bol zamietnutý. Povoľte ho v Nastaveniach.</string>
     <string name="location_permission_rationale">Prístup k polohe je potrebný pre túto funkciu.</string>
 
+    <!-- Image Picker -->
+    <string name="imagepicker_title">Vybrať zdroj obrázka</string>
+    <string name="imagepicker_camera">Fotoaparát</string>
+    <string name="imagepicker_gallery">Galéria</string>
+
     <!-- Settings -->
+    <string name="settings_profile">Môj profil</string>
+    <string name="settings_profile_photo">Profilová fotka</string>
+    <string name="settings_profile_photo_hint">Klepni pre zmenu</string>
     <string name="settings_appearance">Vzhľad</string>
     <string name="settings_theme">Téma</string>
     <string name="settings_theme_light">Svetlá</string>
