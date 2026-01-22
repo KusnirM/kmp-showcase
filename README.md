@@ -184,7 +184,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [x] Spacers (ColumnSpacer, RowSpacer)
 - [x] Image loading with Coil 3 (+ SVG support)
 - [x] Segmented Button (AppSegmentedButton)
-- [ ] Badge
+- [x] Badge
 - [ ] TabBar
 - [x] Menu / Dropdown
 - [ ] ListTile
@@ -208,7 +208,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [x] QR code &amp; barcode scanner (MLKit / AVFoundation)
 - [ ] Local notifications
 - [ ] Push notifications (Firebase)
-- [ ] Biometrics (fingerprint, Face ID)
+- [x] Biometrics (fingerprint, Face ID)
 - [x] Location / GPS
 - [x] Permissions handling (Accompanist / native iOS)
 - [ ] File picker
@@ -291,8 +291,8 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 
 ### Code Quality
 - [ ] Architecture diagram in README
-- [ ] Result type / sealed class error handling
-- [ ] Loading / Error / Empty states pattern
+- [x] Result type / sealed class error handling
+- [x] Loading / Error / Empty states pattern
 - [ ] Graceful offline behavior
 - [ ] Consistent logging throughout
 - [ ] Meaningful git commit history
