@@ -53,6 +53,7 @@ kotlin {
             languageSettings {
                 optIn("androidx.compose.material3.ExperimentalMaterial3Api")
                 optIn("com.google.accompanist.permissions.ExperimentalPermissionsApi")
+                optIn("kotlinx.cinterop.ExperimentalForeignApi")
                 optIn("kotlin.uuid.ExperimentalUuidApi")
                 optIn("kotlinx.cinterop.ExperimentalForeignApi")
                 optIn("kotlinx.cinterop.BetaInteropApi")

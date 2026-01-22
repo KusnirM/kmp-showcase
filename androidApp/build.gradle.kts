@@ -118,6 +118,9 @@ dependencies {
     implementation(libs.android.material)
     implementation(libs.material3.android)
 
+    // location
+    implementation(libs.google.services.location)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
