@@ -186,7 +186,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [x] Segmented Button (AppSegmentedButton)
 - [ ] Badge
 - [ ] TabBar
-- [ ] Menu / Dropdown
+- [x] Menu / Dropdown
 - [ ] ListTile
 - [ ] Pull to refresh
 - [ ] Swipe actions
@@ -274,12 +274,12 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 - [ ] Encrypted storage
 - [ ] Root / Jailbreak detection
 - [ ] Screenshot prevention (sensitive screens)
-- [ ] ProGuard / R8 obfuscation
+- [x] ProGuard / R8 obfuscation
 - [ ] Biometric + PIN fallback
 
 ### Monitoring & Analytics
 - [ ] Firebase Analytics
-- [ ] Crashlytics integration
+- [x] Crashlytics integration
 - [ ] Performance monitoring
 
 ### Build & CI

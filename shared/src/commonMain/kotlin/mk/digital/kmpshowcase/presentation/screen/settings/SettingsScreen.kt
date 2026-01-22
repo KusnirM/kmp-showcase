@@ -20,8 +20,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.component.AppAlertDialog
 import mk.digital.kmpshowcase.presentation.component.AppRadioButton
+import mk.digital.kmpshowcase.presentation.component.AvatarState
+import mk.digital.kmpshowcase.presentation.component.AvatarView
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.image.AppIconPrimary
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerView
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerViewModel
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargeNeutral100
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargePrimary
@@ -31,12 +35,25 @@ import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.settings_appearance
+import mk.digital.kmpshowcase.shared.generated.resources.settings_profile
+import mk.digital.kmpshowcase.shared.generated.resources.settings_profile_photo
+import mk.digital.kmpshowcase.shared.generated.resources.settings_profile_photo_hint
 import mk.digital.kmpshowcase.shared.generated.resources.settings_theme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel) {
+fun SettingsScreen(
+    viewModel: SettingsViewModel,
+    imagePickerViewModel: ImagePickerViewModel,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val imagePickerState by imagePickerViewModel.state.collectAsStateWithLifecycle()
+
+    val avatarState = when {
+        imagePickerState.isLoading -> AvatarState.Loading
+        imagePickerState.imageBitmap != null -> AvatarState.Loaded(imagePickerState.imageBitmap!!)
+        else -> AvatarState.Empty
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -48,6 +65,23 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         ),
         verticalArrangement = Arrangement.spacedBy(space4)
     ) {
+        item {
+            TextTitleLargePrimary(stringResource(Res.string.settings_profile))
+        }
+
+        item {
+            AppElevatedCard(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { imagePickerViewModel.showDialog() }
+            ) {
+                ProfileItem(
+                    avatarState = avatarState,
+                    title = stringResource(Res.string.settings_profile_photo),
+                    hint = stringResource(Res.string.settings_profile_photo_hint)
+                )
+            }
+        }
+
         item {
             TextTitleLargePrimary(stringResource(Res.string.settings_appearance))
         }
@@ -98,6 +132,8 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         }
     }
 
+    ImagePickerView(viewModel = imagePickerViewModel)
+
     if (state.showThemeDialog) {
         ThemeSelectionDialog(
             currentTheme = state.themeModeState,
@@ -107,6 +143,26 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             },
             onDismiss = viewModel::hideThemeDialog
         )
+    }
+}
+
+@Composable
+private fun ProfileItem(
+    avatarState: AvatarState,
+    title: String,
+    hint: String,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(space4),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(space4)
+    ) {
+        AvatarView(state = avatarState)
+        Column(modifier = Modifier.weight(1f)) {
+            TextBodyLargePrimary(title)
+            Spacer2()
+            TextBodyMediumNeutral80(hint)
+        }
     }
 }
 

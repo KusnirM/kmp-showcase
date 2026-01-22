@@ -157,7 +157,15 @@
     <string name="location_permission_denied">Location access was denied. Please enable it in Settings.</string>
     <string name="location_permission_rationale">Location access is needed for this feature.</string>
 
+    <!-- Image Picker -->
+    <string name="imagepicker_title">Select Image Source</string>
+    <string name="imagepicker_camera">Camera</string>
+    <string name="imagepicker_gallery">Gallery</string>
+
     <!-- Settings -->
+    <string name="settings_profile">My Profile</string>
+    <string name="settings_profile_photo">Profile Photo</string>
+    <string name="settings_profile_photo_hint">Tap to change</string>
     <string name="settings_appearance">Appearance</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_theme_light">Light</string>
