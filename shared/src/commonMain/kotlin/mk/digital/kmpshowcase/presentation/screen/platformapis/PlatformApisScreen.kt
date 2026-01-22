@@ -2,71 +2,80 @@ package mk.digital.kmpshowcase.presentation.screen.platformapis
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ContentCopy
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Fingerprint
+import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.MyLocation
+import androidx.compose.material.icons.outlined.Phone
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
-import mk.digital.kmpshowcase.domain.model.Location
 import mk.digital.kmpshowcase.LocalSnackbarHostState
+import mk.digital.kmpshowcase.data.biometric.BiometricResult
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
-import mk.digital.kmpshowcase.presentation.component.permission.rememberLocationPermissionState
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
+import mk.digital.kmpshowcase.presentation.component.permission.rememberLocationPermissionState
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
+import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.headlineMedium.TextHeadlineMediumPrimary
-import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_action
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_hint
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_action
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_activity_not_available
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_cancelled
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_failed
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_not_available
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_success
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_unknown_error
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copied_message
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_copy_text
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_email_body
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_email_subject
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_share_text
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_action
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_action
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_email_action
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_email_hint
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_email_title
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_email_action
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_email_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_action
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_error
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_loading
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_result
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_error
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_start
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_stop
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_action
-import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_title
 import mk.digital.kmpshowcase.util.StringFormatter
 import org.jetbrains.compose.resources.stringResource
-
-private const val DEMO_PHONE_NUMBER = "+1234567890"
-private const val DEMO_URL = "https://github.com/KusnirM/kmp-showcase"
-private const val DEMO_EMAIL = "mir.kusnir@gmail.com"
 
 private enum class PendingLocationAction { NONE, GET_LOCATION, START_UPDATES }
 
@@ -103,19 +112,16 @@ private fun rememberLocationActionHandler(
     }
 }
 
+@Suppress("CyclomaticComplexMethod", "CognitiveComplexMethod")
 @Composable
 fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
     val copiedMessage = stringResource(Res.string.platform_apis_copied_message)
-    val demoShareText = stringResource(Res.string.platform_apis_demo_share_text)
-    val demoCopyText = stringResource(Res.string.platform_apis_demo_copy_text)
-    val demoEmailSubject = stringResource(Res.string.platform_apis_demo_email_subject)
-    val demoEmailBody = stringResource(Res.string.platform_apis_demo_email_body)
 
     val handleLocationAction = rememberLocationActionHandler(
-        onGetLocation = { viewModel.getLocation() },
-        onStartUpdates = { viewModel.startLocationUpdates() }
+        onGetLocation = viewModel::getLocation,
+        onStartUpdates = viewModel::startLocationUpdates
     )
 
     LaunchedEffect(state.copiedToClipboard) {
@@ -144,158 +150,187 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
         }
 
         item {
-            ApiCard(
-                title = stringResource(Res.string.platform_apis_share_title),
-                hint = stringResource(Res.string.platform_apis_share_hint),
-                actionText = stringResource(Res.string.platform_apis_share_action),
-                onClick = { viewModel.share(demoShareText) }
-            )
+            PlatformApiCard(
+                icon = Icons.Outlined.Share,
+                title = stringResource(Res.string.platform_apis_share_title)
+            ) {
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_share_action),
+                    onClick = viewModel::share
+                )
+            }
         }
 
         item {
-            ApiCard(
-                title = stringResource(Res.string.platform_apis_dial_title),
-                hint = stringResource(Res.string.platform_apis_dial_hint),
-                actionText = stringResource(Res.string.platform_apis_dial_action),
-                onClick = { viewModel.dial(DEMO_PHONE_NUMBER) }
-            )
+            PlatformApiCard(
+                icon = Icons.Outlined.Phone,
+                title = stringResource(Res.string.platform_apis_dial_title)
+            ) {
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_dial_action),
+                    onClick = viewModel::dial
+                )
+            }
         }
 
         item {
-            ApiCard(
-                title = stringResource(Res.string.platform_apis_link_title),
-                hint = stringResource(Res.string.platform_apis_link_hint),
-                actionText = stringResource(Res.string.platform_apis_link_action),
-                onClick = { viewModel.openLink(DEMO_URL) }
-            )
+            PlatformApiCard(
+                icon = Icons.Outlined.Link,
+                title = stringResource(Res.string.platform_apis_link_title)
+            ) {
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_link_action),
+                    onClick = viewModel::openLink
+                )
+            }
         }
 
         item {
-            ApiCard(
-                title = stringResource(Res.string.platform_apis_email_title),
-                hint = stringResource(Res.string.platform_apis_email_hint),
-                actionText = stringResource(Res.string.platform_apis_email_action),
-                onClick = { viewModel.sendEmail(DEMO_EMAIL, demoEmailSubject, demoEmailBody) }
-            )
+            PlatformApiCard(
+                icon = Icons.Outlined.Email,
+                title = stringResource(Res.string.platform_apis_email_title)
+            ) {
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_email_action),
+                    onClick = viewModel::sendEmail
+                )
+            }
         }
 
         item {
-            ApiCard(
-                title = stringResource(Res.string.platform_apis_copy_title),
-                hint = stringResource(Res.string.platform_apis_copy_hint),
-                actionText = stringResource(Res.string.platform_apis_copy_action),
-                onClick = { viewModel.copyToClipboard(demoCopyText) }
-            )
+            PlatformApiCard(
+                icon = Icons.Outlined.ContentCopy,
+                title = stringResource(Res.string.platform_apis_copy_title)
+            ) {
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_copy_action),
+                    onClick = viewModel::copyToClipboard
+                )
+            }
         }
 
         item {
-            LocationCard(
-                title = stringResource(Res.string.platform_apis_location_title),
-                hint = stringResource(Res.string.platform_apis_location_hint),
-                actionText = stringResource(Res.string.platform_apis_location_action),
-                loadingText = stringResource(Res.string.platform_apis_location_loading),
-                errorText = stringResource(Res.string.platform_apis_location_error),
-                location = state.location,
-                isLoading = state.locationLoading,
-                isError = state.locationError,
-                onClick = { handleLocationAction(PendingLocationAction.GET_LOCATION) }
-            )
+            val loadingText = stringResource(Res.string.platform_apis_location_loading)
+            val errorText = stringResource(Res.string.platform_apis_location_error)
+            val location = state.location
+            PlatformApiCard(
+                icon = Icons.Outlined.LocationOn,
+                title = stringResource(Res.string.platform_apis_location_title)
+            ) {
+                when {
+                    state.locationLoading -> TextBodyMediumNeutral80(loadingText)
+                    state.locationError -> TextBodyMediumNeutral80(errorText)
+                    location != null -> TextBodyMediumNeutral80(
+                        formatLocationText(location.lat, location.lon)
+                    )
+                }
+                Spacer2()
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_location_action),
+                    onClick = { handleLocationAction(PendingLocationAction.GET_LOCATION) }
+                )
+            }
         }
 
         item {
-            LocationUpdatesCard(
-                title = stringResource(Res.string.platform_apis_location_updates_title),
-                hint = stringResource(Res.string.platform_apis_location_updates_hint),
-                startText = stringResource(Res.string.platform_apis_location_updates_start),
-                stopText = stringResource(Res.string.platform_apis_location_updates_stop),
-                errorText = stringResource(Res.string.platform_apis_location_updates_error),
-                location = state.trackedLocation,
-                isTracking = state.isTrackingLocation,
-                isError = state.locationUpdatesError,
-                onStart = { handleLocationAction(PendingLocationAction.START_UPDATES) },
-                onStop = { viewModel.stopLocationUpdates() }
+            val errorText = stringResource(Res.string.platform_apis_location_updates_error)
+            val trackedLocation = state.trackedLocation
+            PlatformApiCard(
+                icon = Icons.Outlined.MyLocation,
+                title = stringResource(Res.string.platform_apis_location_updates_title)
+            ) {
+                when {
+                    state.locationUpdatesError -> TextBodyMediumNeutral80(errorText)
+                    trackedLocation != null -> TextBodyMediumNeutral80(
+                        formatLocationText(trackedLocation.lat, trackedLocation.lon)
+                    )
+                }
+                Spacer2()
+                ApiCardButton(
+                    text = stringResource(
+                        if (state.isTrackingLocation) Res.string.platform_apis_location_updates_stop
+                        else Res.string.platform_apis_location_updates_start
+                    ),
+                    onClick = {
+                        if (state.isTrackingLocation) viewModel.stopLocationUpdates()
+                        else handleLocationAction(PendingLocationAction.START_UPDATES)
+                    }
+                )
+            }
+        }
+
+        item {
+            val successText = stringResource(Res.string.platform_apis_biometrics_success)
+            val failedText = stringResource(Res.string.platform_apis_biometrics_failed)
+            val cancelledText = stringResource(Res.string.platform_apis_biometrics_cancelled)
+            val notAvailableText = stringResource(Res.string.platform_apis_biometrics_not_available)
+            val activityNotAvailableText = stringResource(Res.string.platform_apis_biometrics_activity_not_available)
+            val unknownErrorText = stringResource(Res.string.platform_apis_biometrics_unknown_error)
+            PlatformApiCard(
+                icon = Icons.Outlined.Fingerprint,
+                title = stringResource(Res.string.platform_apis_biometrics_title)
+            ) {
+                when {
+                    !state.biometricsAvailable -> TextBodyMediumNeutral80(notAvailableText)
+                    state.biometricsLoading -> TextBodyMediumNeutral80("...")
+                    state.biometricsResult is BiometricResult.Success -> TextBodyMediumNeutral80(successText)
+                    state.biometricsResult is BiometricResult.SystemError -> {
+                        val errorMsg = (state.biometricsResult as BiometricResult.SystemError)
+                            .message.ifEmpty { unknownErrorText }
+                        TextBodyMediumNeutral80("$failedText: $errorMsg")
+                    }
+
+                    state.biometricsResult is BiometricResult.Cancelled -> TextBodyMediumNeutral80(cancelledText)
+                    state.biometricsResult is BiometricResult.NotAvailable -> TextBodyMediumNeutral80(notAvailableText)
+                    state.biometricsResult is BiometricResult.ActivityNotAvailable ->
+                        TextBodyMediumNeutral80(activityNotAvailableText)
+                }
+                Spacer2()
+                ApiCardButton(
+                    text = stringResource(Res.string.platform_apis_biometrics_action),
+                    onClick = viewModel::authenticateWithBiometrics,
+                    enabled = state.biometricsAvailable && !state.biometricsLoading
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PlatformApiCard(
+    icon: ImageVector,
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(imageVector = icon, contentDescription = null)
+            Spacer(modifier = Modifier.width(space4))
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.End,
+                content = {
+                    TextBodyLargeNeutral80(title)
+                    Spacer2()
+                    content()
+                }
             )
         }
     }
 }
 
 @Composable
-private fun ApiCard(
-    title: String,
-    hint: String,
-    actionText: String,
-    onClick: () -> Unit
+private fun ApiCardButton(
+    text: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
-    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
-        TextBodyLargeNeutral80(title)
-        Spacer2()
-        TextBodyMediumNeutral80(hint)
-        Spacer2()
-        OutlinedButton(text = actionText, onClick = onClick)
-    }
-}
-
-@Suppress("LongParameterList")
-@Composable
-private fun LocationCard(
-    title: String,
-    hint: String,
-    actionText: String,
-    loadingText: String,
-    errorText: String,
-    location: Location?,
-    isLoading: Boolean,
-    isError: Boolean,
-    onClick: () -> Unit
-) {
-    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
-        TextBodyLargeNeutral80(title)
-        Spacer2()
-        TextBodyMediumNeutral80(hint)
-        Spacer2()
-        when {
-            isLoading -> TextBodyMediumNeutral80(loadingText)
-            isError -> TextBodyMediumNeutral80(errorText)
-            location != null -> TextBodyMediumNeutral80(
-                formatLocationText(location.lat, location.lon)
-            )
-        }
-        Spacer2()
-        OutlinedButton(text = actionText, onClick = onClick)
-    }
-}
-
-@Suppress("LongParameterList")
-@Composable
-private fun LocationUpdatesCard(
-    title: String,
-    hint: String,
-    startText: String,
-    stopText: String,
-    errorText: String,
-    location: Location?,
-    isTracking: Boolean,
-    isError: Boolean,
-    onStart: () -> Unit,
-    onStop: () -> Unit
-) {
-    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
-        TextBodyLargeNeutral80(title)
-        Spacer2()
-        TextBodyMediumNeutral80(hint)
-        Spacer2()
-        when {
-            isError -> TextBodyMediumNeutral80(errorText)
-            location != null -> TextBodyMediumNeutral80(
-                formatLocationText(location.lat, location.lon)
-            )
-        }
-        Spacer2()
-        OutlinedButton(
-            text = if (isTracking) stopText else startText,
-            onClick = if (isTracking) onStop else onStart
-        )
-    }
+    OutlinedButton(
+        text = text,
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        enabled = enabled
+    )
 }
 
 private const val COORDINATE_DECIMAL_PLACES = 6

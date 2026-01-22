@@ -24,10 +24,12 @@ fun OutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
+        enabled = enabled,
         border = BorderStroke(
             width = outlineButtonBorderSize,
             color = MaterialTheme.appColorScheme.primary,
