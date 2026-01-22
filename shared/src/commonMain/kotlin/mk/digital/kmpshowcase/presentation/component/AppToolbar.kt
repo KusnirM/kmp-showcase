@@ -18,8 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.presentation.component.ext.noRippleClickable
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargeNeutral80
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.space6
+import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.content_description_back
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -39,8 +42,8 @@ fun TopAppBar(
                 Icon(
                     modifier = Modifier.size(space6).noRippleClickable(backClick),
                     imageVector = navIcon,
-                    contentDescription = "Back Arrow",
-                    tint = MaterialTheme.appColors.neutral80,
+                    contentDescription = stringResource(Res.string.content_description_back),
+                    tint = MaterialTheme.appColorScheme.neutral80,
                 )
             }
         },

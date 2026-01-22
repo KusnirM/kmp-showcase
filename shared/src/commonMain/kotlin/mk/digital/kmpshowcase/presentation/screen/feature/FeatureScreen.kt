@@ -6,33 +6,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import mk.digital.kmpshowcase.presentation.component.text.headlineMedium.TextHeadlineMediumPrimary
+import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.screen_networking
+import mk.digital.kmpshowcase.shared.generated.resources.screen_platform_apis
+import mk.digital.kmpshowcase.shared.generated.resources.screen_storage
+import mk.digital.kmpshowcase.shared.generated.resources.screen_ui_components
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun UiComponentsScreen() {
-    PlaceholderScreen("UI Components")
+    PlaceholderScreen(Res.string.screen_ui_components)
 }
 
 @Composable
 fun NetworkingScreen() {
-    PlaceholderScreen("Networking")
+    PlaceholderScreen(Res.string.screen_networking)
 }
 
 @Composable
 fun StorageScreen() {
-    PlaceholderScreen("Storage")
+    PlaceholderScreen(Res.string.screen_storage)
 }
 
 @Composable
 fun PlatformApisScreen() {
-    PlaceholderScreen("Platform APIs")
+    PlaceholderScreen(Res.string.screen_platform_apis)
 }
 
 @Composable
-private fun PlaceholderScreen(title: String) {
+private fun PlaceholderScreen(titleRes: StringResource) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        TextHeadlineMediumPrimary(title)
+        TextHeadlineMediumPrimary(stringResource(titleRes))
     }
 }
