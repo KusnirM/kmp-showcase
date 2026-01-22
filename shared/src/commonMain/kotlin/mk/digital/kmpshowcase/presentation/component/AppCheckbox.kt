@@ -4,7 +4,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
 fun AppCheckbox(
@@ -15,7 +15,7 @@ fun AppCheckbox(
         checked = checked,
         onCheckedChange = onCheckedChange,
         colors = CheckboxDefaults.colors(
-            checkedColor = MaterialTheme.appColors.primary,
+            checkedColor = MaterialTheme.appColorScheme.primary,
         )
     )
 }

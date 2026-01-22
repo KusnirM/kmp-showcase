@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import mk.digital.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.cardCornerRadius6
 import mk.digital.kmpshowcase.presentation.foundation.space4
 
@@ -31,7 +31,7 @@ fun OutlinedButton(
         modifier = modifier.fillMaxWidth(),
         border = BorderStroke(
             width = outlineButtonBorderSize,
-            color = MaterialTheme.appColors.primary,
+            color = MaterialTheme.appColorScheme.primary,
         ),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = LocalContentColor.current,

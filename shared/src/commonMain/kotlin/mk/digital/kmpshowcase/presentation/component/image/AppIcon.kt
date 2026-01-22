@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.defaultIconSize
 
 
@@ -38,5 +39,19 @@ fun AppIconPrimary(
         imageVector = imageVector,
         contentDescription = contentDescription,
         tint = MaterialTheme.colorScheme.primary,
+    )
+}
+
+@Composable
+fun AppIconNeutral80(
+    imageVector: ImageVector,
+    size: Dp = defaultIconSize,
+    contentDescription: String = imageVector.name,
+) {
+    AppIcon(
+        size = size,
+        imageVector = imageVector,
+        contentDescription = contentDescription,
+        tint = MaterialTheme.appColorScheme.neutral80,
     )
 }

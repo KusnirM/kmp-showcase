@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargeNeutral80
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import org.jetbrains.compose.resources.stringResource
 
@@ -21,7 +21,7 @@ fun LoadingView() {
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.appColors.neutral0)
+            .background(color = MaterialTheme.appColorScheme.neutral0)
             .padding(horizontal = space4),
         verticalAlignment = Alignment.CenterVertically,
 

@@ -1,9 +1,5 @@
 package mk.digital.kmpshowcase.presentation.base
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
@@ -19,16 +15,6 @@ import mk.digital.kmpshowcase.domain.exceptions.base.UnknownException
 import mk.digital.kmpshowcase.util.Logger
 
 /**
- * Toolbar configuration for screens that need a top bar.
- */
-interface ToolbarConfig {
-    @Composable
-    fun toolbarTitle(): String
-    val navIcon: ImageVector? get() = Icons.AutoMirrored.Filled.ArrowBack
-    val onBack: () -> Unit get() = {}
-}
-
-/**
  * Screen lifecycle callbacks.
  */
 interface ScreenLifecycle {
@@ -38,17 +24,12 @@ interface ScreenLifecycle {
 }
 
 /**
- * Combined interface for screens with toolbar and lifecycle.
- */
-interface ToolbarScreen : ScreenLifecycle, ToolbarConfig
-
-/**
  * Base ViewModel for all screens.
  * Provides state management, navigation, error handling, and lifecycle.
  */
 abstract class BaseViewModel<STATE : Any>(
     defaultState: STATE,
-) : ViewModel(), ToolbarScreen {
+) : ViewModel(), ScreenLifecycle {
 
     protected val tag = this::class.simpleName
     private var isInitialized = false

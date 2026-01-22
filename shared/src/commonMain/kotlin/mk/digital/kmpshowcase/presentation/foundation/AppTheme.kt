@@ -31,7 +31,7 @@ fun AppTheme(content: @Composable () -> Unit) {
 
 private val LocalColors = staticCompositionLocalOf { LightColorPalette }
 
-val MaterialTheme.appColors: AppColors
+val MaterialTheme.appColorScheme: AppColors
     @Composable
     @ReadOnlyComposable
     get() = LocalColors.current

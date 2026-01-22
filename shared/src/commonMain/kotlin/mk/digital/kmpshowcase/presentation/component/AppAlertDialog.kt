@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import mk.digital.kmpshowcase.presentation.component.buttons.AppTextButton
 import mk.digital.kmpshowcase.presentation.component.text.headlineMedium.TextHeadlineMediumPrimary
+import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.button_ok
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppAlertDialog(
@@ -36,7 +39,7 @@ fun AppConfirmDialog(
         title = title,
         text = text,
         confirmButton = {
-            AppTextButton(text = "Ok", onClick = onDismissRequest)
+            AppTextButton(text = stringResource(Res.string.button_ok), onClick = onDismissRequest)
         }
     )
 }

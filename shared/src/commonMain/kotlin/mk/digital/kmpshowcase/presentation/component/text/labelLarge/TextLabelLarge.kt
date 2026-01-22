@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
 internal fun TextLabelLarge(
@@ -49,7 +49,7 @@ internal fun TextButtonNeutral0(
     TextLabelLarge(
         modifier = modifier,
         text = text.uppercase(),
-        color = MaterialTheme.appColors.neutral0,
+        color = MaterialTheme.appColorScheme.neutral0,
         textAlign = textAlign
     )
 }

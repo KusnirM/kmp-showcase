@@ -4,7 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import mk.digital.kmpshowcase.presentation.foundation.appColors
+import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
 fun TextTitleLargeNeutral80(
@@ -15,7 +15,7 @@ fun TextTitleLargeNeutral80(
     TextTitleLarge(
         text = text,
         modifier = modifier,
-        color = MaterialTheme.appColors.neutral80,
+        color = MaterialTheme.appColorScheme.neutral80,
         textAlign = textAlign
     )
 }

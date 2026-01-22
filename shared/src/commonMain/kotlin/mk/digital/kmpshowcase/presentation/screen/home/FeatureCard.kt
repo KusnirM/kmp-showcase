@@ -14,7 +14,6 @@ import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargeNeutral80
 import mk.digital.kmpshowcase.presentation.foundation.space10
-import mk.digital.kmpshowcase.presentation.foundation.space12
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.foundation.space8
 import org.jetbrains.compose.resources.stringResource
