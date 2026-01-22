@@ -52,6 +52,7 @@ kotlin {
         all {
             languageSettings {
                 optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+                optIn("com.google.accompanist.permissions.ExperimentalPermissionsApi")
                 optIn("kotlin.uuid.ExperimentalUuidApi")
                 optIn("kotlinx.cinterop.ExperimentalForeignApi")
                 optIn("kotlinx.cinterop.BetaInteropApi")
@@ -104,9 +105,23 @@ kotlin {
             implementation(libs.activity.ktx)
             implementation(libs.activity.compose)
             implementation(libs.compose.ui.tooling)
+            implementation(libs.activity.compose)
 
             //            local storage
             implementation(libs.datastore.preferences)
+
+            // Barcode
+            implementation(libs.zxing.core)
+            implementation(libs.mlkit.barcode)
+
+            // Camera
+            implementation(libs.camera.core)
+            implementation(libs.camera.camera2)
+            implementation(libs.camera.lifecycle)
+            implementation(libs.camera.view)
+
+            // Permissions
+            implementation(libs.accompanist.permissions)
         }
 
         commonTest.dependencies {

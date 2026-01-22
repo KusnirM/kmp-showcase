@@ -16,6 +16,7 @@ actual class ShareRouterImpl : ShareRouter {
 
         val rootViewController = UIApplication.sharedApplication.keyWindow?.rootViewController
         rootViewController?.let { vc ->
+            @Suppress("TooGenericExceptionCaught")
             try {
                 val popover = vc.popoverPresentationController
                 popover?.let {

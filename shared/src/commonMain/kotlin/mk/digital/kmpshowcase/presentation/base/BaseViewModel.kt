@@ -113,6 +113,7 @@ abstract class BaseViewModel<STATE : Any>(
      * @param onError Called with BaseException when action fails
      * @return Job that can be used to cancel the operation
      */
+    @Suppress("TooGenericExceptionCaught")
     protected fun <T> execute(
         action: suspend () -> T,
         onLoading: () -> Unit = {},
@@ -140,6 +141,7 @@ abstract class BaseViewModel<STATE : Any>(
      * @param onError Called with BaseException when flow or onStart errors
      * @return Job that can be used to cancel the observation
      */
+    @Suppress("TooGenericExceptionCaught")
     protected fun <T> observe(
         onStart: (suspend () -> Unit)? = null,
         flow: Flow<T>,

@@ -4,9 +4,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.PhoneAndroid
+import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.feature_scanner_subtitle
+import mk.digital.kmpshowcase.shared.generated.resources.feature_scanner_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_networking_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.feature_networking_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_platform_apis_subtitle
@@ -28,7 +31,8 @@ enum class FeatureId {
     UI_COMPONENTS,
     NETWORKING,
     STORAGE,
-    PLATFORM_APIS
+    PLATFORM_APIS,
+    SCANNER
 }
 
 val showcaseFeatures = listOf(
@@ -55,5 +59,11 @@ val showcaseFeatures = listOf(
         titleRes = Res.string.feature_platform_apis_title,
         subtitleRes = Res.string.feature_platform_apis_subtitle,
         icon = Icons.Outlined.PhoneAndroid
+    ),
+    Feature(
+        id = FeatureId.SCANNER,
+        titleRes = Res.string.feature_scanner_title,
+        subtitleRes = Res.string.feature_scanner_subtitle,
+        icon = Icons.Outlined.QrCode2
     )
 )

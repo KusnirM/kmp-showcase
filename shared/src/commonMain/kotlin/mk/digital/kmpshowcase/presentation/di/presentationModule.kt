@@ -1,5 +1,7 @@
 package mk.digital.kmpshowcase.presentation.di
 
+import mk.digital.kmpshowcase.presentation.component.barcode.CodeGenerator
+import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import mk.digital.kmpshowcase.presentation.screen.detail.DetailViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingViewModel
@@ -9,9 +11,12 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
+    factory { CodeGenerator() }
+
     viewModel { HomeViewModel() }
     viewModel { DetailViewModel(id = it.get()) }
     viewModel { NetworkingViewModel(get()) }
     viewModel { StorageViewModel(get(), get(), get(), get(), get()) }
     viewModel { PlatformApisViewModel(get()) }
+    viewModel { ScannerViewModel(get()) }
 }

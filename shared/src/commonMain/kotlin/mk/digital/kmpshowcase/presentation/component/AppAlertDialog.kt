@@ -10,6 +10,7 @@ import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMed
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
 import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.button_cancel
 import mk.digital.kmpshowcase.shared.generated.resources.button_ok
 import org.jetbrains.compose.resources.stringResource
 
@@ -44,6 +45,28 @@ fun AppConfirmDialog(
         text = text,
         confirmButton = {
             AppTextButton(text = stringResource(Res.string.button_ok), onClick = onDismissRequest)
+        },
+    )
+}
+
+@Composable
+fun AppAlertDialog(
+    text: String,
+    title: String? = null,
+    confirmButtonText: String = stringResource(Res.string.button_ok),
+    dismissButtonText: String = stringResource(Res.string.button_cancel),
+    onConfirm: () -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+    AppAlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = title,
+        text = text,
+        confirmButton = {
+            AppTextButton(text = confirmButtonText, onClick = onConfirm)
+        },
+        dismissButton = {
+            AppTextButton(text = dismissButtonText, onClick = onDismissRequest)
         }
     )
 }
