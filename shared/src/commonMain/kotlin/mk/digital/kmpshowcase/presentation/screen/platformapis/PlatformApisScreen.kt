@@ -11,10 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
+import mk.digital.kmpshowcase.domain.model.Location
 import mk.digital.kmpshowcase.LocalSnackbarHostState
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
+import mk.digital.kmpshowcase.presentation.component.permission.rememberLocationPermissionState
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
@@ -40,16 +45,63 @@ import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_titl
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_action
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_error
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_hint
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_loading
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_result
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_error
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_hint
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_start
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_stop
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_updates_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_title
+import mk.digital.kmpshowcase.util.StringFormatter
 import org.jetbrains.compose.resources.stringResource
 
 private const val DEMO_PHONE_NUMBER = "+1234567890"
 private const val DEMO_URL = "https://github.com/KusnirM/kmp-showcase"
 private const val DEMO_EMAIL = "mir.kusnir@gmail.com"
+
+private enum class PendingLocationAction { NONE, GET_LOCATION, START_UPDATES }
+
+@Composable
+private fun rememberLocationActionHandler(
+    onGetLocation: () -> Unit,
+    onStartUpdates: () -> Unit
+): (PendingLocationAction) -> Unit {
+    val locationPermission = rememberLocationPermissionState()
+    var pendingAction by remember { mutableStateOf(PendingLocationAction.NONE) }
+
+    LaunchedEffect(locationPermission.isGranted, pendingAction) {
+        if (locationPermission.isGranted && pendingAction != PendingLocationAction.NONE) {
+            when (pendingAction) {
+                PendingLocationAction.GET_LOCATION -> onGetLocation()
+                PendingLocationAction.START_UPDATES -> onStartUpdates()
+                PendingLocationAction.NONE -> Unit
+            }
+            pendingAction = PendingLocationAction.NONE
+        }
+    }
+
+    return { action ->
+        if (locationPermission.isGranted) {
+            when (action) {
+                PendingLocationAction.GET_LOCATION -> onGetLocation()
+                PendingLocationAction.START_UPDATES -> onStartUpdates()
+                PendingLocationAction.NONE -> Unit
+            }
+        } else {
+            pendingAction = action
+            locationPermission.requestPermission()
+        }
+    }
+}
 
 @Composable
 fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
@@ -60,6 +112,11 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
     val demoCopyText = stringResource(Res.string.platform_apis_demo_copy_text)
     val demoEmailSubject = stringResource(Res.string.platform_apis_demo_email_subject)
     val demoEmailBody = stringResource(Res.string.platform_apis_demo_email_body)
+
+    val handleLocationAction = rememberLocationActionHandler(
+        onGetLocation = { viewModel.getLocation() },
+        onStartUpdates = { viewModel.startLocationUpdates() }
+    )
 
     LaunchedEffect(state.copiedToClipboard) {
         if (state.copiedToClipboard) {
@@ -130,6 +187,35 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
                 onClick = { viewModel.copyToClipboard(demoCopyText) }
             )
         }
+
+        item {
+            LocationCard(
+                title = stringResource(Res.string.platform_apis_location_title),
+                hint = stringResource(Res.string.platform_apis_location_hint),
+                actionText = stringResource(Res.string.platform_apis_location_action),
+                loadingText = stringResource(Res.string.platform_apis_location_loading),
+                errorText = stringResource(Res.string.platform_apis_location_error),
+                location = state.location,
+                isLoading = state.locationLoading,
+                isError = state.locationError,
+                onClick = { handleLocationAction(PendingLocationAction.GET_LOCATION) }
+            )
+        }
+
+        item {
+            LocationUpdatesCard(
+                title = stringResource(Res.string.platform_apis_location_updates_title),
+                hint = stringResource(Res.string.platform_apis_location_updates_hint),
+                startText = stringResource(Res.string.platform_apis_location_updates_start),
+                stopText = stringResource(Res.string.platform_apis_location_updates_stop),
+                errorText = stringResource(Res.string.platform_apis_location_updates_error),
+                location = state.trackedLocation,
+                isTracking = state.isTrackingLocation,
+                isError = state.locationUpdatesError,
+                onStart = { handleLocationAction(PendingLocationAction.START_UPDATES) },
+                onStop = { viewModel.stopLocationUpdates() }
+            )
+        }
     }
 }
 
@@ -147,4 +233,78 @@ private fun ApiCard(
         Spacer2()
         OutlinedButton(text = actionText, onClick = onClick)
     }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun LocationCard(
+    title: String,
+    hint: String,
+    actionText: String,
+    loadingText: String,
+    errorText: String,
+    location: Location?,
+    isLoading: Boolean,
+    isError: Boolean,
+    onClick: () -> Unit
+) {
+    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
+        TextBodyLargeNeutral80(title)
+        Spacer2()
+        TextBodyMediumNeutral80(hint)
+        Spacer2()
+        when {
+            isLoading -> TextBodyMediumNeutral80(loadingText)
+            isError -> TextBodyMediumNeutral80(errorText)
+            location != null -> TextBodyMediumNeutral80(
+                formatLocationText(location.lat, location.lon)
+            )
+        }
+        Spacer2()
+        OutlinedButton(text = actionText, onClick = onClick)
+    }
+}
+
+@Suppress("LongParameterList")
+@Composable
+private fun LocationUpdatesCard(
+    title: String,
+    hint: String,
+    startText: String,
+    stopText: String,
+    errorText: String,
+    location: Location?,
+    isTracking: Boolean,
+    isError: Boolean,
+    onStart: () -> Unit,
+    onStop: () -> Unit
+) {
+    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
+        TextBodyLargeNeutral80(title)
+        Spacer2()
+        TextBodyMediumNeutral80(hint)
+        Spacer2()
+        when {
+            isError -> TextBodyMediumNeutral80(errorText)
+            location != null -> TextBodyMediumNeutral80(
+                formatLocationText(location.lat, location.lon)
+            )
+        }
+        Spacer2()
+        OutlinedButton(
+            text = if (isTracking) stopText else startText,
+            onClick = if (isTracking) onStop else onStart
+        )
+    }
+}
+
+private const val COORDINATE_DECIMAL_PLACES = 6
+
+@Composable
+private fun formatLocationText(lat: Double, lon: Double): String {
+    return stringResource(
+        Res.string.platform_apis_location_result,
+        StringFormatter.formatDouble(lat, COORDINATE_DECIMAL_PLACES),
+        StringFormatter.formatDouble(lon, COORDINATE_DECIMAL_PLACES)
+    )
 }
