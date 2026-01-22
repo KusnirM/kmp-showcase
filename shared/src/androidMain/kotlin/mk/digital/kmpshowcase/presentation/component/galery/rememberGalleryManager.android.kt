@@ -1,6 +1,5 @@
 package mk.digital.kmpshowcase.presentation.component.galery
 
-import agency.yesteam.worker.presentation.component.imagepicker.ImageResult
 import android.content.ContentResolver
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,22 +10,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImageResult
 import mk.digital.kmpshowcase.util.BitmapUtils
 
-//todo issue with big bitmaps -> crash
 @Composable
 actual fun rememberGalleryManager(onResult: (ImageResult?) -> Unit): GalleryManager {
     val context = LocalContext.current
     val contentResolver: ContentResolver = context.contentResolver
-    val galleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-            uri?.let {
-                val byteArray = BitmapUtils.getByteArray(uri, contentResolver)
-                val imgBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size).asImageBitmap()
-                val result = ImageResult(byteArray, imgBitmap)
-                onResult.invoke(result)
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            val byteArray = BitmapUtils.getByteArray(uri, contentResolver)
+            val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+            if (bitmap != null) {
+                val result = ImageResult(byteArray, bitmap.asImageBitmap())
+                onResult(result)
+            } else {
+                onResult(null)
             }
+        } else {
+            onResult(null)
         }
+    }
+
     return remember {
         GalleryManager(onLaunch = {
             galleryLauncher.launch(

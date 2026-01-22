@@ -1,7 +1,9 @@
 package mk.digital.kmpshowcase.presentation.screen.settings
 
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.BuildType
+import mk.digital.kmpshowcase.presentation.component.AvatarState
 import mk.digital.kmpshowcase.domain.useCase.base.invoke
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
@@ -23,6 +25,8 @@ data class SettingsState(
     val currentLanguage: LanguageState = LanguageState.EN,
     val showThemeDialog: Boolean = false,
     val showCrashButton: Boolean,
+    val avatarState: AvatarState = AvatarState.Empty,
+    val showImagePickerDialog: Boolean = false,
 )
 
 enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
@@ -87,6 +91,26 @@ class SettingsViewModel(
 
     fun onLanguageNavEvent(event: SettingNavEvents) {
         navigate(event)
+    }
+
+    fun showImagePickerDialog() {
+        newState { it.copy(showImagePickerDialog = true) }
+    }
+
+    fun hideImagePickerDialog() {
+        newState { it.copy(showImagePickerDialog = false) }
+    }
+
+    fun onAvatarLoading() {
+        newState { it.copy(avatarState = AvatarState.Loading) }
+    }
+
+    fun onAvatarChanged(bitmap: ImageBitmap?) {
+        newState {
+            it.copy(
+                avatarState = bitmap?.let { img -> AvatarState.Loaded(img) } ?: AvatarState.Empty
+            )
+        }
     }
 }
 

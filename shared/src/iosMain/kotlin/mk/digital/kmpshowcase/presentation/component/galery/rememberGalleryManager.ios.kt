@@ -1,11 +1,11 @@
 package mk.digital.kmpshowcase.presentation.component.galery
 
-import agency.yesteam.worker.presentation.component.imagepicker.ImageResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImageResult
 import org.jetbrains.skia.Image
 import platform.Foundation.NSData
 import platform.Foundation.getBytes
@@ -23,32 +23,32 @@ import platform.darwin.NSObject
 @Composable
 actual fun rememberGalleryManager(onResult: (ImageResult?) -> Unit): GalleryManager {
     val imagePicker = UIImagePickerController()
+
     val galleryDelegate = remember {
         object : NSObject(), UIImagePickerControllerDelegateProtocol,
             UINavigationControllerDelegateProtocol {
+
             override fun imagePickerController(
-                picker: UIImagePickerController, didFinishPickingMediaWithInfo: Map<Any?, *>
+                picker: UIImagePickerController,
+                didFinishPickingMediaWithInfo: Map<Any?, *>
             ) {
-                val image = didFinishPickingMediaWithInfo.getValue(
-                    UIImagePickerControllerEditedImage
-                ) as? UIImage ?: didFinishPickingMediaWithInfo.getValue(
-                    UIImagePickerControllerOriginalImage
-                ) as? UIImage
+                val image = didFinishPickingMediaWithInfo[UIImagePickerControllerEditedImage] as? UIImage
+                    ?: didFinishPickingMediaWithInfo[UIImagePickerControllerOriginalImage] as? UIImage
 
-
-                val nsData: NSData = image?.let { UIImageJPEGRepresentation(image = it, compressionQuality = 0.8) }
-                    ?: error("Failed to compress UIImage to JPEG")
-
-                val byteArray = ByteArray(nsData.length.toInt())
-
-                byteArray.usePinned { pinned ->
-                    nsData.getBytes(pinned.addressOf(0), nsData.length)
+                val result = image?.let { uiImage ->
+                    UIImageJPEGRepresentation(uiImage, 0.8)?.let { nsData ->
+                        val byteArray = nsData.toByteArray()
+                        val imageBitmap = Image.makeFromEncoded(byteArray).toComposeImageBitmap()
+                        ImageResult(byteArray, imageBitmap)
+                    }
                 }
-                val imageBitmap = Image.makeFromEncoded(byteArray).toComposeImageBitmap()
 
+                onResult(result)
+                picker.dismissViewControllerAnimated(true, null)
+            }
 
-                val imageResult = ImageResult(byteArray, imageBitmap)
-                onResult.invoke(imageResult)
+            override fun imagePickerControllerDidCancel(picker: UIImagePickerController) {
+                onResult(null)
                 picker.dismissViewControllerAnimated(true, null)
             }
         }
@@ -59,9 +59,7 @@ actual fun rememberGalleryManager(onResult: (ImageResult?) -> Unit): GalleryMana
             imagePicker.setSourceType(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary)
             imagePicker.setAllowsEditing(true)
             imagePicker.setDelegate(galleryDelegate)
-            UIApplication.sharedApplication.keyWindow?.rootViewController?.presentViewController(
-                imagePicker, true, null
-            )
+            getRootViewController()?.presentViewController(imagePicker, true, null)
         }
     }
 }
@@ -71,3 +69,14 @@ actual class GalleryManager actual constructor(private val onLaunch: () -> Unit)
         onLaunch()
     }
 }
+
+private fun NSData.toByteArray(): ByteArray {
+    val byteArray = ByteArray(length.toInt())
+    byteArray.usePinned { pinned ->
+        getBytes(pinned.addressOf(0), length)
+    }
+    return byteArray
+}
+
+@Suppress("DEPRECATION")
+private fun getRootViewController() = UIApplication.sharedApplication.keyWindow?.rootViewController

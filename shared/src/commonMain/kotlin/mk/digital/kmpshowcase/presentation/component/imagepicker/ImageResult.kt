@@ -1,4 +1,4 @@
-package agency.yesteam.worker.presentation.component.imagepicker
+package mk.digital.kmpshowcase.presentation.component.imagepicker
 
 import androidx.compose.ui.graphics.ImageBitmap
 

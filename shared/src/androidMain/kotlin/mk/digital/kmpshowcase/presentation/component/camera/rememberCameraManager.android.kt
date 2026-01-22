@@ -1,6 +1,5 @@
 package mk.digital.kmpshowcase.presentation.component.camera
 
-import agency.yesteam.worker.presentation.component.imagepicker.ImageResult
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
@@ -15,39 +14,42 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider.getUriForFile
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImageResult
 import mk.digital.kmpshowcase.util.BitmapUtils
 import java.io.File
-import java.util.Objects
 
-//todo issue with big bitmaps -> crash
 @Composable
 actual fun rememberCameraManager(onResult: (ImageResult?) -> Unit): CameraManager {
     val context = LocalContext.current
     val contentResolver: ContentResolver = context.contentResolver
-    var imageUri by remember { mutableStateOf(value = Uri.EMPTY) }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
     var launchRequested by remember { mutableStateOf(false) }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
-    ) {
-        if (it && imageUri != null) {
+    ) { success ->
+        if (success && imageUri != null) {
             val byteArray = BitmapUtils.getByteArray(imageUri!!, contentResolver)
             val bitmap = BitmapUtils.getBitmapFromUri(imageUri!!, byteArray, contentResolver)
                 ?.asImageBitmap()
-            onResult(bitmap?.let { ImageResult(byteArray, bitmap) })
+            onResult(bitmap?.let { ImageResult(byteArray, it) })
+        } else {
+            onResult(null)
         }
         launchRequested = false
+        imageUri = null
     }
 
-    LaunchedEffect(launchRequested) {
-        if (launchRequested && imageUri != null) {
-            cameraLauncher.launch(imageUri)
+    LaunchedEffect(launchRequested, imageUri) {
+        val uri = imageUri
+        if (launchRequested && uri != null) {
+            cameraLauncher.launch(uri)
         }
     }
 
     return remember {
         CameraManager {
-            imageUri = getImageUri(context)
+            imageUri = createImageUri(context)
             launchRequested = true
         }
     }
@@ -61,18 +63,10 @@ actual class CameraManager actual constructor(
     }
 }
 
-private fun getImageUri(context: Context): Uri {
-    // 1
+private fun createImageUri(context: Context): Uri {
     val tempFile = File.createTempFile(
-        "picture_${System.currentTimeMillis()}", ".png", context.cacheDir
-    ).apply { createNewFile() }
-    // 2
-    val authority = context.applicationContext.packageName + ".provider"
-    // 3
-    println("getImageUri: ${tempFile.absolutePath}")
-    return getUriForFile(
-        Objects.requireNonNull(context),
-        authority,
-        tempFile,
+        "camera_${System.currentTimeMillis()}", ".jpg", context.cacheDir
     )
+    val authority = context.applicationContext.packageName + ".provider"
+    return getUriForFile(context, authority, tempFile)
 }

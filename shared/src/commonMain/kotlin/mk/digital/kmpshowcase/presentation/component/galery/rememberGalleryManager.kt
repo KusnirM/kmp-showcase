@@ -1,6 +1,6 @@
 package mk.digital.kmpshowcase.presentation.component.galery
 
-import agency.yesteam.worker.presentation.component.imagepicker.ImageResult
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImageResult
 import androidx.compose.runtime.Composable
 
 @Composable
