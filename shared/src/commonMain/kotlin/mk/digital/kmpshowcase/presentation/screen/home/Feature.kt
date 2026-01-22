@@ -2,18 +2,21 @@ package mk.digital.kmpshowcase.presentation.screen.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cloud
+import androidx.compose.material.icons.outlined.Dataset
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.shared.generated.resources.Res
-import mk.digital.kmpshowcase.shared.generated.resources.feature_scanner_subtitle
-import mk.digital.kmpshowcase.shared.generated.resources.feature_scanner_title
+import mk.digital.kmpshowcase.shared.generated.resources.feature_database_subtitle
+import mk.digital.kmpshowcase.shared.generated.resources.feature_database_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_networking_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.feature_networking_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_platform_apis_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.feature_platform_apis_title
+import mk.digital.kmpshowcase.shared.generated.resources.feature_scanner_subtitle
+import mk.digital.kmpshowcase.shared.generated.resources.feature_scanner_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_storage_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.feature_storage_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_ui_components_subtitle
@@ -31,6 +34,7 @@ enum class FeatureId {
     UI_COMPONENTS,
     NETWORKING,
     STORAGE,
+    DATABASE,
     PLATFORM_APIS,
     SCANNER
 }
@@ -53,6 +57,12 @@ val showcaseFeatures = listOf(
         titleRes = Res.string.feature_storage_title,
         subtitleRes = Res.string.feature_storage_subtitle,
         icon = Icons.Outlined.Storage
+    ),
+    Feature(
+        id = FeatureId.DATABASE,
+        titleRes = Res.string.feature_database_title,
+        subtitleRes = Res.string.feature_database_subtitle,
+        icon = Icons.Outlined.Dataset
     ),
     Feature(
         id = FeatureId.PLATFORM_APIS,

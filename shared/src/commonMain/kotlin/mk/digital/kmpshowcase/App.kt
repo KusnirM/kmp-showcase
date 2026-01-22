@@ -54,6 +54,8 @@ import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingScreen
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingViewModel
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageScreen
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
+import mk.digital.kmpshowcase.presentation.screen.database.DatabaseScreen
+import mk.digital.kmpshowcase.presentation.screen.database.DatabaseViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
@@ -82,6 +84,7 @@ private val saveStateConfiguration = SavedStateConfiguration {
             subclass(HomeSection.Storage.serializer())
             subclass(HomeSection.PlatformApis.serializer())
             subclass(HomeSection.Scanner.serializer())
+            subclass(HomeSection.Database.serializer())
             subclass(Settings.serializer())
         }
     }
@@ -154,6 +157,11 @@ fun MainView(
                             entry<HomeSection.Scanner> {
                                 WithViewModel<ScannerViewModel> { viewModel ->
                                     ScannerScreen(viewModel)
+                                }
+                            }
+                            entry<HomeSection.Database> {
+                                WithViewModel<DatabaseViewModel> { viewModel ->
+                                    DatabaseScreen(viewModel)
                                 }
                             }
                             entry<Settings> {

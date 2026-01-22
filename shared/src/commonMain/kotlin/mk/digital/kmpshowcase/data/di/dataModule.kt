@@ -1,6 +1,8 @@
 package mk.digital.kmpshowcase.data.di
 
 import io.ktor.client.HttpClient
+import mk.digital.kmpshowcase.data.database.AppDatabase
+import mk.digital.kmpshowcase.data.database.DatabaseDriverFactory
 import mk.digital.kmpshowcase.data.local.StorageLocalStore
 import mk.digital.kmpshowcase.data.local.StorageLocalStoreImpl
 import mk.digital.kmpshowcase.data.local.preferences.AppPreferences
@@ -11,6 +13,7 @@ import mk.digital.kmpshowcase.data.network.HttpClientProvider
 import mk.digital.kmpshowcase.data.repository.BiometricRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.LocationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.SettingsRepositoryImpl
+import mk.digital.kmpshowcase.data.repository.database.NoteRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.storage.StorageRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.user.UserClient
 import mk.digital.kmpshowcase.data.repository.user.UserClientImpl
@@ -19,6 +22,7 @@ import mk.digital.kmpshowcase.di.Qualifiers.app
 import mk.digital.kmpshowcase.di.Qualifiers.session
 import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
+import mk.digital.kmpshowcase.domain.repository.NoteRepository
 import mk.digital.kmpshowcase.domain.repository.SettingsRepository
 import mk.digital.kmpshowcase.domain.repository.StorageRepository
 import mk.digital.kmpshowcase.domain.repository.UserRepository
@@ -36,6 +40,8 @@ val dataModule = module {
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     single<LocationRepository> { LocationRepositoryImpl(get()) }
     single<BiometricRepository> { BiometricRepositoryImpl(get()) }
+    single { AppDatabase(get<DatabaseDriverFactory>().createDriver()) }
+    single<NoteRepository> { NoteRepositoryImpl(get()) }
 }
 
 fun provideHttpClient(): HttpClient = HttpClientProvider().create()

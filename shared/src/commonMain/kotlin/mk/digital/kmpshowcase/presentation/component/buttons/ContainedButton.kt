@@ -19,6 +19,7 @@ fun ContainedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
@@ -27,6 +28,7 @@ fun ContainedButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
         ),
+        enabled = enabled,
         shape = RoundedCornerShape(cardCornerRadius6)
     ) {
         TextButtonNeutral0(text = text)

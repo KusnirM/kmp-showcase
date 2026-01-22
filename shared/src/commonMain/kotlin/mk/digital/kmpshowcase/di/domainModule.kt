@@ -2,6 +2,11 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.domain.useCase.GetUsersUseCase
 import mk.digital.kmpshowcase.domain.useCase.TrackButtonClickUseCase
+import mk.digital.kmpshowcase.domain.useCase.notes.DeleteAllNotesUseCase
+import mk.digital.kmpshowcase.domain.useCase.notes.DeleteNoteUseCase
+import mk.digital.kmpshowcase.domain.useCase.notes.InsertNoteUseCase
+import mk.digital.kmpshowcase.domain.useCase.notes.ObserveNotesUseCase
+import mk.digital.kmpshowcase.domain.useCase.notes.UpdateNoteUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.ClearCacheUseCase
@@ -22,4 +27,9 @@ val domainModule = module {
     singleOf(::ClearCacheUseCase)
     singleOf(::GetThemeModeUseCase)
     singleOf(::SetThemeModeUseCase)
+    singleOf(::ObserveNotesUseCase)
+    singleOf(::InsertNoteUseCase)
+    singleOf(::UpdateNoteUseCase)
+    singleOf(::DeleteNoteUseCase)
+    singleOf(::DeleteAllNotesUseCase)
 }

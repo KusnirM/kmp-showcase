@@ -22,6 +22,7 @@
     <string name="screen_storage">Storage</string>
     <string name="screen_platform_apis">Platform APIs</string>
     <string name="screen_scanner">Scanner</string>
+    <string name="screen_database">Database</string>
     <string name="screen_settings">Settings</string>
 
     <!-- Home Screen Features -->
@@ -35,6 +36,8 @@
     <string name="feature_platform_apis_subtitle">Share, Dial, External Links</string>
     <string name="feature_scanner_title">Scanner</string>
     <string name="feature_scanner_subtitle">Generate and scan QR codes &amp; barcodes</string>
+    <string name="feature_database_title">Database</string>
+    <string name="feature_database_subtitle">SQLDelight, local persistence</string>
 
     <!-- UI Components Showcase -->
     <string name="section_buttons">Buttons</string>
@@ -86,10 +89,22 @@
     <string name="section_fab">Floating Action Button</string>
     <string name="fab_content_description">Add</string>
     <string name="section_sliders">Sliders</string>
+    <string name="section_badges">Badges</string>
     <string name="section_segmented_button">Segmented Button</string>
     <string name="segment_day">Day</string>
     <string name="segment_week">Week</string>
     <string name="segment_month">Month</string>
+
+    <!-- Database Screen -->
+    <string name="database_title">Database</string>
+    <string name="database_subtitle">SQLDelight local database demo</string>
+    <string name="database_title_label">Title</string>
+    <string name="database_title_hint">Enter note title...</string>
+    <string name="database_content_label">Content</string>
+    <string name="database_content_hint">Enter note content...</string>
+    <string name="database_add_note">Add Note</string>
+    <string name="database_clear_all">Delete All Notes</string>
+    <string name="database_empty">No notes yet. Add your first note above!</string>
 
     <!-- Networking Screen -->
     <string name="networking_title">Users</string>

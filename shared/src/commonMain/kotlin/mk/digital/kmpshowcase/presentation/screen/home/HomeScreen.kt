@@ -43,6 +43,7 @@ fun HomeNavEvents(
                     FeatureId.UI_COMPONENTS -> router.navigateTo(Route.HomeSection.UiComponents)
                     FeatureId.NETWORKING -> router.navigateTo(Route.HomeSection.Networking)
                     FeatureId.STORAGE -> router.navigateTo(Route.HomeSection.Storage)
+                    FeatureId.DATABASE -> router.navigateTo(Route.HomeSection.Database)
                     FeatureId.PLATFORM_APIS -> router.navigateTo(Route.HomeSection.PlatformApis)
                     FeatureId.SCANNER -> router.navigateTo(Route.HomeSection.Scanner)
                 }
