@@ -1,3 +1,5 @@
+@file:Suppress("MaxLineLength")
+
 package mk.digital.kmpshowcase.presentation.foundation
 
 import androidx.compose.ui.graphics.Color
