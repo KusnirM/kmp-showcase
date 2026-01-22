@@ -37,7 +37,7 @@ android {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1
-        versionName = (project.findProperty("versionName") as String?) ?: "1.0"
+        versionName = (project.findProperty("versionName") as String?) ?: "1.0.0"
     }
 
     testOptions {
