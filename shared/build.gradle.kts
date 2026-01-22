@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.mokkery)
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -90,10 +91,15 @@ kotlin {
             implementation(libs.coil3.compose)
             implementation(libs.coil3.svg)
             implementation(libs.coil3.network.ktor)
+
+            // SQLDelight
+            implementation(libs.sqldelight.runtime)
+            implementation(libs.sqldelight.coroutines)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.sqldelight.native)
         }
 
         androidMain.dependencies {
@@ -128,6 +134,9 @@ kotlin {
 
             // Biometrics
             implementation(libs.androidx.biometric)
+
+            // SQLDelight
+            implementation(libs.sqldelight.android)
         }
 
         commonTest.dependencies {
@@ -146,6 +155,14 @@ kotlin {
 
 compose.resources {
     packageOfResClass = "mk.digital.kmpshowcase.shared.generated.resources"
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("mk.digital.kmpshowcase.data.database")
+        }
+    }
 }
 
 //todo - delete?

@@ -28,9 +28,12 @@ import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import mk.digital.kmpshowcase.LocalSnackbarHostState
 import mk.digital.kmpshowcase.presentation.component.AppAssistChip
+import mk.digital.kmpshowcase.presentation.component.AppBadge
+import mk.digital.kmpshowcase.presentation.component.AppBadgedBox
 import mk.digital.kmpshowcase.presentation.component.AppBottomSheet
 import mk.digital.kmpshowcase.presentation.component.AppCheckbox
 import mk.digital.kmpshowcase.presentation.component.AppConfirmDialog
+import mk.digital.kmpshowcase.presentation.component.AppDotBadgedBox
 import mk.digital.kmpshowcase.presentation.component.AppFilterChip
 import mk.digital.kmpshowcase.presentation.component.AppInputChip
 import mk.digital.kmpshowcase.presentation.component.AppLinearProgress
@@ -81,6 +84,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.image_description
 import mk.digital.kmpshowcase.shared.generated.resources.radio_option_1
 import mk.digital.kmpshowcase.shared.generated.resources.radio_option_2
 import mk.digital.kmpshowcase.shared.generated.resources.radio_option_3
+import mk.digital.kmpshowcase.shared.generated.resources.section_badges
 import mk.digital.kmpshowcase.shared.generated.resources.section_bottom_sheet
 import mk.digital.kmpshowcase.shared.generated.resources.section_buttons
 import mk.digital.kmpshowcase.shared.generated.resources.section_cards
@@ -330,6 +334,26 @@ fun UiComponentsScreen() {
             }
             Spacer2()
             AppLinearProgress(modifier = Modifier.fillMaxWidth())
+        }
+
+        // Badges Section
+        ComponentSection(title = stringResource(Res.string.section_badges)) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(space12),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AppBadgedBox(count = 5) {
+                    AppIcon(imageVector = Icons.Filled.Add)
+                }
+                AppBadgedBox(count = 123) {
+                    AppIcon(imageVector = Icons.Filled.Add)
+                }
+                AppDotBadgedBox(showBadge = true) {
+                    AppIcon(imageVector = Icons.Filled.Add)
+                }
+                AppBadge()
+                AppBadge(count = 7)
+            }
         }
 
         // Images Section
