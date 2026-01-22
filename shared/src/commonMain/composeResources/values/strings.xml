@@ -102,4 +102,28 @@
     <string name="storage_persistent_label">Persistent Counter</string>
     <string name="storage_persistent_hint">Persists until app is uninstalled</string>
     <string name="storage_clear_session">Clear Session</string>
+
+    <!-- Platform APIs Screen -->
+    <string name="platform_apis_title">Platform APIs</string>
+    <string name="platform_apis_subtitle">Native platform integrations via expect/actual</string>
+    <string name="platform_apis_share_title">Share</string>
+    <string name="platform_apis_share_hint">Share content using the native share sheet</string>
+    <string name="platform_apis_share_action">Share Text</string>
+    <string name="platform_apis_dial_title">Phone Dialer</string>
+    <string name="platform_apis_dial_hint">Open the phone dialer with a number</string>
+    <string name="platform_apis_dial_action">Open Dialer</string>
+    <string name="platform_apis_link_title">External Link</string>
+    <string name="platform_apis_link_hint">Open a URL in the default browser</string>
+    <string name="platform_apis_link_action">Open Link</string>
+    <string name="platform_apis_email_title">Email</string>
+    <string name="platform_apis_email_hint">Compose an email using the default mail app</string>
+    <string name="platform_apis_email_action">Send Email</string>
+    <string name="platform_apis_copy_title">Clipboard</string>
+    <string name="platform_apis_copy_hint">Copy text to the system clipboard</string>
+    <string name="platform_apis_copy_action">Copy Text</string>
+    <string name="platform_apis_copied_message">Copied to clipboard</string>
+    <string name="platform_apis_demo_share_text">Check out this KMP Showcase app!</string>
+    <string name="platform_apis_demo_copy_text">Copied from KMP Showcase</string>
+    <string name="platform_apis_demo_email_subject">KMP Showcase</string>
+    <string name="platform_apis_demo_email_body">Hello from KMP Showcase app!</string>
 </resources>
