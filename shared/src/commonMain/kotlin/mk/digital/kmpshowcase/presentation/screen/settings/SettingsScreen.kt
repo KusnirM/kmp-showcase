@@ -25,6 +25,7 @@ import mk.digital.kmpshowcase.presentation.component.AvatarView
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.image.AppIconPrimary
 import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerView
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerViewModel
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargeNeutral100
 import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLargePrimary
@@ -41,8 +42,18 @@ import mk.digital.kmpshowcase.shared.generated.resources.settings_theme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel) {
+fun SettingsScreen(
+    viewModel: SettingsViewModel,
+    imagePickerViewModel: ImagePickerViewModel,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val imagePickerState by imagePickerViewModel.state.collectAsStateWithLifecycle()
+
+    val avatarState = when {
+        imagePickerState.isLoading -> AvatarState.Loading
+        imagePickerState.imageBitmap != null -> AvatarState.Loaded(imagePickerState.imageBitmap!!)
+        else -> AvatarState.Empty
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -61,10 +72,10 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         item {
             AppElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { viewModel.showImagePickerDialog() }
+                onClick = { imagePickerViewModel.showDialog() }
             ) {
                 ProfileItem(
-                    avatarState = state.avatarState,
+                    avatarState = avatarState,
                     title = stringResource(Res.string.settings_profile_photo),
                     hint = stringResource(Res.string.settings_profile_photo_hint)
                 )
@@ -121,14 +132,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         }
     }
 
-    ImagePickerView(
-        showOptionDialog = state.showImagePickerDialog,
-        onOptionDialogChanged = { show ->
-            if (show) viewModel.showImagePickerDialog() else viewModel.hideImagePickerDialog()
-        },
-        onImageLoading = { viewModel.onAvatarLoading() },
-        onImageChanged = { result -> viewModel.onAvatarChanged(result?.bitmap) }
-    )
+    ImagePickerView(viewModel = imagePickerViewModel)
 
     if (state.showThemeDialog) {
         ThemeSelectionDialog(

@@ -57,6 +57,7 @@ import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
+import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerViewModel
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsNavEvents
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsScreen
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
@@ -159,8 +160,10 @@ fun MainView(
                                 WithViewModel<SettingsViewModel>(
                                     parameters = { parametersOf({ mode: ThemeMode -> themeMode = mode }) }
                                 ) { viewModel ->
-                                    SettingsNavEvents(viewModel, onSetLocale, onOpenSettings)
-                                    SettingsScreen(viewModel)
+                                    WithViewModel<ImagePickerViewModel> { imagePickerViewModel ->
+                                        SettingsNavEvents(viewModel, onSetLocale, onOpenSettings)
+                                        SettingsScreen(viewModel, imagePickerViewModel)
+                                    }
                                 }
                             }
                         }
