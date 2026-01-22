@@ -2,11 +2,11 @@ package mk.digital.kmpshowcase.presentation.di
 
 import mk.digital.kmpshowcase.presentation.component.barcode.CodeGenerator
 import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
-import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import mk.digital.kmpshowcase.presentation.screen.detail.DetailViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingViewModel
 import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisViewModel
+import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
 import org.koin.core.module.dsl.viewModel
@@ -22,6 +22,6 @@ val presentationModule = module {
     viewModel { PlatformApisViewModel(get()) }
     viewModel { ScannerViewModel(get()) }
     viewModel { (onThemeChanged: (ThemeMode) -> Unit) ->
-        SettingsViewModel(get(), get(), onThemeChanged)
+        SettingsViewModel(get(), get(), get(), onThemeChanged)
     }
 }
