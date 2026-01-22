@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -74,6 +75,26 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 currentLanguage = state.currentLanguage,
                 onNavigate = viewModel::onLanguageNavEvent
             )
+        }
+
+        if (state.showCrashButton) {
+            item {
+                AppElevatedCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { throw RuntimeException("Test Crash for Firebase Crashlytics") }
+                ) {
+                    SettingsItem(
+                        icon = {
+                            AppIconPrimary(
+                                Icons.Outlined.BugReport,
+                                contentDescription = "Test Crash"
+                            )
+                        },
+                        title = "Test Crash",
+                        value = "Trigger a crash to test Crashlytics"
+                    )
+                }
+            }
         }
     }
 

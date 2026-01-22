@@ -1,12 +1,12 @@
 package mk.digital.kmpshowcase.presentation.screen.settings
 
+import androidx.compose.ui.graphics.vector.ImageVector
+import mk.digital.kmpshowcase.BuildType
 import mk.digital.kmpshowcase.domain.useCase.base.invoke
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
 import mk.digital.kmpshowcase.presentation.base.BaseViewModel
 import mk.digital.kmpshowcase.presentation.base.NavEvent
-import mk.digital.kmpshowcase.util.getCurrentLanguageTag
-import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.presentation.foundation.AppIcons
 import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.shared.generated.resources.Res
@@ -15,12 +15,14 @@ import mk.digital.kmpshowcase.shared.generated.resources.language_sk
 import mk.digital.kmpshowcase.shared.generated.resources.settings_theme_dark
 import mk.digital.kmpshowcase.shared.generated.resources.settings_theme_light
 import mk.digital.kmpshowcase.shared.generated.resources.settings_theme_system
+import mk.digital.kmpshowcase.util.getCurrentLanguageTag
 import org.jetbrains.compose.resources.StringResource
 
 data class SettingsState(
     val themeModeState: ThemeModeState = ThemeModeState.SYSTEM,
     val currentLanguage: LanguageState = LanguageState.EN,
-    val showThemeDialog: Boolean = false
+    val showThemeDialog: Boolean = false,
+    val showCrashButton: Boolean,
 )
 
 enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
@@ -37,8 +39,9 @@ enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
 class SettingsViewModel(
     private val getThemeModeUseCase: GetThemeModeUseCase,
     private val setThemeModeUseCase: SetThemeModeUseCase,
+    buildType: BuildType,
     private val onThemeChanged: (ThemeMode) -> Unit,
-) : BaseViewModel<SettingsState>(SettingsState()) {
+) : BaseViewModel<SettingsState>(SettingsState(showCrashButton = buildType.isDebug)) {
 
     override fun loadInitialData() {
         loadThemeMode()
@@ -97,10 +100,12 @@ enum class LanguageState(
 
     companion object {
         fun fromTag(tag: String?): LanguageState =
-            entries.find { it.tag.substringBefore('-') == tag
-                ?.lowercase()
-                ?.replace('_', '-')
-                ?.substringBefore('-') }
+            entries.find {
+                it.tag.substringBefore('-') == tag
+                    ?.lowercase()
+                    ?.replace('_', '-')
+                    ?.substringBefore('-')
+            }
                 ?: EN
     }
 }
