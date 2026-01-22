@@ -67,15 +67,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		7555FF72242A565900829871 = {
-			isa = PBXGroup;
-			children = (
-				7555FF7D242A565900829871 /* iosApp */,
-				7555FF7C242A565900829871 /* Products */,
-				357698042F22700000000001 /* Configuration */,
-			);
-			sourceTree = "<group>";
-		};
 		357698042F22700000000001 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +75,15 @@
 				357698002F22627200A55252 /* Release.xcconfig */,
 			);
 			path = Configuration;
+			sourceTree = "<group>";
+		};
+		7555FF72242A565900829871 = {
+			isa = PBXGroup;
+			children = (
+				7555FF7D242A565900829871 /* iosApp */,
+				7555FF7C242A565900829871 /* Products */,
+				357698042F22700000000001 /* Configuration */,
+			);
 			sourceTree = "<group>";
 		};
 		7555FF7C242A565900829871 /* Products */ = {
@@ -218,6 +218,8 @@
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
 				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}.debug.dylib",
 			);
 			name = "Firebase Crashlytics - Upload dSYM";
 			outputFileListPaths = (
