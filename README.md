@@ -37,6 +37,7 @@ Serves as a living reference for KMP features: device APIs, UI components, stora
 - **DI**: Koin
 - **Networking**: Ktor
 - **Serialization**: kotlinx-serialization
+- **Database**: SQLDelight
 - **Coroutines**: kotlinx-coroutines
 - **Date/Time**: kotlinx-datetime
 - **Images**: Coil 3
@@ -79,6 +80,7 @@ root
 | UI Components | Comprehensive component showcase (buttons, inputs, feedback, etc.) |
 | Networking | Ktor HTTP client demo — fetches users from JSONPlaceholder API |
 | Storage | Session vs Persistent storage demo with counters |
+| Database | SQLDelight local database demo with notes CRUD |
 | Platform APIs | Share, dial, external links, email, clipboard demos |
 | Scanner | QR code &amp; barcode generator (ZXing/CoreImage) and scanner (MLKit/AVFoundation) |
 | Settings | Theme (Light/Dark/System) and Language (EN/SK) settings |
@@ -228,7 +230,7 @@ This app serves as a **KMP components portfolio** — a living demo of multiplat
 
 ### Data & Storage
 - [x] DataStore / Preferences (session vs persistent demo)
-- [ ] Local database (SQLDelight)
+- [x] Local database (SQLDelight)
 - [ ] File storage
 - [ ] Encrypted storage
 - [ ] Caching strategies

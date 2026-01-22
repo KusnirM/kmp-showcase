@@ -12,35 +12,35 @@ import mk.digital.kmpshowcase.domain.model.Note
 import mk.digital.kmpshowcase.domain.repository.NoteRepository
 
 class NoteRepositoryImpl(
-    private val database: AppDatabase
+    database: AppDatabase
 ) : NoteRepository {
 
-    private val queries get() = database.noteQueries
+    private val queries = database.noteQueries
 
     override fun observeAll(): Flow<List<Note>> {
         return queries.selectAll()
             .asFlow()
             .mapToList(Dispatchers.IO)
-            .map { it.toDomain() }
+            .map { it.transformAll() }
     }
 
     override suspend fun getById(id: Long): Note? = withContext(Dispatchers.IO) {
-        queries.selectById(id).executeAsOneOrNull()?.toDomain()
+        queries.selectById(id).executeAsOneOrNull()?.transform()
     }
 
-    override suspend fun insert(note: Note) = withContext(Dispatchers.IO) {
+    override suspend fun insert(note: Note): Unit = withContext(Dispatchers.IO) {
         queries.insert(note.title, note.content, note.createdAt)
     }
 
-    override suspend fun update(note: Note) = withContext(Dispatchers.IO) {
+    override suspend fun update(note: Note): Unit = withContext(Dispatchers.IO) {
         queries.update(note.title, note.content, note.id)
     }
 
-    override suspend fun delete(id: Long) = withContext(Dispatchers.IO) {
+    override suspend fun delete(id: Long): Unit = withContext(Dispatchers.IO) {
         queries.deleteById(id)
     }
 
-    override suspend fun deleteAll() = withContext(Dispatchers.IO) {
+    override suspend fun deleteAll(): Unit = withContext(Dispatchers.IO) {
         queries.deleteAll()
     }
 
