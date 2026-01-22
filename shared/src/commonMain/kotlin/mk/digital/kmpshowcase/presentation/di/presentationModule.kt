@@ -20,7 +20,7 @@ val presentationModule = module {
     viewModel { DetailViewModel(id = it.get()) }
     viewModel { NetworkingViewModel(get()) }
     viewModel { StorageViewModel(get(), get(), get(), get(), get()) }
-    viewModel { PlatformApisViewModel(get(), get()) }
+    viewModel { PlatformApisViewModel(get(), get(), get()) }
     viewModel { ScannerViewModel(get()) }
     viewModel { (onThemeChanged: (ThemeMode) -> Unit) ->
         SettingsViewModel(get(), get(), get(), onThemeChanged)

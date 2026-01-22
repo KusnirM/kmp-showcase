@@ -141,6 +141,15 @@
     <string name="platform_apis_location_updates_start">Spustiť sledovanie</string>
     <string name="platform_apis_location_updates_stop">Zastaviť sledovanie</string>
     <string name="platform_apis_location_updates_error">Nepodarilo sa sledovať polohu</string>
+    <string name="platform_apis_biometrics_title">Biometria</string>
+    <string name="platform_apis_biometrics_hint">Autentifikácia pomocou odtlačku prsta alebo Face ID</string>
+    <string name="platform_apis_biometrics_action">Autentifikovať</string>
+    <string name="platform_apis_biometrics_success">Autentifikácia úspešná</string>
+    <string name="platform_apis_biometrics_failed">Autentifikácia zlyhala</string>
+    <string name="platform_apis_biometrics_unknown_error">Neznáma chyba</string>
+    <string name="platform_apis_biometrics_cancelled">Autentifikácia zrušená</string>
+    <string name="platform_apis_biometrics_not_available">Biometria nie je na tomto zariadení dostupná</string>
+    <string name="platform_apis_biometrics_activity_not_available">Aktivita nie je dostupná</string>
 
     <!-- Scanner Screen -->
     <string name="scanner_title">Skener</string>

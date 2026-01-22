@@ -10,7 +10,7 @@ actual class EmailRouterImpl : EmailRouter {
         val urlString = "mailto:$to?subject=$encodedSubject&body=$encodedBody"
 
         NSURL.URLWithString(urlString)?.let { url ->
-            UIApplication.sharedApplication.openURL(url)
+            UIApplication.sharedApplication.openURL(url, emptyMap<Any?, Any?>()) { _ -> }
         }
     }
 

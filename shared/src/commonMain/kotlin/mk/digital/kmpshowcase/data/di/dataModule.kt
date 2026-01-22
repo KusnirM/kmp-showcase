@@ -8,6 +8,7 @@ import mk.digital.kmpshowcase.data.local.preferences.AppPreferencesImpl
 import mk.digital.kmpshowcase.data.local.preferences.SessionPreferences
 import mk.digital.kmpshowcase.data.local.preferences.SessionPreferencesImpl
 import mk.digital.kmpshowcase.data.network.HttpClientProvider
+import mk.digital.kmpshowcase.data.repository.BiometricRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.LocationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.SettingsRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.storage.StorageRepositoryImpl
@@ -16,6 +17,7 @@ import mk.digital.kmpshowcase.data.repository.user.UserClientImpl
 import mk.digital.kmpshowcase.data.repository.user.UserRepositoryImpl
 import mk.digital.kmpshowcase.di.Qualifiers.app
 import mk.digital.kmpshowcase.di.Qualifiers.session
+import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
 import mk.digital.kmpshowcase.domain.repository.SettingsRepository
 import mk.digital.kmpshowcase.domain.repository.StorageRepository
@@ -33,6 +35,7 @@ val dataModule = module {
     single<StorageRepository> { StorageRepositoryImpl(get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     single<LocationRepository> { LocationRepositoryImpl(get()) }
+    single<BiometricRepository> { BiometricRepositoryImpl(get()) }
 }
 
 fun provideHttpClient(): HttpClient = HttpClientProvider().create()

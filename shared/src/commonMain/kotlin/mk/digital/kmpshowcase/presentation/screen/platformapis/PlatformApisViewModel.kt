@@ -1,37 +1,54 @@
 package mk.digital.kmpshowcase.presentation.screen.platformapis
 
 import kotlinx.coroutines.Job
+import mk.digital.kmpshowcase.data.biometric.BiometricResult
 import mk.digital.kmpshowcase.domain.model.Location
+import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
 import mk.digital.kmpshowcase.presentation.base.BaseViewModel
 import mk.digital.kmpshowcase.presentation.base.router.ExternalRouter
 
 class PlatformApisViewModel(
     private val externalRouter: ExternalRouter,
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val biometricRepository: BiometricRepository,
 ) : BaseViewModel<PlatformApisUiState>(PlatformApisUiState()) {
 
     private var locationUpdatesJob: Job? = null
 
-    fun share(text: String) {
-        externalRouter.share(text)
+    override fun loadInitialData() {
+        newState { it.copy(biometricsAvailable = biometricRepository.enabled()) }
     }
 
-    fun dial(phoneNumber: String) {
-        externalRouter.dial(phoneNumber)
+    fun share() {
+        externalRouter.share(DEMO_SHARE_TEXT)
     }
 
-    fun openLink(url: String) {
-        externalRouter.openLink(url)
+    fun dial() {
+        externalRouter.dial(DEMO_PHONE_NUMBER)
     }
 
-    fun sendEmail(to: String, subject: String = "", body: String = "") {
-        externalRouter.sendEmail(to, subject, body)
+    fun openLink() {
+        externalRouter.openLink(DEMO_URL)
     }
 
-    fun copyToClipboard(text: String) {
-        externalRouter.copyToClipboard(text)
+    fun sendEmail() {
+        externalRouter.sendEmail(DEMO_EMAIL, DEMO_EMAIL_SUBJECT, DEMO_EMAIL_BODY)
+    }
+
+    fun copyToClipboard() {
+        externalRouter.copyToClipboard(DEMO_COPY_TEXT)
         newState { it.copy(copiedToClipboard = true) }
+    }
+
+    companion object {
+        private const val DEMO_PHONE_NUMBER = "+1234567890"
+        private const val DEMO_URL = "https://github.com/anthropics/claude-code"
+        private const val DEMO_EMAIL = "example@example.com"
+        private const val DEMO_EMAIL_SUBJECT = "Hello from KMP Showcase"
+        private const val DEMO_EMAIL_BODY = "This is a demo email sent from the KMP Showcase app."
+        private const val DEMO_SHARE_TEXT = "Check out KMP Showcase - a Kotlin Multiplatform demo app!"
+        private const val DEMO_COPY_TEXT = "Text copied from KMP Showcase"
     }
 
     fun resetCopyState() {
@@ -72,6 +89,36 @@ class PlatformApisViewModel(
         newState { it.copy(isTrackingLocation = false) }
     }
 
+    fun authenticateWithBiometrics() {
+        execute(
+            action = { biometricRepository.authenticate() },
+            onLoading = {
+                newState {
+                    it.copy(
+                        biometricsLoading = true,
+                        biometricsResult = null
+                    )
+                }
+            },
+            onSuccess = { result ->
+                newState {
+                    it.copy(
+                        biometricsLoading = false,
+                        biometricsResult = result
+                    )
+                }
+            },
+            onError = { error ->
+                newState {
+                    it.copy(
+                        biometricsLoading = false,
+                        biometricsResult = BiometricResult.SystemError(error.message.orEmpty())
+                    )
+                }
+            }
+        )
+    }
+
     override fun onCleared() {
         super.onCleared()
         stopLocationUpdates()
@@ -85,5 +132,8 @@ data class PlatformApisUiState(
     val locationError: Boolean = false,
     val isTrackingLocation: Boolean = false,
     val trackedLocation: Location? = null,
-    val locationUpdatesError: Boolean = false
+    val locationUpdatesError: Boolean = false,
+    val biometricsAvailable: Boolean = false,
+    val biometricsLoading: Boolean = false,
+    val biometricsResult: BiometricResult? = null,
 )

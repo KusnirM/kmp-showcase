@@ -141,6 +141,15 @@
     <string name="platform_apis_location_updates_start">Start Tracking</string>
     <string name="platform_apis_location_updates_stop">Stop Tracking</string>
     <string name="platform_apis_location_updates_error">Unable to track location</string>
+    <string name="platform_apis_biometrics_title">Biometrics</string>
+    <string name="platform_apis_biometrics_hint">Authenticate using fingerprint or Face ID</string>
+    <string name="platform_apis_biometrics_action">Authenticate</string>
+    <string name="platform_apis_biometrics_success">Authentication successful</string>
+    <string name="platform_apis_biometrics_failed">Authentication failed</string>
+    <string name="platform_apis_biometrics_unknown_error">Unknown error</string>
+    <string name="platform_apis_biometrics_cancelled">Authentication cancelled</string>
+    <string name="platform_apis_biometrics_not_available">Biometrics not available on this device</string>
+    <string name="platform_apis_biometrics_activity_not_available">Activity not available</string>
 
     <!-- Scanner Screen -->
     <string name="scanner_title">Scanner</string>
