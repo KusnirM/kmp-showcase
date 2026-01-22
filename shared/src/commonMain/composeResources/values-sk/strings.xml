@@ -156,4 +156,13 @@
     <string name="gallery_permission_rationale">Prístup k fotogalérii je potrebný na výber obrázkov.</string>
     <string name="location_permission_denied">Prístup k polohe bol zamietnutý. Povoľte ho v Nastaveniach.</string>
     <string name="location_permission_rationale">Prístup k polohe je potrebný pre túto funkciu.</string>
+
+    <!-- Settings -->
+    <string name="settings_appearance">Vzhľad</string>
+    <string name="settings_theme">Téma</string>
+    <string name="settings_theme_light">Svetlá</string>
+    <string name="settings_theme_dark">Tmavá</string>
+    <string name="settings_theme_system">Systémová</string>
+    <string name="settings_language">Jazyk</string>
+    <string name="settings_language_value">Slovenčina</string>
 </resources>

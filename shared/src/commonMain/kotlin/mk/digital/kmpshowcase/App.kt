@@ -13,8 +13,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,6 +29,8 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import mk.digital.kmpshowcase.domain.useCase.base.invoke
+import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
@@ -38,6 +44,7 @@ import mk.digital.kmpshowcase.presentation.component.AppSnackbarHost
 import mk.digital.kmpshowcase.presentation.component.FloatingNavItem
 import mk.digital.kmpshowcase.presentation.component.TopAppBar
 import mk.digital.kmpshowcase.presentation.foundation.AppTheme
+import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerScreen
 import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import mk.digital.kmpshowcase.presentation.screen.feature.UiComponentsScreen
@@ -51,10 +58,13 @@ import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsScreen
+import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.nav_home
 import mk.digital.kmpshowcase.shared.generated.resources.nav_settings
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 
 val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
@@ -82,7 +92,14 @@ fun MainView() {
     val currentRoute: Route = router.backStack.last()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    AppTheme {
+    val getThemeModeUseCase = koinInject<GetThemeModeUseCase>()
+    var themeMode by remember { mutableStateOf(ThemeMode.SYSTEM) }
+
+    LaunchedEffect(Unit) {
+        themeMode = getThemeModeUseCase()
+    }
+
+    AppTheme(themeMode = themeMode) {
         CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Scaffold(
@@ -135,7 +152,11 @@ fun MainView() {
                                 }
                             }
                             entry<Settings> {
-                                SettingsScreen()
+                                WithViewModel<SettingsViewModel>(
+                                    parameters = { parametersOf({ mode: ThemeMode -> themeMode = mode }) }
+                                ) { viewModel ->
+                                    SettingsScreen(viewModel)
+                                }
                             }
                         }
                     )
@@ -181,4 +202,3 @@ fun MainView() {
         }
     }
 }
-
