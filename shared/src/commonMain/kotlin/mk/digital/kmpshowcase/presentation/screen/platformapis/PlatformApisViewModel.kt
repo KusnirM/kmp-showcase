@@ -41,16 +41,6 @@ class PlatformApisViewModel(
         newState { it.copy(copiedToClipboard = true) }
     }
 
-    companion object {
-        private const val DEMO_PHONE_NUMBER = "+1234567890"
-        private const val DEMO_URL = "https://github.com/anthropics/claude-code"
-        private const val DEMO_EMAIL = "example@example.com"
-        private const val DEMO_EMAIL_SUBJECT = "Hello from KMP Showcase"
-        private const val DEMO_EMAIL_BODY = "This is a demo email sent from the KMP Showcase app."
-        private const val DEMO_SHARE_TEXT = "Check out KMP Showcase - a Kotlin Multiplatform demo app!"
-        private const val DEMO_COPY_TEXT = "Text copied from KMP Showcase"
-    }
-
     fun resetCopyState() {
         newState { it.copy(copiedToClipboard = false) }
     }
@@ -68,18 +58,24 @@ class PlatformApisViewModel(
         )
     }
 
+    override fun onResumed() {
+        super.onResumed()
+        requireState { state -> if (state.shouldTrackLocation) startLocationUpdates() }
+    }
+
+    override fun onPaused() {
+        super.onPaused()
+        requireState { currentState -> newState { it.copy(shouldTrackLocation = currentState.isTrackingLocation) } }
+        stopLocationUpdates()
+    }
+
     fun startLocationUpdates() {
         if (locationUpdatesJob?.isActive == true) return
-
         newState { it.copy(isTrackingLocation = true, locationUpdatesError = false) }
         locationUpdatesJob = observe(
             flow = locationRepository.locationUpdates(highAccuracy = true),
-            onEach = { location ->
-                newState { it.copy(trackedLocation = location) }
-            },
-            onError = {
-                newState { it.copy(isTrackingLocation = false, locationUpdatesError = true) }
-            }
+            onEach = { location -> newState { it.copy(trackedLocation = location) } },
+            onError = { newState { it.copy(isTrackingLocation = false, locationUpdatesError = true) } }
         )
     }
 
@@ -92,36 +88,25 @@ class PlatformApisViewModel(
     fun authenticateWithBiometrics() {
         execute(
             action = { biometricRepository.authenticate() },
-            onLoading = {
-                newState {
-                    it.copy(
-                        biometricsLoading = true,
-                        biometricsResult = null
-                    )
-                }
-            },
-            onSuccess = { result ->
-                newState {
-                    it.copy(
-                        biometricsLoading = false,
-                        biometricsResult = result
-                    )
-                }
-            },
-            onError = { error ->
-                newState {
-                    it.copy(
-                        biometricsLoading = false,
-                        biometricsResult = BiometricResult.SystemError(error.message.orEmpty())
-                    )
-                }
-            }
+            onLoading = { newState { it.copy(biometricsLoading = true, biometricsResult = null) } },
+            onSuccess = { result -> newState { it.copy(biometricsLoading = false, biometricsResult = result) } },
+            onError = { error -> newState { it.copy(biometricsLoading = false, biometricsResult = BiometricResult.SystemError(error.message.orEmpty())) } }
         )
     }
 
     override fun onCleared() {
         super.onCleared()
         stopLocationUpdates()
+    }
+
+    private companion object {
+        private const val DEMO_PHONE_NUMBER = "+1234567890"
+        private const val DEMO_URL = "https://github.com/anthropics/claude-code"
+        private const val DEMO_EMAIL = "example@example.com"
+        private const val DEMO_EMAIL_SUBJECT = "Hello from KMP Showcase"
+        private const val DEMO_EMAIL_BODY = "This is a demo email sent from the KMP Showcase app."
+        private const val DEMO_SHARE_TEXT = "Check out KMP Showcase - a Kotlin Multiplatform demo app!"
+        private const val DEMO_COPY_TEXT = "Text copied from KMP Showcase"
     }
 }
 
@@ -131,6 +116,7 @@ data class PlatformApisUiState(
     val locationLoading: Boolean = false,
     val locationError: Boolean = false,
     val isTrackingLocation: Boolean = false,
+    val shouldTrackLocation: Boolean = false,
     val trackedLocation: Location? = null,
     val locationUpdatesError: Boolean = false,
     val biometricsAvailable: Boolean = false,

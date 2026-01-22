@@ -27,13 +27,7 @@ class ImagePickerViewModel(
     }
 
     fun onImageResult(result: ImageResult?) {
-        newState {
-            it.copy(
-                action = PickerAction.None,
-                isLoading = false,
-                imageBitmap = result?.bitmap
-            )
-        }
+        newState { it.copy(action = PickerAction.None, isLoading = false, imageBitmap = result?.bitmap) }
         onImageSelected(result?.bitmap)
     }
 

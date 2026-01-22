@@ -27,12 +27,8 @@ class ScannerViewModel(
         if (text.isBlank()) return
 
         execute(
-            action = {
-                codeGenerator.generate(text, state.value.selectedFormat)
-            },
-            onSuccess = { bitmap ->
-                newState { it.copy(generatedBitmap = bitmap) }
-            }
+            action = { codeGenerator.generate(text, state.value.selectedFormat) },
+            onSuccess = { bitmap -> newState { it.copy(generatedBitmap = bitmap) } }
         )
     }
 
