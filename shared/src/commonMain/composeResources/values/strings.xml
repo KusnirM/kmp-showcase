@@ -130,6 +130,12 @@
     <string name="platform_apis_demo_copy_text">Copied from KMP Showcase</string>
     <string name="platform_apis_demo_email_subject">KMP Showcase</string>
     <string name="platform_apis_demo_email_body">Hello from KMP Showcase app!</string>
+    <string name="platform_apis_location_title">Location</string>
+    <string name="platform_apis_location_hint">Get current device location using GPS</string>
+    <string name="platform_apis_location_action">Get Location</string>
+    <string name="platform_apis_location_loading">Getting location…</string>
+    <string name="platform_apis_location_result">Lat: %1$.6f, Lon: %2$.6f</string>
+    <string name="platform_apis_location_error">Unable to get location</string>
 
     <!-- Scanner Screen -->
     <string name="scanner_title">Scanner</string>

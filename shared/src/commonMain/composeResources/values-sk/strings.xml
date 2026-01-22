@@ -130,6 +130,12 @@
     <string name="platform_apis_demo_copy_text">Skopírované z KMP Showcase</string>
     <string name="platform_apis_demo_email_subject">KMP Showcase</string>
     <string name="platform_apis_demo_email_body">Ahoj z KMP Showcase aplikácie!</string>
+    <string name="platform_apis_location_title">Poloha</string>
+    <string name="platform_apis_location_hint">Získať aktuálnu polohu zariadenia pomocou GPS</string>
+    <string name="platform_apis_location_action">Získať polohu</string>
+    <string name="platform_apis_location_loading">Získavam polohu…</string>
+    <string name="platform_apis_location_result">Lat: %1$.6f, Lon: %2$.6f</string>
+    <string name="platform_apis_location_error">Nepodarilo sa získať polohu</string>
 
     <!-- Scanner Screen -->
     <string name="scanner_title">Skener</string>

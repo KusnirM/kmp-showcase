@@ -13,6 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.delay
+import mk.digital.kmpshowcase.domain.model.Location
 import mk.digital.kmpshowcase.LocalSnackbarHostState
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
@@ -40,6 +41,11 @@ import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_titl
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_link_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_action
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_error
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_hint
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_loading
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_location_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_hint
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_share_title
@@ -130,6 +136,20 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
                 onClick = { viewModel.copyToClipboard(demoCopyText) }
             )
         }
+
+        item {
+            LocationCard(
+                title = stringResource(Res.string.platform_apis_location_title),
+                hint = stringResource(Res.string.platform_apis_location_hint),
+                actionText = stringResource(Res.string.platform_apis_location_action),
+                loadingText = stringResource(Res.string.platform_apis_location_loading),
+                errorText = stringResource(Res.string.platform_apis_location_error),
+                location = state.location,
+                isLoading = state.locationLoading,
+                isError = state.locationError,
+                onClick = { viewModel.getLocation() }
+            )
+        }
     }
 }
 
@@ -146,5 +166,53 @@ private fun ApiCard(
         TextBodyMediumNeutral80(hint)
         Spacer2()
         OutlinedButton(text = actionText, onClick = onClick)
+    }
+}
+
+@Composable
+private fun LocationCard(
+    title: String,
+    hint: String,
+    actionText: String,
+    loadingText: String,
+    errorText: String,
+    location: Location?,
+    isLoading: Boolean,
+    isError: Boolean,
+    onClick: () -> Unit
+) {
+    AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
+        TextBodyLargeNeutral80(title)
+        Spacer2()
+        TextBodyMediumNeutral80(hint)
+        Spacer2()
+        when {
+            isLoading -> TextBodyMediumNeutral80(loadingText)
+            isError -> TextBodyMediumNeutral80(errorText)
+            location != null -> TextBodyMediumNeutral80(
+                "Lat: %.6f, Lon: %.6f".formatCoordinates(location.lat, location.lon)
+            )
+        }
+        Spacer2()
+        OutlinedButton(text = actionText, onClick = onClick)
+    }
+}
+
+private fun String.formatCoordinates(lat: Double, lon: Double): String {
+    return "Lat: ${"%.6f".formatDouble(lat)}, Lon: ${"%.6f".formatDouble(lon)}"
+}
+
+private fun String.formatDouble(value: Double): String {
+    val formatted = value.toString()
+    val dotIndex = formatted.indexOf('.')
+    return if (dotIndex == -1) {
+        "$formatted.000000"
+    } else {
+        val decimals = formatted.length - dotIndex - 1
+        if (decimals >= 6) {
+            formatted.substring(0, dotIndex + 7)
+        } else {
+            formatted + "0".repeat(6 - decimals)
+        }
     }
 }
