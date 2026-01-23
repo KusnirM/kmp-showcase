@@ -105,6 +105,14 @@
     <string name="database_add_note">Add Note</string>
     <string name="database_clear_all">Delete All Notes</string>
     <string name="database_empty">No notes yet. Add your first note above!</string>
+    <string name="database_search_hint">Search notes...</string>
+    <string name="database_filter">Filter</string>
+    <string name="database_delete">Delete</string>
+    <string name="database_sort_by">Sort by</string>
+    <string name="database_sort_date_newest">Date (newest)</string>
+    <string name="database_sort_date_oldest">Date (oldest)</string>
+    <string name="database_sort_title_asc">Title (A-Z)</string>
+    <string name="database_sort_title_desc">Title (Z-A)</string>
 
     <!-- Networking Screen -->
     <string name="networking_title">Users</string>

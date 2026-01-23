@@ -65,7 +65,7 @@ graph LR
 | UI Components | 40+ reusable components (buttons, inputs, dialogs, etc.) |
 | Networking | Ktor HTTP client demo |
 | Storage | Session vs Persistent storage |
-| Database | SQLDelight with notes CRUD |
+| Database | SQLDelight with notes CRUD, search & sort |
 | Platform APIs | Share, dial, links, email, clipboard, location, biometrics |
 | Scanner | QR/barcode generator & scanner |
 | Settings | Theme & Language settings |
@@ -114,6 +114,7 @@ graph LR
 - ✅ TextField, Switch, Radio, Checkbox, Chips
 - ✅ Slider, Progress indicators, Dividers
 - ✅ Segmented Button, Badge, Menu
+- ✅ SearchField with debounce
 - ✅ Typography, Spacers
 
 ### Quality & Build
@@ -127,7 +128,7 @@ graph LR
 
 ## Roadmap
 
-- [ ] Search with debounce
+- [x] Search with debounce
 - [ ] Form validation
 - [ ] Date/Time pickers
 - [ ] Pagination (infinite scroll)
