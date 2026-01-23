@@ -1,5 +1,8 @@
 package mk.digital.kmpshowcase
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +38,8 @@ import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.base.Route.HomeSection
+import mk.digital.kmpshowcase.presentation.base.Route.Login
+import mk.digital.kmpshowcase.presentation.base.Route.Register
 import mk.digital.kmpshowcase.presentation.base.Route.Settings
 import mk.digital.kmpshowcase.presentation.base.WithViewModel
 import mk.digital.kmpshowcase.presentation.base.rememberNavEntryDecorators
@@ -61,7 +66,14 @@ import mk.digital.kmpshowcase.presentation.screen.database.DatabaseViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
+import mk.digital.kmpshowcase.presentation.screen.login.LoginNavEvents
+import mk.digital.kmpshowcase.presentation.screen.login.LoginScreen
+import mk.digital.kmpshowcase.presentation.screen.login.LoginViewModel
+import mk.digital.kmpshowcase.presentation.screen.register.RegisterNavEvents
+import mk.digital.kmpshowcase.presentation.screen.register.RegisterScreen
+import mk.digital.kmpshowcase.presentation.screen.register.RegisterViewModel
 import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerViewModel
+import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsNavEvents
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsScreen
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
@@ -70,7 +82,6 @@ import mk.digital.kmpshowcase.shared.generated.resources.nav_home
 import mk.digital.kmpshowcase.shared.generated.resources.nav_settings
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-import org.koin.core.parameter.parametersOf
 
 
 val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
@@ -80,6 +91,8 @@ val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
 private val saveStateConfiguration = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
+            subclass(Login.serializer())
+            subclass(Register.serializer())
             subclass(HomeSection.Home.serializer())
             subclass(HomeSection.UiComponents.serializer())
             subclass(HomeSection.Networking.serializer())
@@ -99,7 +112,7 @@ fun MainView(
     onSetLocale: ((String) -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
 ) {
-    val router: NavRouter<Route> = rememberNavRouter(saveStateConfiguration, HomeSection.Home)
+    val router: NavRouter<Route> = rememberNavRouter(saveStateConfiguration, Login)
     val currentRoute: Route = router.backStack.last()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -122,11 +135,13 @@ fun MainView(
                     },
                     contentWindowInsets = WindowInsets(0),
                     topBar = {
-                        TopAppBar(
-                            title = stringResource(currentRoute.titleRes),
-                            navIcon = if (currentRoute.showBackArrow) Icons.AutoMirrored.Filled.ArrowBack else null,
-                            backClick = router::onBack,
-                        )
+                        if (currentRoute.showTopBar) {
+                            TopAppBar(
+                                title = stringResource(currentRoute.titleRes),
+                                navIcon = if (currentRoute.showBackArrow) Icons.AutoMirrored.Filled.ArrowBack else null,
+                                backClick = router::onBack,
+                            )
+                        }
                     },
                 ) { contentPadding ->
                     NavDisplay(
@@ -135,6 +150,18 @@ fun MainView(
                         onBack = router::onBack,
                         entryDecorators = rememberNavEntryDecorators(),
                         entryProvider = entryProvider {
+                            entry<Login> {
+                                WithViewModel<LoginViewModel> { viewModel ->
+                                    LoginNavEvents(viewModel, router)
+                                    LoginScreen(viewModel)
+                                }
+                            }
+                            entry<Register> {
+                                WithViewModel<RegisterViewModel> { viewModel ->
+                                    RegisterNavEvents(viewModel, router)
+                                    RegisterScreen(viewModel)
+                                }
+                            }
                             entry<HomeSection.Home> {
                                 WithViewModel<HomeViewModel> { viewModel ->
                                     HomeNavEvents(viewModel, router)
@@ -173,11 +200,15 @@ fun MainView(
                                 }
                             }
                             entry<Settings> {
-                                WithViewModel<SettingsViewModel>(
-                                    parameters = { parametersOf({ mode: ThemeMode -> themeMode = mode }) }
-                                ) { viewModel ->
+                                WithViewModel<SettingsViewModel> { viewModel ->
                                     WithViewModel<ImagePickerViewModel> { imagePickerViewModel ->
-                                        SettingsNavEvents(viewModel, onSetLocale, onOpenSettings)
+                                        SettingsNavEvents(
+                                            viewModel = viewModel,
+                                            router = router,
+                                            onSetLocale = onSetLocale,
+                                            onOpenSettings = onOpenSettings,
+                                            onThemeChanged = { mode -> themeMode = mode }
+                                        )
                                         SettingsScreen(viewModel, imagePickerViewModel)
                                     }
                                 }
@@ -186,42 +217,48 @@ fun MainView(
                     )
                 }
 
-                AppFloatingNavBar(
-                    items = listOf(
-                        FloatingNavItem(
-                            icon = Icons.Filled.Home,
-                            label = stringResource(Res.string.nav_home),
-                            selected = currentRoute is HomeSection,
-                            onClick = {
-                                if (currentRoute !is HomeSection.Home) {
-                                    router.navigateTo(
-                                        page = HomeSection.Home,
-                                        popUpTo = HomeSection.Home::class,
-                                        inclusive = true
-                                    )
-                                }
-                            }
-                        ),
-                        FloatingNavItem(
-                            icon = Icons.Filled.Settings,
-                            label = stringResource(Res.string.nav_settings),
-                            selected = currentRoute is Settings,
-                            onClick = {
-                                if (currentRoute !is Settings) {
-                                    router.navigateTo(
-                                        page = Settings,
-                                        popUpTo = HomeSection.Home::class,
-                                        inclusive = false
-                                    )
-                                }
-                            }
-                        )
-                    ),
+                AnimatedVisibility(
+                    visible = currentRoute.showBottomNav,
+                    enter = slideInVertically(initialOffsetY = { it }),
+                    exit = slideOutVertically(targetOffsetY = { it }),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .systemBarsPadding()
-                        .padding(bottom = 16.dp)
-                )
+                        .padding(bottom = space4)
+                ) {
+                    AppFloatingNavBar(
+                        items = listOf(
+                            FloatingNavItem(
+                                icon = Icons.Filled.Home,
+                                label = stringResource(Res.string.nav_home),
+                                selected = currentRoute is HomeSection,
+                                onClick = {
+                                    if (currentRoute !is HomeSection.Home) {
+                                        router.navigateTo(
+                                            page = HomeSection.Home,
+                                            popUpTo = HomeSection.Home::class,
+                                            inclusive = true
+                                        )
+                                    }
+                                }
+                            ),
+                            FloatingNavItem(
+                                icon = Icons.Filled.Settings,
+                                label = stringResource(Res.string.nav_settings),
+                                selected = currentRoute is Settings,
+                                onClick = {
+                                    if (currentRoute !is Settings) {
+                                        router.navigateTo(
+                                            page = Settings,
+                                            popUpTo = HomeSection.Home::class,
+                                            inclusive = false
+                                        )
+                                    }
+                                }
+                            )
+                        )
+                    )
+                }
             }
         }
     }

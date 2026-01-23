@@ -2,6 +2,7 @@ package mk.digital.kmpshowcase.presentation.screen.settings
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.AppConfig
+import mk.digital.kmpshowcase.data.analytics.AnalyticsClient
 import mk.digital.kmpshowcase.domain.useCase.base.invoke
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
@@ -41,8 +42,8 @@ enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
 class SettingsViewModel(
     private val getThemeModeUseCase: GetThemeModeUseCase,
     private val setThemeModeUseCase: SetThemeModeUseCase,
+    private val analyticsClient: AnalyticsClient,
     appConfig: AppConfig,
-    private val onThemeChanged: (ThemeMode) -> Unit,
 ) : BaseViewModel<SettingsState>(
     SettingsState(
         showCrashButton = appConfig.buildType.isDebug,
@@ -78,7 +79,7 @@ class SettingsViewModel(
             action = { setThemeModeUseCase(themeModeState.mode) },
             onSuccess = {
                 newState { it.copy(themeModeState = themeModeState) }
-                onThemeChanged(themeModeState.mode)
+                navigate(SettingNavEvents.ThemeChanged(themeModeState.mode))
             }
         )
     }
@@ -93,6 +94,16 @@ class SettingsViewModel(
 
     fun onLanguageNavEvent(event: SettingNavEvents) {
         navigate(event)
+    }
+
+    fun logout() {
+        navigate(SettingNavEvents.Logout)
+    }
+
+    fun triggerTestCrash() {
+        val exception = RuntimeException("Test Crash for Firebase Crashlytics")
+        analyticsClient.recordException(exception)
+        throw exception
     }
 }
 
@@ -123,4 +134,8 @@ sealed interface SettingNavEvents : NavEvent {
 
     // iOS
     data object ToSettings : SettingNavEvents
+
+    data object Logout : SettingNavEvents
+
+    data class ThemeChanged(val mode: ThemeMode) : SettingNavEvents
 }

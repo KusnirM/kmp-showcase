@@ -1,0 +1,144 @@
+package mk.digital.kmpshowcase.presentation.screen.login
+
+import mk.digital.kmpshowcase.data.biometric.BiometricResult
+import mk.digital.kmpshowcase.domain.useCase.base.invoke
+import mk.digital.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
+import mk.digital.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
+import mk.digital.kmpshowcase.presentation.base.BaseViewModel
+import mk.digital.kmpshowcase.presentation.base.NavEvent
+
+class LoginViewModel(
+    private val isBiometricEnabledUseCase: IsBiometricEnabledUseCase,
+    private val authenticateWithBiometricUseCase: AuthenticateWithBiometricUseCase,
+) : BaseViewModel<LoginUiState>(LoginUiState()) {
+
+    fun skip() = navigate(LoginNavEvent.ToHome)
+
+    fun toRegister() = navigate(LoginNavEvent.ToRegister)
+
+    override fun loadInitialData() {
+        execute(
+            action = { isBiometricEnabledUseCase() },
+            onSuccess = { enabled -> newState { it.copy(biometricsAvailable = enabled) } }
+        )
+    }
+
+    fun onEmailChange(email: String) = newState { it.copy(email = email, emailError = null) }
+
+    fun onPasswordChange(password: String) = newState { it.copy(password = password, passwordError = null) }
+
+    fun fillTestAccount() {
+        newState {
+            it.copy(
+                email = TEST_EMAIL,
+                password = TEST_PASSWORD,
+                emailError = null,
+                passwordError = null
+            )
+        }
+    }
+
+    fun login() {
+        requireState { state ->
+            val emailError = validateEmail(state.email)
+            val passwordError = validatePassword(state.password)
+
+            if (emailError != null || passwordError != null) {
+                newState {
+                    it.copy(
+                        emailError = emailError,
+                        passwordError = passwordError
+                    )
+                }
+                return@requireState
+            }
+
+            // Login successful - navigate to home
+            navigate(LoginNavEvent.ToHome)
+        }
+    }
+
+    fun authenticateWithBiometrics() {
+        execute(
+            action = { authenticateWithBiometricUseCase() },
+            onLoading = { newState { it.copy(biometricsLoading = true, biometricsResult = null) } },
+            onSuccess = { result ->
+                newState {
+                    it.copy(
+                        biometricsLoading = false,
+                        biometricsResult = result
+                    )
+                }
+                if (result is BiometricResult.Success) {
+                    navigate(LoginNavEvent.ToHome)
+                }
+            },
+            onError = { error ->
+                newState {
+                    it.copy(
+                        biometricsLoading = false,
+                        biometricsResult = BiometricResult.SystemError(error.message.orEmpty())
+                    )
+                }
+            }
+        )
+    }
+
+    private fun validateEmail(email: String): EmailError? {
+        return when {
+            email.isBlank() -> EmailError.EMPTY
+            !EMAIL_REGEX.matches(email) -> EmailError.INVALID_FORMAT
+            else -> null
+        }
+    }
+
+    private fun validatePassword(password: String): PasswordError? {
+        return when {
+            password.isBlank() -> PasswordError.EMPTY
+            password.length < MIN_PASSWORD_LENGTH -> PasswordError.TOO_SHORT
+            !PASSWORD_REGEX.matches(password) -> PasswordError.WEAK
+            else -> null
+        }
+    }
+
+    companion object {
+        const val TEST_EMAIL = "test@example.com"
+        const val TEST_PASSWORD = "Test123!"
+
+        private const val MIN_PASSWORD_LENGTH = 8
+
+        private val EMAIL_REGEX = Regex(
+            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+        )
+
+        private val PASSWORD_REGEX = Regex(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$"
+        )
+    }
+}
+
+enum class EmailError {
+    EMPTY,
+    INVALID_FORMAT
+}
+
+enum class PasswordError {
+    EMPTY,
+    TOO_SHORT,
+    WEAK
+}
+
+data class LoginUiState(
+    val email: String = "",
+    val password: String = "",
+    val emailError: EmailError? = null,
+    val passwordError: PasswordError? = null,
+    val biometricsAvailable: Boolean = false,
+    val biometricsLoading: Boolean = false,
+    val biometricsResult: BiometricResult? = null,
+)
+
+sealed interface LoginNavEvent : NavEvent {
+    data object ToHome : LoginNavEvent
+    data object ToRegister : LoginNavEvent
+}

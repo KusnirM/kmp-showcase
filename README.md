@@ -69,6 +69,7 @@ graph LR
 | Database | SQLDelight with notes CRUD, search & sort |
 | Platform APIs | Share, dial, links, email, clipboard, location, biometrics |
 | Scanner | QR/barcode generator & scanner |
+| Calendar | Date range picker with disabled dates |
 | Settings | Theme & Language settings |
 
 ---
@@ -116,6 +117,7 @@ graph LR
 - ✅ Slider, Progress indicators, Dividers
 - ✅ Segmented Button, Badge, Menu
 - ✅ SearchField with debounce (database search & sort)
+- ✅ Calendar (date range picker, disabled dates, month navigation)
 - ✅ Typography, Spacers
 
 ### Quality & Build
@@ -131,7 +133,7 @@ graph LR
 ## Roadmap
 
 - [ ] Form validation
-- [ ] Date/Time pickers
+- [x] Date/Time pickers (Calendar with range selection)
 - [ ] Pagination (infinite scroll)
 - [ ] Push notifications
 - [ ] Deep links

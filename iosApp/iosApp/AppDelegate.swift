@@ -33,6 +33,25 @@ class AppDelegate : NSObject, UIApplicationDelegate, ObservableObject {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        setupCrashlytics()
         return true
+    }
+
+    private func setupCrashlytics() {
+        IOSAnalyticsClient.companion.exceptionHandler = { message, stackTrace in
+            let error = NSError(
+                domain: "KMPException",
+                code: 0,
+                userInfo: [
+                    NSLocalizedDescriptionKey: message,
+                    "stackTrace": stackTrace
+                ]
+            )
+            Crashlytics.crashlytics().record(error: error)
+        }
+
+        IOSAnalyticsClient.companion.logHandler = { message in
+            Crashlytics.crashlytics().log(message)
+        }
     }
 }

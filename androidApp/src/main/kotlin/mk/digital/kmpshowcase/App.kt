@@ -2,7 +2,6 @@ package mk.digital.kmpshowcase
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
-
 import mk.digital.kmpshowcase.di.androidAppModule
 import mk.digital.kmpshowcase.di.commonModule
 import mk.digital.kmpshowcase.di.initKoin

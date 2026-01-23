@@ -1,23 +1,31 @@
 package mk.digital.kmpshowcase.util
 
+import mk.digital.kmpshowcase.data.analytics.AnalyticsClient
 import platform.Foundation.NSLog
 
-actual object Logger {
+actual class Logger actual constructor(
+    private val analyticsClient: AnalyticsClient
+) {
+
     actual fun e(log: String) {
         NSLog("$TAG: $log")
     }
 
     actual fun e(e: Throwable) {
         NSLog("$TAG ❗️ ${e.message ?: e.toString()}\n${e.stackTraceToString()}")
+        analyticsClient.recordException(e)
     }
 
     actual fun e(log: String, e: Throwable) {
         NSLog("$TAG ❗️ $log\n${e.message ?: e.toString()}\n${e.stackTraceToString()}")
+        analyticsClient.recordException(e)
     }
 
     actual fun d(log: String) {
-        NSLog("$TAG ❗️ $log")
+        NSLog("$TAG: $log")
     }
 
-    private const val TAG = "Logger"
+    companion object {
+        private const val TAG = "Logger"
+    }
 }

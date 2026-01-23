@@ -1,13 +1,16 @@
 package mk.digital.kmpshowcase.di
 
-import mk.digital.kmpshowcase.data.analytics.AndroidAnalyticsClient
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import mk.digital.kmpshowcase.data.analytics.AnalyticsClient
-import mk.digital.kmpshowcase.data.location.AndroidLocationClient
-import mk.digital.kmpshowcase.data.location.LocationClient
+import mk.digital.kmpshowcase.data.analytics.AndroidAnalyticsClient
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val androidAppModule = module {
-    single<AnalyticsClient> { AndroidAnalyticsClient(androidContext()) }
-    single<LocationClient> { AndroidLocationClient(androidContext()) }
+    single { FirebaseAnalytics.getInstance(androidContext()) }
+    single { FirebaseCrashlytics.getInstance() }
+    singleOf(::AndroidAnalyticsClient) { bind<AnalyticsClient>() }
 }
