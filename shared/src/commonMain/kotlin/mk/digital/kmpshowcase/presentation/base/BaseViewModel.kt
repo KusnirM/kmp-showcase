@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import mk.digital.kmpshowcase.domain.exceptions.base.BaseException
 import mk.digital.kmpshowcase.domain.exceptions.base.UnknownException
+import mk.digital.kmpshowcase.domain.useCase.analytics.TrackScreenUseCase
 import mk.digital.kmpshowcase.util.Logger
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * Screen lifecycle callbacks.
@@ -31,7 +34,9 @@ interface ScreenLifecycle {
  */
 abstract class BaseViewModel<STATE : Any>(
     defaultState: STATE,
-) : ViewModel(), ScreenLifecycle {
+) : ViewModel(), ScreenLifecycle, KoinComponent {
+
+    private val trackScreenUseCase: TrackScreenUseCase by inject()
 
     protected val tag = this::class.simpleName
     private var isInitialized = false
@@ -101,7 +106,9 @@ abstract class BaseViewModel<STATE : Any>(
      * Logs the screen name for analytics.
      */
     protected fun logScreenName() {
-        Logger.d("Screen: ${tag?.removeSuffix("ViewModel")}")
+        val screenName = tag?.removeSuffix("ViewModel") ?: return
+        Logger.d("Screen: $screenName")
+        trackScreenUseCase(screenName)
     }
 
     /**

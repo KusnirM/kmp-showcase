@@ -6,8 +6,8 @@ A **KMP portfolio app** demonstrating multiplatform capabilities with **shared b
 
 - **Purpose**: Portfolio app showcasing KMP capabilities — each feature is a self-contained demo.
 - **KMP shared**: UI (Compose Multiplatform), Navigation3, DI (Koin), networking (Ktor 3), database (SQLDelight), JSON (kotlinx-serialization).
-- **Android**: Material 3, Activity Compose, edge‑to‑edge.
-- **iOS**: Compose MPP UI hosted in Swift/SwiftUI shell, safe‑area support, Darwin HTTP engine.
+- **Android**: Material 3, Activity Compose, edge‑to‑edge, Firebase Analytics.
+- **iOS**: Compose MPP UI hosted in Swift/SwiftUI shell, safe‑area support, Darwin HTTP engine, Firebase Analytics.
 
 ---
 
@@ -22,6 +22,7 @@ A **KMP portfolio app** demonstrating multiplatform capabilities with **shared b
 | Networking | Ktor 3 (OkHttp / Darwin) |
 | Database | SQLDelight |
 | Images | Coil 3 |
+| Analytics | Firebase Analytics |
 | Testing | kotlin.test + Mokkery |
 | Code Quality | Detekt + Compose rules |
 
@@ -114,12 +115,13 @@ graph LR
 - ✅ TextField, Switch, Radio, Checkbox, Chips
 - ✅ Slider, Progress indicators, Dividers
 - ✅ Segmented Button, Badge, Menu
-- ✅ SearchField with debounce
+- ✅ SearchField with debounce (database search & sort)
 - ✅ Typography, Spacers
 
 ### Quality & Build
 - ✅ Detekt + Compose rules
 - ✅ GitHub Actions CI
+- ✅ Firebase Analytics (screen tracking)
 - ✅ Crashlytics
 - ✅ ProGuard / R8
 - ✅ Dark mode & Localization
@@ -128,7 +130,6 @@ graph LR
 
 ## Roadmap
 
-- [x] Search with debounce
 - [ ] Form validation
 - [ ] Date/Time pickers
 - [ ] Pagination (infinite scroll)
