@@ -54,6 +54,8 @@ import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingScreen
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingViewModel
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageScreen
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
+import mk.digital.kmpshowcase.presentation.screen.calendar.CalendarScreen
+import mk.digital.kmpshowcase.presentation.screen.calendar.CalendarViewModel
 import mk.digital.kmpshowcase.presentation.screen.database.DatabaseScreen
 import mk.digital.kmpshowcase.presentation.screen.database.DatabaseViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
@@ -85,6 +87,7 @@ private val saveStateConfiguration = SavedStateConfiguration {
             subclass(HomeSection.PlatformApis.serializer())
             subclass(HomeSection.Scanner.serializer())
             subclass(HomeSection.Database.serializer())
+            subclass(HomeSection.Calendar.serializer())
             subclass(Settings.serializer())
         }
     }
@@ -162,6 +165,11 @@ fun MainView(
                             entry<HomeSection.Database> {
                                 WithViewModel<DatabaseViewModel> { viewModel ->
                                     DatabaseScreen(viewModel)
+                                }
+                            }
+                            entry<HomeSection.Calendar> {
+                                WithViewModel<CalendarViewModel> { viewModel ->
+                                    CalendarScreen(viewModel)
                                 }
                             }
                             entry<Settings> {

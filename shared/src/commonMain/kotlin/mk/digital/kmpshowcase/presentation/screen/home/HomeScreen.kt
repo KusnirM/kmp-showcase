@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.foundation.space8
 
@@ -18,8 +19,13 @@ fun HomeScreen(viewModel: HomeViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LazyColumn(
-        contentPadding = PaddingValues(vertical = space8, horizontal = space4),
-        verticalArrangement = Arrangement.spacedBy(space8)
+        contentPadding = PaddingValues(
+            start = space4,
+            end = space4,
+            top = space8,
+            bottom = floatingNavBarSpace,
+        ),
+        verticalArrangement = Arrangement.spacedBy(space8),
     ) {
         items(state.features, key = { it.id }) { feature ->
             FeatureCard(
@@ -46,6 +52,7 @@ fun HomeNavEvents(
                     FeatureId.DATABASE -> router.navigateTo(Route.HomeSection.Database)
                     FeatureId.PLATFORM_APIS -> router.navigateTo(Route.HomeSection.PlatformApis)
                     FeatureId.SCANNER -> router.navigateTo(Route.HomeSection.Scanner)
+                    FeatureId.CALENDAR -> router.navigateTo(Route.HomeSection.Calendar)
                 }
             }
         }

@@ -23,6 +23,7 @@
     <string name="screen_platform_apis">Platform APIs</string>
     <string name="screen_scanner">Scanner</string>
     <string name="screen_database">Database</string>
+    <string name="screen_calendar">Calendar</string>
     <string name="screen_settings">Settings</string>
 
     <!-- Home Screen Features -->
@@ -38,6 +39,8 @@
     <string name="feature_scanner_subtitle">Generate and scan QR codes &amp; barcodes</string>
     <string name="feature_database_title">Database</string>
     <string name="feature_database_subtitle">SQLDelight, local persistence</string>
+    <string name="feature_calendar_title">Calendar</string>
+    <string name="feature_calendar_subtitle">Date range picker, Airbnb-style</string>
 
     <!-- UI Components Showcase -->
     <string name="section_buttons">Buttons</string>
@@ -113,6 +116,41 @@
     <string name="database_sort_date_oldest">Date (oldest)</string>
     <string name="database_sort_title_asc">Title (A-Z)</string>
     <string name="database_sort_title_desc">Title (Z-A)</string>
+
+    <!-- Calendar Screen -->
+    <string name="calendar_title">Date Range Picker</string>
+    <string name="calendar_subtitle">Select a date range by clicking two dates</string>
+    <string name="calendar_selected_range">Selected Range</string>
+    <string name="calendar_clear_selection">Clear Selection</string>
+    <string name="calendar_header_format">%1$s %2$d</string>
+    <string name="calendar_previous_month">Previous month</string>
+    <string name="calendar_next_month">Next month</string>
+    <!-- Weekday labels (short) -->
+    <string name="calendar_weekday_mon">Mo</string>
+    <string name="calendar_weekday_tue">Tu</string>
+    <string name="calendar_weekday_wed">We</string>
+    <string name="calendar_weekday_thu">Th</string>
+    <string name="calendar_weekday_fri">Fr</string>
+    <string name="calendar_weekday_sat">Sa</string>
+    <string name="calendar_weekday_sun">Su</string>
+    <!-- Month names -->
+    <string name="calendar_month_january">January</string>
+    <string name="calendar_month_february">February</string>
+    <string name="calendar_month_march">March</string>
+    <string name="calendar_month_april">April</string>
+    <string name="calendar_month_may">May</string>
+    <string name="calendar_month_june">June</string>
+    <string name="calendar_month_july">July</string>
+    <string name="calendar_month_august">August</string>
+    <string name="calendar_month_september">September</string>
+    <string name="calendar_month_october">October</string>
+    <string name="calendar_month_november">November</string>
+    <string name="calendar_month_december">December</string>
+    <!-- Range selection text -->
+    <string name="calendar_no_dates_selected">No dates selected</string>
+    <string name="calendar_start_date">Start: %1$s</string>
+    <string name="calendar_single_date">Single date: %1$s</string>
+    <string name="calendar_range_format">From: %1$s\nTo: %2$s</string>
 
     <!-- Networking Screen -->
     <string name="networking_title">Users</string>
