@@ -37,6 +37,7 @@ abstract class BaseViewModel<STATE : Any>(
 ) : ViewModel(), ScreenLifecycle, KoinComponent {
 
     private val trackScreenUseCase: TrackScreenUseCase by inject()
+    private val logger: Logger by inject()
 
     protected val tag = this::class.simpleName
     private var isInitialized = false
@@ -107,7 +108,7 @@ abstract class BaseViewModel<STATE : Any>(
      */
     protected fun logScreenName() {
         val screenName = tag?.removeSuffix("ViewModel") ?: return
-        Logger.d("Screen: $screenName")
+        logger.d("Screen: $screenName")
         trackScreenUseCase(screenName)
     }
 
@@ -131,10 +132,10 @@ abstract class BaseViewModel<STATE : Any>(
         try {
             onSuccess(action())
         } catch (e: BaseException) {
-            Logger.e("${tag}: ${e.message}", e)
+            logger.e("${tag}: ${e.message}", e)
             onError(e)
         } catch (e: Throwable) {
-            Logger.e("${tag}: ${e.message}", e)
+            logger.e("${tag}: ${e.message}", e)
             onError(UnknownException(e))
         }
     }
@@ -158,22 +159,22 @@ abstract class BaseViewModel<STATE : Any>(
         try {
             onStart?.invoke()
         } catch (e: BaseException) {
-            Logger.e("${tag}: ${e.message}", e)
+            logger.e("${tag}: ${e.message}", e)
             onError(e)
             return@launch
         } catch (e: Throwable) {
-            Logger.e("${tag}: ${e.message}", e)
+            logger.e("${tag}: ${e.message}", e)
             onError(UnknownException(e))
             return@launch
         }
         flow.catch { e ->
             when (e) {
                 is BaseException -> {
-                    Logger.e("${tag}: ${e.message}", e)
+                    logger.e("${tag}: ${e.message}", e)
                     onError(e)
                 }
                 else -> {
-                    Logger.e("${tag}: ${e.message}", e)
+                    logger.e("${tag}: ${e.message}", e)
                     onError(UnknownException(e))
                 }
             }

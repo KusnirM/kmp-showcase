@@ -18,7 +18,7 @@ fun AppIcon(
     imageVector: ImageVector,
     size: Dp = defaultIconSize,
     tint: Color = LocalContentColor.current,
-    contentDescription: String = imageVector.name,
+    contentDescription: String? = imageVector.name,
 ) {
     Icon(
         modifier = Modifier.size(size),
@@ -46,7 +46,7 @@ fun AppIconPrimary(
 fun AppIconNeutral80(
     imageVector: ImageVector,
     size: Dp = defaultIconSize,
-    contentDescription: String = imageVector.name,
+    contentDescription: String? = imageVector.name,
 ) {
     AppIcon(
         size = size,

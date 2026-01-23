@@ -10,9 +10,9 @@ import platform.LocalAuthentication.LAPolicyDeviceOwnerAuthenticationWithBiometr
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class IOSBiometricClient : BiometricClient {
+actual class BiometricClientImpl : BiometricClient {
 
-    override fun enabled(): Boolean {
+    actual override fun enabled(): Boolean {
         val context = LAContext()
         return context.canEvaluatePolicy(
             LAPolicyDeviceOwnerAuthenticationWithBiometrics,
@@ -21,7 +21,7 @@ class IOSBiometricClient : BiometricClient {
     }
 
     @OptIn(ExperimentalForeignApi::class)
-    override suspend fun authenticate(): BiometricResult {
+    actual override suspend fun authenticate(): BiometricResult {
         if (!enabled()) {
             return BiometricResult.NotAvailable
         }

@@ -53,3 +53,17 @@ internal fun TextButtonNeutral0(
         textAlign = textAlign
     )
 }
+
+@Composable
+internal fun TextButtonError(
+    text: String,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = null,
+) {
+    TextLabelLarge(
+        modifier = modifier,
+        text = text.uppercase(),
+        color = MaterialTheme.colorScheme.error,
+        textAlign = textAlign
+    )
+}

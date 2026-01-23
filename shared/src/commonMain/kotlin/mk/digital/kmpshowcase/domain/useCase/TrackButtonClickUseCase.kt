@@ -1,10 +1,12 @@
 package mk.digital.kmpshowcase.domain.useCase
 
+import mk.digital.kmpshowcase.data.analytics.AnalyticsClient
 import mk.digital.kmpshowcase.domain.useCase.base.UseCase
-import mk.digital.kmpshowcase.util.Logger
 
-class TrackButtonClickUseCase : UseCase<Int, Unit>() {
+class TrackButtonClickUseCase(
+    private val analyticsClient: AnalyticsClient
+) : UseCase<Int, Unit>() {
     override suspend fun run(params: Int) {
-        Logger.d("Button Clicked: $params")
+        analyticsClient.log("Button Clicked: $params")
     }
 }

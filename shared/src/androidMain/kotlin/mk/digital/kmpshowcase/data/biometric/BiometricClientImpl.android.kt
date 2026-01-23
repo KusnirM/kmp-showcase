@@ -11,7 +11,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import mk.digital.kmpshowcase.shared.R
 import kotlin.coroutines.resume
 
-class AndroidBiometricClient(
+actual class BiometricClientImpl(
     private val context: Context,
 ) : BiometricClient {
 
@@ -23,14 +23,14 @@ class AndroidBiometricClient(
         currentActivity = activity
     }
 
-    override fun enabled(): Boolean {
+    actual override fun enabled(): Boolean {
         return when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or BIOMETRIC_WEAK)) {
             BiometricManager.BIOMETRIC_SUCCESS -> true
             else -> false
         }
     }
 
-    override suspend fun authenticate(): BiometricResult {
+    actual override suspend fun authenticate(): BiometricResult {
         val activity = currentActivity
             ?: return BiometricResult.ActivityNotAvailable
 
