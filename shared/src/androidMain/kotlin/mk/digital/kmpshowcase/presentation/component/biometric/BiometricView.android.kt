@@ -1,17 +1,18 @@
 package mk.digital.kmpshowcase.presentation.component.biometric
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import mk.digital.kmpshowcase.presentation.component.image.AppIconPrimary
+import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
 import mk.digital.kmpshowcase.shared.generated.resources.Res
-import mk.digital.kmpshowcase.shared.generated.resources.login_biometric_hint
+import mk.digital.kmpshowcase.shared.generated.resources.login_biometric_hint_fingerprint
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -19,14 +20,20 @@ actual fun BiometricView(
     modifier: Modifier,
     onClick: () -> Unit,
 ) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier.size(64.dp)
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppIconPrimary(
-            imageVector = Icons.Filled.Fingerprint,
-            contentDescription = stringResource(Res.string.login_biometric_hint),
-            size = 48.dp,
-        )
+        IconButton(
+            onClick = onClick,
+            modifier = Modifier.size(64.dp)
+        ) {
+            AppIconPrimary(
+                imageVector = Icons.Filled.Fingerprint,
+                contentDescription = stringResource(Res.string.login_biometric_hint_fingerprint),
+                size = 48.dp,
+            )
+        }
+        TextBodySmallNeutral80(stringResource(Res.string.login_biometric_hint_fingerprint))
     }
 }

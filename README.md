@@ -62,6 +62,8 @@ graph LR
 
 | Screen | Description |
 |--------|-------------|
+| Login | Email/password with biometric authentication (Fingerprint/Face ID) |
+| Register | User registration with validation |
 | Home | Feature catalog with cards |
 | UI Components | 40+ reusable components (buttons, inputs, dialogs, etc.) |
 | Networking | Ktor HTTP client demo |
@@ -70,7 +72,7 @@ graph LR
 | Platform APIs | Share, dial, links, email, clipboard, location, biometrics |
 | Scanner | QR/barcode generator & scanner |
 | Calendar | Date range picker with disabled dates |
-| Settings | Theme & Language settings |
+| Settings | Theme, Language, profile photo picker |
 
 ---
 
@@ -96,6 +98,8 @@ graph LR
 - ✅ Unit tests (kotlin.test + Mokkery)
 - ✅ String resources (EN/SK)
 - ✅ Global snackbar (themed)
+- ✅ Login/Register with form validation
+- ✅ Biometric authentication (Fingerprint on Android, Face ID on iOS)
 
 ### Networking & Data
 - ✅ Ktor HTTP client with JSON
@@ -104,9 +108,9 @@ graph LR
 - ✅ Coil 3 image loading
 
 ### Device Features
-- ✅ Camera & Image picker
+- ✅ Camera & Image picker (profile photo)
 - ✅ QR/Barcode scanner & generator
-- ✅ Biometrics (fingerprint, Face ID)
+- ✅ Biometrics (Fingerprint on Android, Face ID on iOS)
 - ✅ Location / GPS
 - ✅ Permissions handling
 - ✅ Platform routers (share, dial, links, email, clipboard)
@@ -124,7 +128,7 @@ graph LR
 - ✅ Detekt + Compose rules
 - ✅ GitHub Actions CI
 - ✅ Firebase Analytics (screen tracking)
-- ✅ Crashlytics
+- ✅ Crashlytics (crashes + non-fatal exceptions)
 - ✅ ProGuard / R8
 - ✅ Dark mode & Localization
 
@@ -132,7 +136,7 @@ graph LR
 
 ## Roadmap
 
-- [ ] Form validation
+- [x] Form validation (Login/Register)
 - [x] Date/Time pickers (Calendar with range selection)
 - [ ] Pagination (infinite scroll)
 - [ ] Push notifications

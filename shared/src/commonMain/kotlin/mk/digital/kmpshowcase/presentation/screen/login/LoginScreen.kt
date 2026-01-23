@@ -53,7 +53,6 @@ import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.space2
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
-import mk.digital.kmpshowcase.shared.generated.resources.login_biometric_hint
 import mk.digital.kmpshowcase.shared.generated.resources.login_button
 import mk.digital.kmpshowcase.shared.generated.resources.login_email_empty
 import mk.digital.kmpshowcase.shared.generated.resources.login_email_invalid
@@ -204,8 +203,6 @@ fun LoginScreen(
             } else {
                 BiometricView(onClick = viewModel::authenticateWithBiometrics)
             }
-
-            TextBodySmallNeutral80(stringResource(Res.string.login_biometric_hint))
         }
 
         Spacer(modifier = Modifier.weight(1f))
