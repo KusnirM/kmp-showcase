@@ -121,9 +121,9 @@ dependencies {
     // location
     implementation(libs.google.services.location)
 
-    // Firebase
+    // Firebase (BOM manages versions)
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.app.check)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.app.check)
+    implementation(libs.firebase.crashlytics)
 }
