@@ -1,6 +1,7 @@
 package mk.digital.kmpshowcase.presentation.screen.database
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,9 +12,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,14 +24,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import mk.digital.kmpshowcase.domain.model.Note
+import mk.digital.kmpshowcase.domain.model.NoteSortOption
+import mk.digital.kmpshowcase.presentation.component.AppSearchField
 import mk.digital.kmpshowcase.presentation.component.AppTextField
 import mk.digital.kmpshowcase.presentation.component.buttons.ContainedButton
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
+import mk.digital.kmpshowcase.presentation.component.image.AppIconNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
-import mk.digital.kmpshowcase.presentation.component.text.headlineMedium.TextHeadlineMediumPrimary
+import mk.digital.kmpshowcase.presentation.component.text.labelMedium.TextLabelMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargeNeutral80
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
@@ -38,9 +43,15 @@ import mk.digital.kmpshowcase.shared.generated.resources.database_add_note
 import mk.digital.kmpshowcase.shared.generated.resources.database_clear_all
 import mk.digital.kmpshowcase.shared.generated.resources.database_content_hint
 import mk.digital.kmpshowcase.shared.generated.resources.database_content_label
+import mk.digital.kmpshowcase.shared.generated.resources.database_delete
 import mk.digital.kmpshowcase.shared.generated.resources.database_empty
-import mk.digital.kmpshowcase.shared.generated.resources.database_subtitle
-import mk.digital.kmpshowcase.shared.generated.resources.database_title
+import mk.digital.kmpshowcase.shared.generated.resources.database_filter
+import mk.digital.kmpshowcase.shared.generated.resources.database_search_hint
+import mk.digital.kmpshowcase.shared.generated.resources.database_sort_by
+import mk.digital.kmpshowcase.shared.generated.resources.database_sort_date_newest
+import mk.digital.kmpshowcase.shared.generated.resources.database_sort_date_oldest
+import mk.digital.kmpshowcase.shared.generated.resources.database_sort_title_asc
+import mk.digital.kmpshowcase.shared.generated.resources.database_sort_title_desc
 import mk.digital.kmpshowcase.shared.generated.resources.database_title_hint
 import mk.digital.kmpshowcase.shared.generated.resources.database_title_label
 import org.jetbrains.compose.resources.stringResource
@@ -61,10 +72,15 @@ fun DatabaseScreen(viewModel: DatabaseViewModel) {
         verticalArrangement = Arrangement.spacedBy(space4)
     ) {
         item {
-            Column {
-                TextHeadlineMediumPrimary(stringResource(Res.string.database_title))
-                TextBodyMediumNeutral80(stringResource(Res.string.database_subtitle))
-            }
+            SearchBar(
+                query = state.searchQuery,
+                onQueryChanged = viewModel::onSearchQueryChanged,
+                sortOption = state.sortOption,
+                onSortOptionChanged = viewModel::onSortOptionChanged,
+                showFilterMenu = state.showFilterMenu,
+                onToggleFilterMenu = viewModel::toggleFilterMenu,
+                onDismissFilterMenu = viewModel::dismissFilterMenu
+            )
         }
 
         item {
@@ -95,6 +111,77 @@ fun DatabaseScreen(viewModel: DatabaseViewModel) {
                 OutlinedButton(
                     text = stringResource(Res.string.database_clear_all),
                     onClick = viewModel::deleteAllNotes
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SearchBar(
+    query: String,
+    onQueryChanged: (String) -> Unit,
+    sortOption: NoteSortOption,
+    onSortOptionChanged: (NoteSortOption) -> Unit,
+    showFilterMenu: Boolean,
+    onToggleFilterMenu: () -> Unit,
+    onDismissFilterMenu: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(space4)
+    ) {
+        AppSearchField(
+            value = query,
+            onValueChange = onQueryChanged,
+            modifier = Modifier.weight(1f),
+            placeholder = stringResource(Res.string.database_search_hint)
+        )
+
+        Box {
+            IconButton(onClick = onToggleFilterMenu) {
+                AppIconNeutral80(
+                    imageVector = Icons.Filled.FilterList,
+                    contentDescription = stringResource(Res.string.database_filter)
+                )
+            }
+
+            DropdownMenu(
+                expanded = showFilterMenu,
+                onDismissRequest = onDismissFilterMenu
+            ) {
+                TextLabelMediumNeutral80(
+                    text = stringResource(Res.string.database_sort_by),
+                    modifier = Modifier.padding(horizontal = space4, vertical = space4)
+                )
+                DropdownMenuItem(
+                    text = { TextBodyMediumNeutral80(stringResource(Res.string.database_sort_date_newest)) },
+                    onClick = { onSortOptionChanged(NoteSortOption.DATE_DESC) },
+                    leadingIcon = if (sortOption == NoteSortOption.DATE_DESC) {
+                        { TextBodyMediumNeutral80("✓") }
+                    } else null
+                )
+                DropdownMenuItem(
+                    text = { TextBodyMediumNeutral80(stringResource(Res.string.database_sort_date_oldest)) },
+                    onClick = { onSortOptionChanged(NoteSortOption.DATE_ASC) },
+                    leadingIcon = if (sortOption == NoteSortOption.DATE_ASC) {
+                        { TextBodyMediumNeutral80("✓") }
+                    } else null
+                )
+                DropdownMenuItem(
+                    text = { TextBodyMediumNeutral80(stringResource(Res.string.database_sort_title_asc)) },
+                    onClick = { onSortOptionChanged(NoteSortOption.TITLE_ASC) },
+                    leadingIcon = if (sortOption == NoteSortOption.TITLE_ASC) {
+                        { TextBodyMediumNeutral80("✓") }
+                    } else null
+                )
+                DropdownMenuItem(
+                    text = { TextBodyMediumNeutral80(stringResource(Res.string.database_sort_title_desc)) },
+                    onClick = { onSortOptionChanged(NoteSortOption.TITLE_DESC) },
+                    leadingIcon = if (sortOption == NoteSortOption.TITLE_DESC) {
+                        { TextBodyMediumNeutral80("✓") }
+                    } else null
                 )
             }
         }
@@ -155,10 +242,9 @@ private fun NoteCard(
                 TextBodySmallNeutral80(formatTimestamp(note.createdAt))
             }
             IconButton(onClick = onDeleteClick) {
-                Icon(
+                AppIconNeutral80(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Delete",
-                    tint = MaterialTheme.colorScheme.error
+                    contentDescription = stringResource(Res.string.database_delete)
                 )
             }
         }

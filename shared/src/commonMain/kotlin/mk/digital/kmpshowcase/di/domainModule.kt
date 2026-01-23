@@ -6,6 +6,7 @@ import mk.digital.kmpshowcase.domain.useCase.notes.DeleteAllNotesUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.DeleteNoteUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.InsertNoteUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.ObserveNotesUseCase
+import mk.digital.kmpshowcase.domain.useCase.notes.SearchNotesUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.UpdateNoteUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
@@ -28,6 +29,7 @@ val domainModule = module {
     singleOf(::GetThemeModeUseCase)
     singleOf(::SetThemeModeUseCase)
     singleOf(::ObserveNotesUseCase)
+    singleOf(::SearchNotesUseCase)
     singleOf(::InsertNoteUseCase)
     singleOf(::UpdateNoteUseCase)
     singleOf(::DeleteNoteUseCase)

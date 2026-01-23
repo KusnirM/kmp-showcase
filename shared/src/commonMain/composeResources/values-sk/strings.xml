@@ -105,6 +105,14 @@
     <string name="database_add_note">Pridať poznámku</string>
     <string name="database_clear_all">Vymazať všetky poznámky</string>
     <string name="database_empty">Zatiaľ žiadne poznámky. Pridajte prvú poznámku vyššie!</string>
+    <string name="database_search_hint">Hľadať poznámky...</string>
+    <string name="database_filter">Filter</string>
+    <string name="database_delete">Vymazať</string>
+    <string name="database_sort_by">Zoradiť podľa</string>
+    <string name="database_sort_date_newest">Dátum (najnovšie)</string>
+    <string name="database_sort_date_oldest">Dátum (najstaršie)</string>
+    <string name="database_sort_title_asc">Názov (A-Z)</string>
+    <string name="database_sort_title_desc">Názov (Z-A)</string>
 
     <!-- Networking Screen -->
     <string name="networking_title">Používatelia</string>

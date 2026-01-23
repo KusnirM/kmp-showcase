@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 val Neutral0Light: Color = Color(0xFFFFFFFF)
 internal val Neutral20Light: Color = Color(0xFFC8C8C8)
 internal val Neutral40Light: Color = Color(0xFF919191)
+internal val Neutral60Light: Color = Color(0xFF5A5A5A)
 internal val Neutral80Light: Color = Color(0xFF232323)
 internal val Neutral100Light: Color = Color.Black
 
@@ -25,6 +26,7 @@ internal val WarningLight: Color = Color(0xFFFF9800)
 internal val Neutral0Dark: Color = Color(0xFF121212)
 internal val Neutral20Dark: Color = Color(0xFF2C2C2C)
 internal val Neutral40Dark: Color = Color(0xFF6E6E6E)
+internal val Neutral60Dark: Color = Color(0xFFA0A0A0)
 internal val Neutral80Dark: Color = Color(0xFFE0E0E0)
 internal val Neutral100Dark: Color = Color.White
 
@@ -46,6 +48,7 @@ data class AppColors(
     val material: ColorScheme,
     val neutral0: Color,
     val neutral20: Color,
+    val neutral60: Color,
     val neutral80: Color,
     val neutral100: Color,
     val success: Color,

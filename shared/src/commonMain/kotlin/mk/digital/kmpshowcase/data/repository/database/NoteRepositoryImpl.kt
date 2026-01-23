@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import mk.digital.kmpshowcase.data.database.AppDatabase
 import mk.digital.kmpshowcase.domain.model.Note
+import mk.digital.kmpshowcase.domain.model.NoteSortOption
 import mk.digital.kmpshowcase.domain.repository.NoteRepository
 
 class NoteRepositoryImpl(
@@ -17,11 +18,24 @@ class NoteRepositoryImpl(
 
     private val queries = database.noteQueries
 
-    override fun observeAll(): Flow<List<Note>> {
-        return queries.selectAll()
-            .asFlow()
-            .mapToList(Dispatchers.IO)
-            .map { it.transformAll() }
+    override fun observeAll(sortOption: NoteSortOption): Flow<List<Note>> {
+        val query = when (sortOption) {
+            NoteSortOption.DATE_DESC -> queries.selectAll()
+            NoteSortOption.DATE_ASC -> queries.selectAllByDateAsc()
+            NoteSortOption.TITLE_ASC -> queries.selectAllByTitleAsc()
+            NoteSortOption.TITLE_DESC -> queries.selectAllByTitleDesc()
+        }
+        return query.asFlow().mapToList(Dispatchers.IO).map { it.transformAll() }
+    }
+
+    override fun search(query: String, sortOption: NoteSortOption): Flow<List<Note>> {
+        val dbQuery = when (sortOption) {
+            NoteSortOption.DATE_DESC -> queries.search(query, query)
+            NoteSortOption.DATE_ASC -> queries.searchByDateAsc(query, query)
+            NoteSortOption.TITLE_ASC -> queries.searchByTitleAsc(query, query)
+            NoteSortOption.TITLE_DESC -> queries.searchByTitleDesc(query, query)
+        }
+        return dbQuery.asFlow().mapToList(Dispatchers.IO).map { it.transformAll() }
     }
 
     override suspend fun getById(id: Long): Note? = withContext(Dispatchers.IO) {
