@@ -2,6 +2,7 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.domain.useCase.GetUsersUseCase
 import mk.digital.kmpshowcase.domain.useCase.TrackButtonClickUseCase
+import mk.digital.kmpshowcase.domain.useCase.analytics.TrackScreenUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.DeleteAllNotesUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.DeleteNoteUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.InsertNoteUseCase
@@ -19,6 +20,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val domainModule = module {
+    singleOf(::TrackScreenUseCase)
     singleOf(::TrackButtonClickUseCase)
     singleOf(::GetUsersUseCase)
     singleOf(::LoadStorageDataUseCase)

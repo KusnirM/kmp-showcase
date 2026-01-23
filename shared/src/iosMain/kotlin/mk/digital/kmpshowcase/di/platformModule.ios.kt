@@ -1,5 +1,7 @@
 package mk.digital.kmpshowcase.di
 
+import mk.digital.kmpshowcase.data.analytics.AnalyticsClient
+import mk.digital.kmpshowcase.data.analytics.IOSAnalyticsClient
 import mk.digital.kmpshowcase.data.biometric.BiometricClient
 import mk.digital.kmpshowcase.data.biometric.IOSBiometricClient
 import mk.digital.kmpshowcase.data.database.DatabaseDriverFactory
@@ -20,5 +22,6 @@ actual val platformModule: Module = module {
     single<Preferences>(app) { PreferencesImpl(storageName = app.value) }
     single<LocationClient> { IOSLocationClient() }
     single<BiometricClient> { IOSBiometricClient() }
+    single<AnalyticsClient> { IOSAnalyticsClient() }
     singleOf(::DatabaseDriverFactory)
 }

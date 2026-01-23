@@ -147,6 +147,7 @@ kotlin {
         // androidHostTest inherits from commonTest, runs on JVM without device
         getByName("androidHostTest").dependencies {
             implementation(kotlin("test-junit"))
+            implementation(libs.sqldelight.sqlite.driver)
         }
     }
 
