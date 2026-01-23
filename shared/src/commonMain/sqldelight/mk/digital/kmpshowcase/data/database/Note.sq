@@ -8,6 +8,27 @@ CREATE TABLE Note (
 selectAll:
 SELECT * FROM Note ORDER BY createdAt DESC;
 
+selectAllByDateAsc:
+SELECT * FROM Note ORDER BY createdAt ASC;
+
+selectAllByTitleAsc:
+SELECT * FROM Note ORDER BY title ASC;
+
+selectAllByTitleDesc:
+SELECT * FROM Note ORDER BY title DESC;
+
+search:
+SELECT * FROM Note WHERE title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%' ORDER BY createdAt DESC;
+
+searchByDateAsc:
+SELECT * FROM Note WHERE title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%' ORDER BY createdAt ASC;
+
+searchByTitleAsc:
+SELECT * FROM Note WHERE title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%' ORDER BY title ASC;
+
+searchByTitleDesc:
+SELECT * FROM Note WHERE title LIKE '%' || ? || '%' OR content LIKE '%' || ? || '%' ORDER BY title DESC;
+
 selectById:
 SELECT * FROM Note WHERE id = ?;
 

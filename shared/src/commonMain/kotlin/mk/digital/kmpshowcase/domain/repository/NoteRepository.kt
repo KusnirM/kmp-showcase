@@ -2,9 +2,11 @@ package mk.digital.kmpshowcase.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import mk.digital.kmpshowcase.domain.model.Note
+import mk.digital.kmpshowcase.domain.model.NoteSortOption
 
 interface NoteRepository {
-    fun observeAll(): Flow<List<Note>>
+    fun observeAll(sortOption: NoteSortOption = NoteSortOption.DATE_DESC): Flow<List<Note>>
+    fun search(query: String, sortOption: NoteSortOption = NoteSortOption.DATE_DESC): Flow<List<Note>>
     suspend fun getById(id: Long): Note?
     suspend fun insert(note: Note)
     suspend fun update(note: Note)
