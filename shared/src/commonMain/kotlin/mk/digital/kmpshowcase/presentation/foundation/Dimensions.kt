@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 val space0: Dp = 0.dp
+val quarterSpace: Dp = 1.dp
 val halfSpace: Dp = 2.dp
 val space: Dp = 4.dp
 val space2: Dp = 8.dp

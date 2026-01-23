@@ -11,6 +11,7 @@ import mk.digital.kmpshowcase.data.local.preferences.SessionPreferences
 import mk.digital.kmpshowcase.data.local.preferences.SessionPreferencesImpl
 import mk.digital.kmpshowcase.data.network.HttpClientProvider
 import mk.digital.kmpshowcase.data.repository.BiometricRepositoryImpl
+import mk.digital.kmpshowcase.data.repository.DateRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.LocationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.SettingsRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.database.NoteRepositoryImpl
@@ -21,6 +22,7 @@ import mk.digital.kmpshowcase.data.repository.user.UserRepositoryImpl
 import mk.digital.kmpshowcase.di.Qualifiers.app
 import mk.digital.kmpshowcase.di.Qualifiers.session
 import mk.digital.kmpshowcase.domain.repository.BiometricRepository
+import mk.digital.kmpshowcase.domain.repository.DateRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
 import mk.digital.kmpshowcase.domain.repository.NoteRepository
 import mk.digital.kmpshowcase.domain.repository.SettingsRepository
@@ -40,6 +42,7 @@ val dataModule = module {
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
     single<LocationRepository> { LocationRepositoryImpl(get()) }
     single<BiometricRepository> { BiometricRepositoryImpl(get()) }
+    single<DateRepository> { DateRepositoryImpl() }
     single { AppDatabase(get<DatabaseDriverFactory>().createDriver()) }
     single<NoteRepository> { NoteRepositoryImpl(get()) }
 }

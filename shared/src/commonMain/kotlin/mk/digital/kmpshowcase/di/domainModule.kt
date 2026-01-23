@@ -2,6 +2,7 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.domain.useCase.GetUsersUseCase
 import mk.digital.kmpshowcase.domain.useCase.TrackButtonClickUseCase
+import mk.digital.kmpshowcase.domain.useCase.calendar.GetTodayDateUseCase
 import mk.digital.kmpshowcase.domain.useCase.analytics.TrackScreenUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.DeleteAllNotesUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.DeleteNoteUseCase
@@ -36,4 +37,5 @@ val domainModule = module {
     singleOf(::UpdateNoteUseCase)
     singleOf(::DeleteNoteUseCase)
     singleOf(::DeleteAllNotesUseCase)
+    singleOf(::GetTodayDateUseCase)
 }

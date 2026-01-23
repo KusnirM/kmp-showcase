@@ -1,6 +1,7 @@
 package mk.digital.kmpshowcase.presentation.screen.home
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Cloud
 import androidx.compose.material.icons.outlined.Dataset
 import androidx.compose.material.icons.outlined.Palette
@@ -9,6 +10,8 @@ import androidx.compose.material.icons.outlined.QrCode2
 import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.shared.generated.resources.Res
+import mk.digital.kmpshowcase.shared.generated.resources.feature_calendar_subtitle
+import mk.digital.kmpshowcase.shared.generated.resources.feature_calendar_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_database_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.feature_database_title
 import mk.digital.kmpshowcase.shared.generated.resources.feature_networking_subtitle
@@ -36,7 +39,8 @@ enum class FeatureId {
     STORAGE,
     DATABASE,
     PLATFORM_APIS,
-    SCANNER
+    SCANNER,
+    CALENDAR,
 }
 
 val showcaseFeatures = listOf(
@@ -74,6 +78,12 @@ val showcaseFeatures = listOf(
         id = FeatureId.SCANNER,
         titleRes = Res.string.feature_scanner_title,
         subtitleRes = Res.string.feature_scanner_subtitle,
-        icon = Icons.Outlined.QrCode2
-    )
+        icon = Icons.Outlined.QrCode2,
+    ),
+    Feature(
+        id = FeatureId.CALENDAR,
+        titleRes = Res.string.feature_calendar_title,
+        subtitleRes = Res.string.feature_calendar_subtitle,
+        icon = Icons.Outlined.CalendarMonth,
+    ),
 )

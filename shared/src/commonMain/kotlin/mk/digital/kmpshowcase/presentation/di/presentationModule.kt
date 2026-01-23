@@ -3,6 +3,7 @@ package mk.digital.kmpshowcase.presentation.di
 import mk.digital.kmpshowcase.presentation.component.barcode.CodeGenerator
 import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerViewModel
 import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
+import mk.digital.kmpshowcase.presentation.screen.calendar.CalendarViewModel
 import mk.digital.kmpshowcase.presentation.screen.database.DatabaseViewModel
 import mk.digital.kmpshowcase.presentation.screen.detail.DetailViewModel
 import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
@@ -28,4 +29,5 @@ val presentationModule = module {
     }
     viewModel { ImagePickerViewModel() }
     viewModel { DatabaseViewModel(get(), get(), get(), get()) }
+    viewModel { CalendarViewModel(get()) }
 }
