@@ -18,8 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
+import mk.digital.kmpshowcase.presentation.base.NavRouter
+import mk.digital.kmpshowcase.presentation.base.Route
 import mk.digital.kmpshowcase.presentation.component.AppAlertDialog
 import mk.digital.kmpshowcase.presentation.component.AppRadioButton
+import mk.digital.kmpshowcase.presentation.component.buttons.AppTextButtonError
+import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.presentation.component.AvatarState
 import mk.digital.kmpshowcase.presentation.component.AvatarView
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
@@ -36,6 +40,7 @@ import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.settings_appearance
+import mk.digital.kmpshowcase.shared.generated.resources.settings_logout
 import mk.digital.kmpshowcase.shared.generated.resources.settings_profile
 import mk.digital.kmpshowcase.shared.generated.resources.settings_profile_photo
 import mk.digital.kmpshowcase.shared.generated.resources.settings_profile_photo_hint
@@ -117,7 +122,7 @@ fun SettingsScreen(
             item {
                 AppElevatedCard(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { throw RuntimeException("Test Crash for Firebase Crashlytics") }
+                    onClick = viewModel::triggerTestCrash
                 ) {
                     SettingsItem(
                         icon = {
@@ -137,6 +142,14 @@ fun SettingsScreen(
             VersionFooter(
                 versionName = state.versionName,
                 versionCode = state.versionCode
+            )
+        }
+
+        item {
+            AppTextButtonError(
+                text = stringResource(Res.string.settings_logout),
+                onClick = viewModel::logout,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -250,14 +263,18 @@ private fun VersionFooter(
 @Composable
 fun SettingsNavEvents(
     viewModel: SettingsViewModel,
+    router: NavRouter<Route>,
     onSetLocale: ((String) -> Unit)?,
     onOpenSettings: (() -> Unit)?,
+    onThemeChanged: (ThemeMode) -> Unit,
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
         if (event !is SettingNavEvents) return@CollectNavEvents
         when (event) {
             is SettingNavEvents.SetLocaleTag -> onSetLocale?.invoke(event.tag)
             is SettingNavEvents.ToSettings -> onOpenSettings?.invoke()
+            is SettingNavEvents.Logout -> router.replaceAll(Route.Login)
+            is SettingNavEvents.ThemeChanged -> onThemeChanged(event.mode)
         }
     }
 }

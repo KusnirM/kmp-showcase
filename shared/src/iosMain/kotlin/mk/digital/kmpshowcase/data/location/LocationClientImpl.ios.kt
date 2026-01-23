@@ -3,6 +3,7 @@ package mk.digital.kmpshowcase.data.location
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import mk.digital.kmpshowcase.domain.model.Location
 import platform.CoreLocation.CLLocation
@@ -14,11 +15,7 @@ import platform.Foundation.NSError
 import platform.Foundation.NSLog
 import platform.darwin.NSObject
 
-/**
- * iOS location gateway – starts/stops CoreLocation updates and emits positions.
- * Permission prompts are handled elsewhere (see LocationPermissionManager).
- */
-class IOSLocationClient : LocationClient {
+actual class LocationClientImpl : LocationClient {
 
     private val manager = CLLocationManager()
     private var out: SendChannel<Location>? = null
@@ -44,7 +41,7 @@ class IOSLocationClient : LocationClient {
         manager.delegate = delegate
     }
 
-    override suspend fun lastKnown(): Location? {
+    actual override suspend fun lastKnown(): Location? {
         val loc = manager.location
         if (loc == null) {
             NSLog("[%s] lastKnown: null (no cached location yet)", TAG)
@@ -55,7 +52,7 @@ class IOSLocationClient : LocationClient {
         return Location(lat, long)
     }
 
-    override fun updates(highAccuracy: Boolean) = callbackFlow {
+    actual override fun updates(highAccuracy: Boolean): Flow<Location> = callbackFlow {
         out = channel
 
         manager.desiredAccuracy = if (highAccuracy) kCLLocationAccuracyBest else kCLLocationAccuracyHundredMeters
@@ -68,6 +65,6 @@ class IOSLocationClient : LocationClient {
     }
 
     private companion object {
-        private const val TAG = "IOSLocationGateway"
+        private const val TAG = "LocationClientImpl"
     }
 }

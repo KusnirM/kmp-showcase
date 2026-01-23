@@ -2,6 +2,10 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.domain.useCase.GetUsersUseCase
 import mk.digital.kmpshowcase.domain.useCase.TrackButtonClickUseCase
+import mk.digital.kmpshowcase.domain.useCase.auth.CheckEmailExistsUseCase
+import mk.digital.kmpshowcase.domain.useCase.auth.RegisterUserUseCase
+import mk.digital.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
+import mk.digital.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
 import mk.digital.kmpshowcase.domain.useCase.calendar.GetTodayDateUseCase
 import mk.digital.kmpshowcase.domain.useCase.analytics.TrackScreenUseCase
 import mk.digital.kmpshowcase.domain.useCase.notes.DeleteAllNotesUseCase
@@ -38,4 +42,8 @@ val domainModule = module {
     singleOf(::DeleteNoteUseCase)
     singleOf(::DeleteAllNotesUseCase)
     singleOf(::GetTodayDateUseCase)
+    singleOf(::IsBiometricEnabledUseCase)
+    singleOf(::AuthenticateWithBiometricUseCase)
+    singleOf(::CheckEmailExistsUseCase)
+    singleOf(::RegisterUserUseCase)
 }

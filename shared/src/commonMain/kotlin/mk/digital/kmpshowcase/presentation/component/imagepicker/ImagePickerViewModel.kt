@@ -10,9 +10,7 @@ data class ImagePickerState(
     val imageBitmap: ImageBitmap? = null,
 )
 
-class ImagePickerViewModel(
-    private val onImageSelected: (ImageBitmap?) -> Unit = {},
-) : BaseViewModel<ImagePickerState>(ImagePickerState()) {
+class ImagePickerViewModel : BaseViewModel<ImagePickerState>(ImagePickerState()) {
 
     fun showDialog() {
         newState { it.copy(showOptionDialog = true) }
@@ -28,7 +26,6 @@ class ImagePickerViewModel(
 
     fun onImageResult(result: ImageResult?) {
         newState { it.copy(action = PickerAction.None, isLoading = false, imageBitmap = result?.bitmap) }
-        onImageSelected(result?.bitmap)
     }
 
     fun onImageLoading() {

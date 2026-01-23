@@ -14,6 +14,7 @@ import mk.digital.kmpshowcase.data.repository.BiometricRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.DateRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.LocationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.SettingsRepositoryImpl
+import mk.digital.kmpshowcase.data.repository.database.AuthRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.database.NoteRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.storage.StorageRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.user.UserClient
@@ -21,6 +22,7 @@ import mk.digital.kmpshowcase.data.repository.user.UserClientImpl
 import mk.digital.kmpshowcase.data.repository.user.UserRepositoryImpl
 import mk.digital.kmpshowcase.di.Qualifiers.app
 import mk.digital.kmpshowcase.di.Qualifiers.session
+import mk.digital.kmpshowcase.domain.repository.AuthRepository
 import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.DateRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
@@ -28,23 +30,32 @@ import mk.digital.kmpshowcase.domain.repository.NoteRepository
 import mk.digital.kmpshowcase.domain.repository.SettingsRepository
 import mk.digital.kmpshowcase.domain.repository.StorageRepository
 import mk.digital.kmpshowcase.domain.repository.UserRepository
+import mk.digital.kmpshowcase.util.Logger
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<UserClient> { UserClientImpl(get()) }
-    single<UserRepository> { UserRepositoryImpl(get()) }
+    singleOf(::Logger)
+    singleOf(::UserClientImpl) { bind<UserClient>() }
+    singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
     single { provideHttpClient() }
 
+    // Qualified preferences - need explicit qualifier
     single<SessionPreferences> { SessionPreferencesImpl(get(session)) }
     single<AppPreferences> { AppPreferencesImpl(get(app)) }
-    single<StorageLocalStore> { StorageLocalStoreImpl(get(), get()) }
-    single<StorageRepository> { StorageRepositoryImpl(get()) }
-    single<SettingsRepository> { SettingsRepositoryImpl(get()) }
-    single<LocationRepository> { LocationRepositoryImpl(get()) }
-    single<BiometricRepository> { BiometricRepositoryImpl(get()) }
-    single<DateRepository> { DateRepositoryImpl() }
+
+    singleOf(::StorageLocalStoreImpl) { bind<StorageLocalStore>() }
+    singleOf(::StorageRepositoryImpl) { bind<StorageRepository>() }
+    singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
+    singleOf(::LocationRepositoryImpl) { bind<LocationRepository>() }
+    singleOf(::BiometricRepositoryImpl) { bind<BiometricRepository>() }
+    singleOf(::DateRepositoryImpl) { bind<DateRepository>() }
+    singleOf(::NoteRepositoryImpl) { bind<NoteRepository>() }
+    singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
+
+    // Database - needs special factory
     single { AppDatabase(get<DatabaseDriverFactory>().createDriver()) }
-    single<NoteRepository> { NoteRepositoryImpl(get()) }
 }
 
 fun provideHttpClient(): HttpClient = HttpClientProvider().create()

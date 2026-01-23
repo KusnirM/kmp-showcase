@@ -1,8 +1,13 @@
 package mk.digital.kmpshowcase.domain.useCase.base
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
+
 /**
  * Base class for all use cases.
  * Encapsulates a single business logic operation.
+ * Automatically runs on IO dispatcher.
  *
  * @param Params Input parameters for the use case
  * @param Result Output result from the use case
@@ -16,9 +21,11 @@ abstract class UseCase<in Params, out Result> {
     protected abstract suspend fun run(params: Params): Result
 
     /**
-     * Invokes the use case.
+     * Invokes the use case on IO dispatcher.
      */
-    suspend operator fun invoke(params: Params): Result = run(params)
+    suspend operator fun invoke(params: Params): Result = withContext(Dispatchers.IO) {
+        run(params)
+    }
 }
 
 /**

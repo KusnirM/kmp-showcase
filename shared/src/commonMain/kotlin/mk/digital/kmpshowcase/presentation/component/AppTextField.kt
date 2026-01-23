@@ -9,10 +9,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
+import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
+import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
 import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
@@ -61,8 +62,8 @@ fun AppTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        label = label?.let { { Text(it) } },
-        placeholder = placeholder?.let { { Text(it) } },
+        label = label?.let { { TextBodySmallNeutral80(it) } },
+        placeholder = placeholder?.let { { TextBodyMediumNeutral80(it) } },
         enabled = enabled,
         readOnly = readOnly,
         isError = isError,
@@ -70,7 +71,7 @@ fun AppTextField(
         maxLines = maxLines,
         leadingIcon = leadingIcon,
         trailingIcon = clearButton,
-        supportingText = supportingText?.let { { Text(it) } },
+        supportingText = supportingText?.let { { TextBodySmallNeutral80(it) } },
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

@@ -1,12 +1,12 @@
 package mk.digital.kmpshowcase.di
 
-import mk.digital.kmpshowcase.data.biometric.AndroidBiometricClient
 import mk.digital.kmpshowcase.data.biometric.BiometricClient
+import mk.digital.kmpshowcase.data.biometric.BiometricClientImpl
 import mk.digital.kmpshowcase.data.database.DatabaseDriverFactory
 import mk.digital.kmpshowcase.data.local.preferences.Preferences
 import mk.digital.kmpshowcase.data.local.preferences.PreferencesImpl
-import mk.digital.kmpshowcase.data.location.AndroidLocationClient
 import mk.digital.kmpshowcase.data.location.LocationClient
+import mk.digital.kmpshowcase.data.location.LocationClientImpl
 import mk.digital.kmpshowcase.di.Qualifiers.app
 import mk.digital.kmpshowcase.di.Qualifiers.session
 import mk.digital.kmpshowcase.presentation.base.router.ExternalRouter
@@ -17,13 +17,13 @@ import org.koin.dsl.module
 
 actual val platformModule: Module = module {
     singleOf(::ExternalRouter)
-    single<Preferences>(session) {
-        PreferencesImpl(context = androidContext(), storageName = session.value)
-    }
-    single<Preferences>(app) {
-        PreferencesImpl(context = androidContext(), storageName = app.value)
-    }
-    single<LocationClient> { AndroidLocationClient(androidContext()) }
-    single<BiometricClient> { AndroidBiometricClient(androidContext()) }
+
+    // Qualified preferences - need androidContext()
+    single<Preferences>(session) { PreferencesImpl(androidContext(), session.value) }
+    single<Preferences>(app) { PreferencesImpl(androidContext(), app.value) }
+
+    // Platform clients - need androidContext()
+    single<LocationClient> { LocationClientImpl(androidContext()) }
+    single<BiometricClient> { BiometricClientImpl(androidContext()) }
     single { DatabaseDriverFactory(androidContext()) }
 }

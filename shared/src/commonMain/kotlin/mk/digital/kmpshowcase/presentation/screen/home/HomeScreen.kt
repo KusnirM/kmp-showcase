@@ -12,7 +12,6 @@ import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
-import mk.digital.kmpshowcase.presentation.foundation.space8
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
@@ -22,10 +21,10 @@ fun HomeScreen(viewModel: HomeViewModel) {
         contentPadding = PaddingValues(
             start = space4,
             end = space4,
-            top = space8,
+            top = space4,
             bottom = floatingNavBarSpace,
         ),
-        verticalArrangement = Arrangement.spacedBy(space8),
+        verticalArrangement = Arrangement.spacedBy(space4),
     ) {
         items(state.features, key = { it.id }) { feature ->
             FeatureCard(

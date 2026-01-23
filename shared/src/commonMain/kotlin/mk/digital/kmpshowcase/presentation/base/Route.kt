@@ -12,12 +12,32 @@ import mk.digital.kmpshowcase.shared.generated.resources.screen_storage
 import mk.digital.kmpshowcase.shared.generated.resources.screen_calendar
 import mk.digital.kmpshowcase.shared.generated.resources.screen_database
 import mk.digital.kmpshowcase.shared.generated.resources.screen_ui_components
+import mk.digital.kmpshowcase.shared.generated.resources.screen_login
+import mk.digital.kmpshowcase.shared.generated.resources.screen_register
 import org.jetbrains.compose.resources.StringResource
 
 @Serializable
 sealed interface Route : NavKey {
     val titleRes: StringResource
     val showBackArrow: Boolean get() = true
+    val showTopBar: Boolean get() = true
+    val showBottomNav: Boolean get() = true
+
+    @Serializable
+    data object Login : Route {
+        override val titleRes = Res.string.screen_login
+        override val showBackArrow = false
+        override val showTopBar = false
+        override val showBottomNav = false
+    }
+
+    @Serializable
+    data object Register : Route {
+        override val titleRes = Res.string.screen_register
+        override val showBackArrow = true
+        override val showTopBar = false
+        override val showBottomNav = false
+    }
 
     @Serializable
     sealed interface HomeSection : Route {
