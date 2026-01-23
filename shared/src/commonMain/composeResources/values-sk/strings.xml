@@ -114,6 +114,44 @@
     <string name="database_sort_title_asc">Názov (A-Z)</string>
     <string name="database_sort_title_desc">Názov (Z-A)</string>
 
+    <!-- Calendar Screen -->
+    <string name="screen_calendar">Kalendár</string>
+    <string name="feature_calendar_title">Kalendár</string>
+    <string name="feature_calendar_subtitle">Výber rozsahu dátumov, štýl Airbnb</string>
+    <string name="calendar_title">Výber rozsahu dátumov</string>
+    <string name="calendar_subtitle">Vyberte rozsah dátumov kliknutím na dva dátumy</string>
+    <string name="calendar_selected_range">Vybraný rozsah</string>
+    <string name="calendar_clear_selection">Vymazať výber</string>
+    <string name="calendar_header_format">%1$s %2$d</string>
+    <string name="calendar_previous_month">Predchádzajúci mesiac</string>
+    <string name="calendar_next_month">Nasledujúci mesiac</string>
+    <!-- Weekday labels (short) -->
+    <string name="calendar_weekday_mon">Po</string>
+    <string name="calendar_weekday_tue">Ut</string>
+    <string name="calendar_weekday_wed">St</string>
+    <string name="calendar_weekday_thu">Št</string>
+    <string name="calendar_weekday_fri">Pi</string>
+    <string name="calendar_weekday_sat">So</string>
+    <string name="calendar_weekday_sun">Ne</string>
+    <!-- Month names -->
+    <string name="calendar_month_january">Január</string>
+    <string name="calendar_month_february">Február</string>
+    <string name="calendar_month_march">Marec</string>
+    <string name="calendar_month_april">Apríl</string>
+    <string name="calendar_month_may">Máj</string>
+    <string name="calendar_month_june">Jún</string>
+    <string name="calendar_month_july">Júl</string>
+    <string name="calendar_month_august">August</string>
+    <string name="calendar_month_september">September</string>
+    <string name="calendar_month_october">Október</string>
+    <string name="calendar_month_november">November</string>
+    <string name="calendar_month_december">December</string>
+    <!-- Range selection text -->
+    <string name="calendar_no_dates_selected">Žiadne dátumy nevybraté</string>
+    <string name="calendar_start_date">Začiatok: %1$s</string>
+    <string name="calendar_single_date">Jeden dátum: %1$s</string>
+    <string name="calendar_range_format">Od: %1$s\nDo: %2$s</string>
+
     <!-- Networking Screen -->
     <string name="networking_title">Používatelia</string>
     <string name="networking_subtitle">Načítané z JSONPlaceholder API</string>
