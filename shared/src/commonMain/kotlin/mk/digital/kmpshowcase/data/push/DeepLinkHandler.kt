@@ -6,7 +6,7 @@ object DeepLinkHandler {
 
     private const val SCHEME = "kmpshowcase"
 
-    private val routeMap = mapOf(
+    private val routeMap: Map<String, Route> = mapOf(
         "" to Route.HomeSection.Home,
         "home" to Route.HomeSection.Home,
         "settings" to Route.Settings,
@@ -23,6 +23,8 @@ object DeepLinkHandler {
         "register" to Route.Register,
     )
 
+    // Called from platform-specific code (AppDelegate.swift)
+    @Suppress("unused")
     fun parseDeepLink(deepLink: String): Route? {
         if (!deepLink.startsWith("$SCHEME://")) return null
         val path = deepLink.removePrefix("$SCHEME://").lowercase()
