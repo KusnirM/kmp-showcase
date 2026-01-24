@@ -36,8 +36,10 @@ fun ImagePickerView(viewModel: ImagePickerViewModel) {
             permission = PermissionType.CAMERA,
             onDeniedDialogDismiss = { viewModel.resetAction() },
         ) {
-            cameraManager.launch()
-            viewModel.resetAction()
+            LaunchedEffect(Unit) {
+                cameraManager.launch()
+                viewModel.resetAction()
+            }
         }
 
         PickerAction.Gallery -> {
@@ -46,8 +48,10 @@ fun ImagePickerView(viewModel: ImagePickerViewModel) {
                     permission = PermissionType.GALLERY,
                     onDeniedDialogDismiss = { viewModel.resetAction() },
                 ) {
-                    galleryManager.launch()
-                    viewModel.resetAction()
+                    LaunchedEffect(Unit) {
+                        galleryManager.launch()
+                        viewModel.resetAction()
+                    }
                 }
             } else {
                 LaunchedEffect(state.action) {

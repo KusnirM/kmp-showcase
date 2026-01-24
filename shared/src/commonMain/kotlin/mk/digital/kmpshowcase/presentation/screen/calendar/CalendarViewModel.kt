@@ -25,6 +25,7 @@ class CalendarViewModel(
         )
     }
 
+    @Suppress("MagicNumber")
     private fun generateSampleDisabledDates(today: LocalDate): Set<LocalDate> {
         return setOf(
             today.plus(3, DateTimeUnit.DAY),

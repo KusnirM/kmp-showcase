@@ -12,9 +12,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlinx.coroutines.flow.Flow
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-private fun ScreenLifecycleEffect(
+fun ScreenLifecycleEffect(
     key: Any? = Unit,
     onCreate: () -> Unit = {},
     onResume: () -> Unit = {},
@@ -62,12 +63,14 @@ private fun ScreenLifecycleEffect(
                         currentOnResume()
                     }
                 }
+
                 Lifecycle.Event.ON_PAUSE -> {
                     if (isResumed) {
                         isResumed = false
                         currentOnPause()
                     }
                 }
+
                 else -> {}
             }
         }
@@ -80,20 +83,26 @@ private fun ScreenLifecycleEffect(
     }
 }
 
+/**
+ * A lifecycle-aware version of hiltViewModel that automatically connects
+ * ViewModel's onResumed/onPaused to the composable's lifecycle.
+ */
 @Composable
-fun ScreenLifecycleEffect(viewModel: ScreenLifecycle) {
+inline fun <reified VM : BaseViewModel<*>> lifecycleAwareViewModel(): VM {
+    val viewModel = koinViewModel<VM>()
     ScreenLifecycleEffect(
         key = viewModel,
         onCreate = viewModel::onCreated,
         onResume = viewModel::onResumed,
         onPause = viewModel::onPaused
     )
+    return viewModel
 }
 
 @Composable
-fun CollectNavEvents(
-    navEventFlow: Flow<NavEvent>,
-    onEvent: (NavEvent) -> Unit
+fun <T : NavEvent> CollectNavEvents(
+    navEventFlow: Flow<T>,
+    onEvent: (T) -> Unit
 ) {
     val currentOnEvent by rememberUpdatedState(onEvent)
     LaunchedEffect(navEventFlow) {

@@ -6,11 +6,10 @@ import platform.UIKit.UIViewController
 
 @Suppress("FunctionNaming")
 fun MainViewController(
-    onOpenSettings: () -> Unit,
     onTrackScreen: ((String) -> Unit)? = null
 ): UIViewController {
     IOSAnalyticsClient.screenTrackingHandler = onTrackScreen
     return ComposeUIViewController {
-        MainView(onOpenSettings = onOpenSettings)
+        MainView()
     }
 }

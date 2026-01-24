@@ -10,11 +10,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun HomeScreen(router: NavRouter<Route>,viewModel: HomeViewModel = lifecycleAwareViewModel()) {
+    HomeNavEvents(router)
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LazyColumn(
@@ -36,12 +38,11 @@ fun HomeScreen(viewModel: HomeViewModel) {
 }
 
 @Composable
-fun HomeNavEvents(
-    viewModel: HomeViewModel,
-    router: NavRouter<Route>
+private fun HomeNavEvents(
+    router: NavRouter<Route>,
+    viewModel: HomeViewModel = lifecycleAwareViewModel(),
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) {
-        if (it !is HomeNavEvent) return@CollectNavEvents
         when (it) {
             is HomeNavEvent.ToFeature -> {
                 when (it.featureId) {

@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.AppTextField
 import mk.digital.kmpshowcase.presentation.component.barcode.CodeFormat
 import mk.digital.kmpshowcase.presentation.component.barcode.CodeScanner
@@ -56,7 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Suppress("CognitiveComplexMethod")
 @Composable
-fun ScannerScreen(viewModel: ScannerViewModel) {
+fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val modeOptions = listOf(

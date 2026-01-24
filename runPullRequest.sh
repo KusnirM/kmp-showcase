@@ -1,1 +1,1 @@
- ./gradlew :shared:testAndroidHostTest detekt
+ ./gradlew :shared:testAndroidHostTest detekt  --parallel

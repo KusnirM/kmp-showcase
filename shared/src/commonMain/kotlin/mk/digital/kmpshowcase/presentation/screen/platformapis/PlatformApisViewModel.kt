@@ -19,8 +19,8 @@ class PlatformApisViewModel(
         newState { it.copy(biometricsAvailable = biometricRepository.enabled()) }
     }
 
-    fun share() {
-        navigate(PlatformApisNavEvent.Share(DEMO_SHARE_TEXT))
+    fun share(text: String) {
+        navigate(PlatformApisNavEvent.Share(text))
     }
 
     fun dial() {
@@ -31,12 +31,12 @@ class PlatformApisViewModel(
         navigate(PlatformApisNavEvent.OpenLink(DEMO_URL))
     }
 
-    fun sendEmail() {
-        navigate(PlatformApisNavEvent.SendEmail(DEMO_EMAIL, DEMO_EMAIL_SUBJECT, DEMO_EMAIL_BODY))
+    fun sendEmail(subject: String, body: String) {
+        navigate(PlatformApisNavEvent.SendEmail(DEMO_EMAIL, subject, body))
     }
 
-    fun copyToClipboard() {
-        navigate(PlatformApisNavEvent.CopyToClipboard(DEMO_COPY_TEXT))
+    fun copyToClipboard(text: String) {
+        navigate(PlatformApisNavEvent.CopyToClipboard(text))
         newState { it.copy(copiedToClipboard = true) }
     }
 
@@ -89,7 +89,10 @@ class PlatformApisViewModel(
             action = { biometricRepository.authenticate() },
             onLoading = { newState { it.copy(biometricsLoading = true, biometricsResult = null) } },
             onSuccess = { result -> newState { it.copy(biometricsLoading = false, biometricsResult = result) } },
-            onError = { error -> newState { it.copy(biometricsLoading = false, biometricsResult = BiometricResult.SystemError(error.message.orEmpty())) } }
+            onError = { error ->
+                val result = BiometricResult.SystemError(error.message.orEmpty())
+                newState { it.copy(biometricsLoading = false, biometricsResult = result) }
+            }
         )
     }
 
@@ -100,12 +103,8 @@ class PlatformApisViewModel(
 
     private companion object {
         private const val DEMO_PHONE_NUMBER = "+1234567890"
-        private const val DEMO_URL = "https://github.com/anthropics/claude-code"
+        private const val DEMO_URL = "https://github.com/KusnirM"
         private const val DEMO_EMAIL = "example@example.com"
-        private const val DEMO_EMAIL_SUBJECT = "Hello from KMP Showcase"
-        private const val DEMO_EMAIL_BODY = "This is a demo email sent from the KMP Showcase app."
-        private const val DEMO_SHARE_TEXT = "Check out KMP Showcase - a Kotlin Multiplatform demo app!"
-        private const val DEMO_COPY_TEXT = "Text copied from KMP Showcase"
     }
 }
 

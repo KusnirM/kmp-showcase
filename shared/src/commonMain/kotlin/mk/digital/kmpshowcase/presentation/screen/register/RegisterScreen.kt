@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.AppPasswordTextField
 import mk.digital.kmpshowcase.presentation.component.AppTextField
 import mk.digital.kmpshowcase.presentation.component.buttons.ContainedButton
@@ -41,7 +41,6 @@ import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
-import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.space2
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.foundation.space6
@@ -73,8 +72,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RegisterScreen(
-    viewModel: RegisterViewModel,
+    router: NavRouter<Route>,
+    viewModel: RegisterViewModel = lifecycleAwareViewModel(),
 ) {
+    RegisterNavEvents(router)
     val state by viewModel.state.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 
@@ -182,7 +183,8 @@ fun RegisterScreen(
             supportingText = state.confirmPasswordError?.let { error ->
                 when (error) {
                     RegisterConfirmPasswordError.EMPTY -> stringResource(Res.string.register_confirm_password_empty)
-                    RegisterConfirmPasswordError.MISMATCH -> stringResource(Res.string.register_confirm_password_mismatch)
+                    RegisterConfirmPasswordError.MISMATCH ->
+                        stringResource(Res.string.register_confirm_password_mismatch)
                 }
             },
             keyboardActions = KeyboardActions(
@@ -229,12 +231,12 @@ fun RegisterScreen(
 }
 
 @Composable
-fun RegisterNavEvents(
-    viewModel: RegisterViewModel,
-    router: NavRouter<Route>
+private fun RegisterNavEvents(
+    router: NavRouter<Route>,
+    viewModel: RegisterViewModel = lifecycleAwareViewModel(),
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
-        if (event !is RegisterNavEvent) return@CollectNavEvents
+
         when (event) {
             is RegisterNavEvent.ToHome -> router.replaceAll(Route.HomeSection.Home)
             is RegisterNavEvent.ToLogin -> router.onBack()

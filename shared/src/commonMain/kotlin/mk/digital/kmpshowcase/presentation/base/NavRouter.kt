@@ -57,7 +57,7 @@ class NavRouterImpl<T : NavKey>(
     }
 
     override fun replaceAll(page: T) {
-        while (backStack.removeLastOrNull() != null) { }
+        backStack.clear()
         backStack.add(page)
     }
 

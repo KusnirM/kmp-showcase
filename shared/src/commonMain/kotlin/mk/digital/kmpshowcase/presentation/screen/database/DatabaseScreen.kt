@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.datetime.TimeZone
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import kotlinx.datetime.toLocalDateTime
 import mk.digital.kmpshowcase.domain.model.Note
 import mk.digital.kmpshowcase.domain.model.NoteSortOption
@@ -58,7 +59,7 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Instant
 
 @Composable
-fun DatabaseScreen(viewModel: DatabaseViewModel) {
+fun DatabaseScreen(viewModel: DatabaseViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LazyColumn(

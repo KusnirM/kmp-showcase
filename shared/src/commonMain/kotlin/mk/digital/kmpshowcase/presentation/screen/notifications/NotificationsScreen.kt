@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.NotificationsActive
@@ -28,6 +27,7 @@ import mk.digital.kmpshowcase.domain.repository.PushPermissionStatus
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.permission.rememberNotificationPermissionRequester
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
@@ -65,7 +65,9 @@ import mk.digital.kmpshowcase.shared.generated.resources.notifications_token_tit
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun NotificationsScreen(viewModel: NotificationsViewModel) {
+fun NotificationsScreen(router: NavRouter<Route>, viewModel: NotificationsViewModel = lifecycleAwareViewModel()) {
+    NotificationsNavEvents(router)
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     val permissionRequester = rememberNotificationPermissionRequester { status ->
         viewModel.updatePermissionStatus(status)
@@ -237,12 +239,11 @@ private fun CardButton(
 }
 
 @Composable
-fun NotificationsNavEvents(
-    viewModel: NotificationsViewModel,
+private fun NotificationsNavEvents(
     router: NavRouter<Route>,
+    viewModel: NotificationsViewModel = lifecycleAwareViewModel(),
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
-        if (event !is NotificationsNavEvent) return@CollectNavEvents
         when (event) {
             is NotificationsNavEvent.OpenSettings -> {
                 router.openNotificationSettings()

@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import mk.digital.kmpshowcase.domain.model.User
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.CircularProgress
 import mk.digital.kmpshowcase.presentation.component.ErrorView
 import mk.digital.kmpshowcase.presentation.component.LoadingView
@@ -40,7 +41,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.networking_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun NetworkingScreen(viewModel: NetworkingViewModel) {
+fun NetworkingScreen(viewModel: NetworkingViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Box(modifier = Modifier.fillMaxSize()) {

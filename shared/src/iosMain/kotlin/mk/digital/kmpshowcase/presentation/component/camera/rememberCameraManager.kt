@@ -13,7 +13,6 @@ import platform.UIKit.UIApplication
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageJPEGRepresentation
 import platform.UIKit.UIImagePickerController
-import platform.UIKit.UIImagePickerControllerCameraCaptureMode
 import platform.UIKit.UIImagePickerControllerDelegateProtocol
 import platform.UIKit.UIImagePickerControllerEditedImage
 import platform.UIKit.UIImagePickerControllerOriginalImage
@@ -59,8 +58,6 @@ actual fun rememberCameraManager(onResult: (ImageResult?) -> Unit): CameraManage
         CameraManager {
             imagePicker.setSourceType(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypeCamera)
             imagePicker.setAllowsEditing(true)
-            val photoMode = UIImagePickerControllerCameraCaptureMode.UIImagePickerControllerCameraCaptureModePhoto
-            imagePicker.setCameraCaptureMode(photoMode)
             imagePicker.setDelegate(cameraDelegate)
             getRootViewController()?.presentViewController(imagePicker, true, null)
         }
