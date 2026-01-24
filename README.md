@@ -1,156 +1,121 @@
-# kmp-showcase — Kotlin Multiplatform Component Showcase
+# KMP Showcase
 
-A **KMP portfolio app** demonstrating multiplatform capabilities with **shared business/UI code** and **native shells** for Android and iOS.
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1-7F52FF.svg?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Compose](https://img.shields.io/badge/Compose-Multiplatform-4285F4.svg?logo=jetpackcompose&logoColor=white)](https://www.jetbrains.com/lp/compose-multiplatform/)
+[![Android](https://img.shields.io/badge/Android-34-3DDC84.svg?logo=android&logoColor=white)](/)
+[![iOS](https://img.shields.io/badge/iOS-17-000000.svg?logo=apple&logoColor=white)](/)
 
-## TL;DR
+**95% shared code** across Android & iOS
 
-- **Purpose**: Portfolio app showcasing KMP capabilities — each feature is a self-contained demo.
-- **KMP shared**: UI (Compose Multiplatform), Navigation3, DI (Koin), networking (Ktor 3), database (SQLDelight), JSON (kotlinx-serialization).
-- **Android**: Material 3, Activity Compose, edge‑to‑edge, Firebase Analytics, FCM push notifications.
-- **iOS**: Compose MPP UI hosted in Swift/SwiftUI shell, safe‑area support, Darwin HTTP engine, Firebase Analytics, APNs push notifications.
+---
+
+<table>
+<tr>
+<td width="50%">
+
+### 🎨 UI & Navigation
+- Compose Multiplatform
+- Material 3 + Dark Mode
+- Navigation3
+- 40+ Components
+
+</td>
+<td width="50%">
+
+### 📱 Platform APIs
+- Biometrics (Face ID / Fingerprint)
+- Camera & Gallery
+- QR/Barcode Scanner
+- Location & Permissions
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔌 Data & Network
+- Ktor 3 HTTP Client
+- SQLDelight Database
+- DataStore Preferences
+- Coil Image Loading
+
+</td>
+<td width="50%">
+
+### 🔔 Notifications
+- Push (FCM / APNs)
+- Local Notifications
+- Notification Channels
+- Permission Handling
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| Language | Kotlin |
-| UI | Compose Multiplatform |
-| Navigation | Navigation3 |
-| DI | Koin |
-| Networking | Ktor 3 (OkHttp / Darwin) |
-| Database | SQLDelight |
-| Images | Coil 3 |
-| Analytics | Firebase Analytics |
-| Push Notifications | FCM (Android) / APNs (iOS) |
-| Testing | kotlin.test + Mokkery |
-| Code Quality | Detekt + Compose rules |
-
-See `gradle/libs.versions.toml` for versions.
-
----
-
-## Module Structure
-
-```
-root
-├─ androidApp/    # Android app (Compose, Material3)
-├─ iosApp/        # iOS app (Swift/SwiftUI host)
-└─ shared/        # KMP shared code
-   └─ src/
-      ├─ commonMain/     # Shared (UI, domain, data, DI)
-      ├─ commonTest/     # Unit tests
-      ├─ androidMain/    # Android implementations
-      └─ iosMain/        # iOS implementations
-```
-
----
-
-## Architecture
-
-```mermaid
-graph LR
-    Presentation[Presentation\nUI + ViewModel] --> Domain[Domain\nUseCases + Models]
-    Domain --> Data[Data\nRepositories + DataSources]
-```
-
-**MVVM Clean** — Presentation → Domain → Data
+<p>
+<img src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white" />
+<img src="https://img.shields.io/badge/Compose-4285F4?logo=jetpackcompose&logoColor=white" />
+<img src="https://img.shields.io/badge/Koin-F7A91E?logoColor=white" />
+<img src="https://img.shields.io/badge/Ktor-7F52FF?logoColor=white" />
+<img src="https://img.shields.io/badge/SQLDelight-005C99?logoColor=white" />
+<img src="https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black" />
+<img src="https://img.shields.io/badge/Detekt-6F42C1?logoColor=white" />
+<img src="https://img.shields.io/badge/Mokkery-FF6B6B?logoColor=white" />
+</p>
 
 ---
 
 ## Screens
 
-| Screen | Description |
-|--------|-------------|
-| Login | Email/password with biometric authentication (Fingerprint/Face ID) |
-| Register | User registration with validation |
-| Home | Feature catalog with cards |
-| UI Components | 40+ reusable components (buttons, inputs, dialogs, etc.) |
-| Networking | Ktor HTTP client demo |
-| Storage | Session vs Persistent storage |
-| Database | SQLDelight with notes CRUD, search & sort |
-| Platform APIs | Share, dial, links, email, clipboard, location, biometrics |
-| Scanner | QR/barcode generator & scanner |
-| Calendar | Date range picker with disabled dates |
-| Notifications | Push notifications, local notifications, permission handling |
-| Settings | Theme, Language, profile photo picker |
+| | | | |
+|:---:|:---:|:---:|:---:|
+| 🔐 **Login** | 📝 **Register** | 🏠 **Home** | 🎨 **Components** |
+| 🌐 **Networking** | 💾 **Storage** | 🗄️ **Database** | 📱 **Platform APIs** |
+| 📷 **Scanner** | 📅 **Calendar** | 🔔 **Notifications** | ⚙️ **Settings** |
 
 ---
 
-## Commands
+## Architecture
 
-```bash
-# Run tests
-./gradlew :shared:testAndroidHostTest
-
-# Run detekt
-./gradlew detekt
+```
+Presentation  →  Domain  →  Data
+  (UI/VM)       (UseCase)   (Repository)
 ```
 
 ---
 
-## Implemented Features
+## Quick Start
 
-### Core
-- ✅ Compose Multiplatform UI with Material 3
-- ✅ Navigation3 with floating nav bar
-- ✅ Koin dependency injection
-- ✅ Safe area / edge-to-edge
-- ✅ Unit tests (kotlin.test + Mokkery)
-- ✅ String resources (EN/SK)
-- ✅ Global snackbar (themed)
-- ✅ Login/Register with form validation
-- ✅ Biometric authentication (Fingerprint on Android, Face ID on iOS)
+```bash
+# Android
+./gradlew :androidApp:installDebug
 
-### Networking & Data
-- ✅ Ktor HTTP client with JSON
-- ✅ DataStore / Preferences
-- ✅ SQLDelight local database
-- ✅ Coil 3 image loading
+# iOS
+open iosApp/iosApp.xcodeproj
+```
 
-### Device Features
-- ✅ Camera & Image picker (profile photo)
-- ✅ QR/Barcode scanner & generator
-- ✅ Biometrics (Fingerprint on Android, Face ID on iOS)
-- ✅ Location / GPS
-- ✅ Permissions handling
-- ✅ Platform routers (share, dial, links, email, clipboard)
+---
 
-### UI Components
-- ✅ Buttons, Cards, Dialogs, Bottom Sheet
-- ✅ TextField, Switch, Radio, Checkbox, Chips
-- ✅ Slider, Progress indicators, Dividers
-- ✅ Segmented Button, Badge, Menu
-- ✅ SearchField with debounce (database search & sort)
-- ✅ Calendar (date range picker, disabled dates, month navigation)
-- ✅ Typography, Spacers
+## Project Structure
 
-### Notifications
-- ✅ Push notifications (FCM on Android, APNs on iOS)
-- ✅ Local notifications with channels
-- ✅ Notification permission handling
-- ✅ Open notification settings
-
-### Quality & Build
-- ✅ Detekt + Compose rules
-- ✅ GitHub Actions CI
-- ✅ Firebase Analytics (screen tracking)
-- ✅ Crashlytics (crashes + non-fatal exceptions)
-- ✅ ProGuard / R8
-- ✅ Dark mode & Localization
+```
+androidApp/     Android app
+iosApp/         iOS app (SwiftUI shell)
+shared/         Shared KMP module (UI, domain, data)
+```
 
 ---
 
 ## Roadmap
 
-- [x] Form validation (Login/Register)
-- [x] Date/Time pickers (Calendar with range selection)
-- [x] Push notifications (FCM/APNs)
-- [ ] Pagination (infinite scroll)
+- [ ] Pagination
 - [ ] Deep links
-- [ ] Maps integration
+- [ ] Maps
 - [ ] Video player
-- [ ] Offline-first sync
-
----
+- [ ] Offline-first
+- [ ] Compose UI tests
+- [ ] Instrumented tests (Android/iOS)
