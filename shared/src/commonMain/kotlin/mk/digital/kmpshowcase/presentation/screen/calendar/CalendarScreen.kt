@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Modifier
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.calendar.CalendarView
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
@@ -34,7 +35,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.calendar_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun CalendarScreen(viewModel: CalendarViewModel) {
+fun CalendarScreen(viewModel: CalendarViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LazyColumn(

@@ -68,7 +68,7 @@ class AndroidPushNotificationService(
         val currentToken = _token.value
         if (currentToken != null) {
             Log.d(TAG, "FCM Token: $currentToken")
-            analyticsClient.log("FCM Token logged: ${currentToken.take(10)}...")
+            analyticsClient.log("FCM Token logged: ${currentToken.take(TOKEN_PREVIEW_LENGTH)}...")
         } else {
             Log.d(TAG, "FCM Token: not available yet")
         }
@@ -77,7 +77,7 @@ class AndroidPushNotificationService(
     suspend fun updateToken(token: String) {
         _token.value = token
         notificationRepository.setToken(token)
-        Log.d(TAG, "FCM Token updated: ${token.take(10)}...")
+        Log.d(TAG, "FCM Token updated: ${token.take(TOKEN_PREVIEW_LENGTH)}...")
         analyticsClient.log("FCM token updated")
     }
 
@@ -109,6 +109,7 @@ class AndroidPushNotificationService(
 
     companion object {
         private const val TAG = "PushNotificationService"
+        private const val TOKEN_PREVIEW_LENGTH = 10
         private const val KEY_DEEP_LINK = "deep_link"
         private const val KEY_NOTIFICATION_ID = "notificationId"
         private const val KEY_TITLE = "title"

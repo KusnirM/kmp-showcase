@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
@@ -39,7 +40,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.storage_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun StorageScreen(viewModel: StorageViewModel) {
+fun StorageScreen(viewModel: StorageViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LazyColumn(

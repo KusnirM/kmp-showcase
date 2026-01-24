@@ -18,6 +18,8 @@ import mk.digital.kmpshowcase.domain.repository.PushNotificationService
 import mk.digital.kmpshowcase.domain.repository.PushPermissionStatus
 import kotlin.time.Clock
 
+private const val TOKEN_PREVIEW_LENGTH = 10
+
 class IOSPushNotificationService(
     private val notificationRepository: NotificationRepository
 ) : PushNotificationService {
@@ -78,7 +80,7 @@ class IOSPushNotificationService(
                 service.scope.launch {
                     service.notificationRepository.setToken(token)
                 }
-                println("FCM Token received: ${token.take(10)}...")
+                println("FCM Token received: ${token.take(TOKEN_PREVIEW_LENGTH)}...")
             }
         }
 

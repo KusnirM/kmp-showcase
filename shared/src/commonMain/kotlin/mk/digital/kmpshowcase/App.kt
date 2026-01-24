@@ -39,47 +39,28 @@ import mk.digital.kmpshowcase.presentation.base.Route.HomeSection
 import mk.digital.kmpshowcase.presentation.base.Route.Login
 import mk.digital.kmpshowcase.presentation.base.Route.Register
 import mk.digital.kmpshowcase.presentation.base.Route.Settings
-import mk.digital.kmpshowcase.presentation.base.WithViewModel
 import mk.digital.kmpshowcase.presentation.base.rememberNavEntryDecorators
 import mk.digital.kmpshowcase.presentation.base.rememberNavRouter
 import mk.digital.kmpshowcase.presentation.component.AppFloatingNavBar
 import mk.digital.kmpshowcase.presentation.component.AppSnackbarHost
 import mk.digital.kmpshowcase.presentation.component.FloatingNavItem
 import mk.digital.kmpshowcase.presentation.component.TopAppBar
-import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerViewModel
 import mk.digital.kmpshowcase.presentation.foundation.AppTheme
 import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.screen.calendar.CalendarScreen
-import mk.digital.kmpshowcase.presentation.screen.calendar.CalendarViewModel
 import mk.digital.kmpshowcase.presentation.screen.database.DatabaseScreen
-import mk.digital.kmpshowcase.presentation.screen.database.DatabaseViewModel
 import mk.digital.kmpshowcase.presentation.screen.feature.UiComponentsScreen
-import mk.digital.kmpshowcase.presentation.screen.home.HomeNavEvents
 import mk.digital.kmpshowcase.presentation.screen.home.HomeScreen
-import mk.digital.kmpshowcase.presentation.screen.home.HomeViewModel
-import mk.digital.kmpshowcase.presentation.screen.login.LoginNavEvents
 import mk.digital.kmpshowcase.presentation.screen.login.LoginScreen
-import mk.digital.kmpshowcase.presentation.screen.login.LoginViewModel
 import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingScreen
-import mk.digital.kmpshowcase.presentation.screen.networking.NetworkingViewModel
-import mk.digital.kmpshowcase.presentation.screen.notifications.NotificationsNavEvents
 import mk.digital.kmpshowcase.presentation.screen.notifications.NotificationsScreen
-import mk.digital.kmpshowcase.presentation.screen.notifications.NotificationsViewModel
-import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisNavEvents
 import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisScreen
-import mk.digital.kmpshowcase.presentation.screen.platformapis.PlatformApisViewModel
-import mk.digital.kmpshowcase.presentation.screen.register.RegisterNavEvents
 import mk.digital.kmpshowcase.presentation.screen.register.RegisterScreen
-import mk.digital.kmpshowcase.presentation.screen.register.RegisterViewModel
 import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerScreen
-import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
-import mk.digital.kmpshowcase.presentation.screen.settings.SettingsNavEvents
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsScreen
-import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageScreen
-import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.nav_home
 import mk.digital.kmpshowcase.shared.generated.resources.nav_settings
@@ -114,7 +95,6 @@ private val saveStateConfiguration = SavedStateConfiguration {
 @Composable
 fun MainView(
     onSetLocale: ((String) -> Unit)? = null,
-    onOpenSettings: (() -> Unit)? = null,
 ) {
     val router: NavRouter<Route> = rememberNavRouter(saveStateConfiguration, Login)
     val currentRoute: Route = router.backStack.last()
@@ -154,75 +134,23 @@ fun MainView(
                         onBack = router::onBack,
                         entryDecorators = rememberNavEntryDecorators(),
                         entryProvider = entryProvider {
-                            entry<Login> {
-                                WithViewModel<LoginViewModel> { viewModel ->
-                                    LoginNavEvents(viewModel, router)
-                                    LoginScreen(viewModel)
-                                }
-                            }
-                            entry<Register> {
-                                WithViewModel<RegisterViewModel> { viewModel ->
-                                    RegisterNavEvents(viewModel, router)
-                                    RegisterScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.Home> {
-                                WithViewModel<HomeViewModel> { viewModel ->
-                                    HomeNavEvents(viewModel, router)
-                                    HomeScreen(viewModel)
-                                }
-                            }
+                            entry<Login> { LoginScreen(router) }
+                            entry<Register> { RegisterScreen(router) }
+                            entry<HomeSection.Home> { HomeScreen(router) }
                             entry<HomeSection.UiComponents> { UiComponentsScreen() }
-                            entry<HomeSection.Networking> {
-                                WithViewModel<NetworkingViewModel> { viewModel ->
-                                    NetworkingScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.Storage> {
-                                WithViewModel<StorageViewModel> { viewModel ->
-                                    StorageScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.PlatformApis> {
-                                WithViewModel<PlatformApisViewModel> { viewModel ->
-                                    PlatformApisNavEvents(viewModel, router)
-                                    PlatformApisScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.Scanner> {
-                                WithViewModel<ScannerViewModel> { viewModel ->
-                                    ScannerScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.Database> {
-                                WithViewModel<DatabaseViewModel> { viewModel ->
-                                    DatabaseScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.Calendar> {
-                                WithViewModel<CalendarViewModel> { viewModel ->
-                                    CalendarScreen(viewModel)
-                                }
-                            }
-                            entry<HomeSection.Notifications> {
-                                WithViewModel<NotificationsViewModel> { viewModel ->
-                                    NotificationsNavEvents(viewModel, router)
-                                    NotificationsScreen(viewModel)
-                                }
-                            }
+                            entry<HomeSection.Networking> { NetworkingScreen() }
+                            entry<HomeSection.Storage> { StorageScreen() }
+                            entry<HomeSection.PlatformApis> { PlatformApisScreen(router) }
+                            entry<HomeSection.Scanner> { ScannerScreen() }
+                            entry<HomeSection.Database> { DatabaseScreen() }
+                            entry<HomeSection.Calendar> { CalendarScreen() }
+                            entry<HomeSection.Notifications> { NotificationsScreen(router) }
                             entry<Settings> {
-                                WithViewModel<SettingsViewModel> { viewModel ->
-                                    WithViewModel<ImagePickerViewModel> { imagePickerViewModel ->
-                                        SettingsNavEvents(
-                                            viewModel = viewModel,
-                                            router = router,
-                                            onSetLocale = onSetLocale,
-                                            onOpenSettings = onOpenSettings,
-                                            onThemeChanged = { mode -> themeMode = mode }
-                                        )
-                                        SettingsScreen(viewModel, imagePickerViewModel)
-                                    }
-                                }
+                                SettingsScreen(
+                                    router = router,
+                                    onSetLocale = onSetLocale,
+                                    onThemeChanged = { mode -> themeMode = mode },
+                                )
                             }
                         }
                     )

@@ -20,12 +20,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.AppAlertDialog
 import mk.digital.kmpshowcase.presentation.component.AppRadioButton
-import mk.digital.kmpshowcase.presentation.component.buttons.AppTextButtonError
-import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.presentation.component.AvatarState
 import mk.digital.kmpshowcase.presentation.component.AvatarView
+import mk.digital.kmpshowcase.presentation.component.buttons.AppTextButtonError
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.image.AppIconPrimary
 import mk.digital.kmpshowcase.presentation.component.imagepicker.ImagePickerView
@@ -36,6 +36,7 @@ import mk.digital.kmpshowcase.presentation.component.text.bodyLarge.TextBodyLarg
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
+import mk.digital.kmpshowcase.presentation.foundation.ThemeMode
 import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.shared.generated.resources.Res
@@ -50,9 +51,18 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsViewModel,
-    imagePickerViewModel: ImagePickerViewModel,
+    router: NavRouter<Route>,
+    onSetLocale: ((String) -> Unit)?,
+    onThemeChanged: (ThemeMode) -> Unit,
+    viewModel: SettingsViewModel = lifecycleAwareViewModel(),
+    imagePickerViewModel: ImagePickerViewModel = lifecycleAwareViewModel(),
 ) {
+    SettingsNavEvents(
+        router = router,
+        onSetLocale = onSetLocale,
+        onThemeChanged = onThemeChanged,
+    )
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     val imagePickerState by imagePickerViewModel.state.collectAsStateWithLifecycle()
 
@@ -261,18 +271,16 @@ private fun VersionFooter(
 }
 
 @Composable
-fun SettingsNavEvents(
-    viewModel: SettingsViewModel,
+private fun SettingsNavEvents(
     router: NavRouter<Route>,
     onSetLocale: ((String) -> Unit)?,
-    onOpenSettings: (() -> Unit)?,
     onThemeChanged: (ThemeMode) -> Unit,
+    viewModel: SettingsViewModel = lifecycleAwareViewModel(),
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
-        if (event !is SettingNavEvents) return@CollectNavEvents
         when (event) {
             is SettingNavEvents.SetLocaleTag -> onSetLocale?.invoke(event.tag)
-            is SettingNavEvents.ToSettings -> onOpenSettings?.invoke()
+            is SettingNavEvents.ToSettings -> router.openSettings()
             is SettingNavEvents.Logout -> router.replaceAll(Route.Login)
             is SettingNavEvents.ThemeChanged -> onThemeChanged(event.mode)
         }
