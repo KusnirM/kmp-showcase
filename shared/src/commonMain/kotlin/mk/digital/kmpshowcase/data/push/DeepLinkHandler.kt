@@ -6,26 +6,26 @@ object DeepLinkHandler {
 
     private const val SCHEME = "kmpshowcase"
 
+    private val routeMap = mapOf(
+        "" to Route.HomeSection.Home,
+        "home" to Route.HomeSection.Home,
+        "settings" to Route.Settings,
+        "networking" to Route.HomeSection.Networking,
+        "storage" to Route.HomeSection.Storage,
+        "ui-components" to Route.HomeSection.UiComponents,
+        "uicomponents" to Route.HomeSection.UiComponents,
+        "platform-apis" to Route.HomeSection.PlatformApis,
+        "platformapis" to Route.HomeSection.PlatformApis,
+        "scanner" to Route.HomeSection.Scanner,
+        "database" to Route.HomeSection.Database,
+        "calendar" to Route.HomeSection.Calendar,
+        "login" to Route.Login,
+        "register" to Route.Register,
+    )
+
     fun parseDeepLink(deepLink: String): Route? {
-        if (!deepLink.startsWith("$SCHEME://")) {
-            return null
-        }
-
+        if (!deepLink.startsWith("$SCHEME://")) return null
         val path = deepLink.removePrefix("$SCHEME://").lowercase()
-
-        return when {
-            path == "home" || path.isEmpty() -> Route.HomeSection.Home
-            path == "settings" -> Route.Settings
-            path == "networking" -> Route.HomeSection.Networking
-            path == "storage" -> Route.HomeSection.Storage
-            path == "ui-components" || path == "uicomponents" -> Route.HomeSection.UiComponents
-            path == "platform-apis" || path == "platformapis" -> Route.HomeSection.PlatformApis
-            path == "scanner" -> Route.HomeSection.Scanner
-            path == "database" -> Route.HomeSection.Database
-            path == "calendar" -> Route.HomeSection.Calendar
-            path == "login" -> Route.Login
-            path == "register" -> Route.Register
-            else -> null
-        }
+        return routeMap[path]
     }
 }

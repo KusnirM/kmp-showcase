@@ -36,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.AppPasswordTextField
 import mk.digital.kmpshowcase.presentation.component.AppTextField
 import mk.digital.kmpshowcase.presentation.component.biometric.BiometricView
@@ -74,8 +75,10 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
+    router: NavRouter<Route>,
+    viewModel: LoginViewModel = lifecycleAwareViewModel(),
 ) {
+    LoginNavEvents(router)
     val state by viewModel.state.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
 
@@ -243,12 +246,11 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginNavEvents(
-    viewModel: LoginViewModel,
-    router: NavRouter<Route>
+private fun LoginNavEvents(
+    router: NavRouter<Route>,
+    viewModel: LoginViewModel = lifecycleAwareViewModel(),
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
-        if (event !is LoginNavEvent) return@CollectNavEvents
         when (event) {
             is LoginNavEvent.ToHome -> {
                 router.replaceAll(Route.HomeSection.Home)

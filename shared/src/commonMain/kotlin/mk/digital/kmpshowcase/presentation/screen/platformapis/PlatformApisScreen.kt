@@ -32,11 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharedFlow
 import mk.digital.kmpshowcase.LocalSnackbarHostState
 import mk.digital.kmpshowcase.data.biometric.BiometricResult
 import mk.digital.kmpshowcase.presentation.base.CollectNavEvents
+import mk.digital.kmpshowcase.presentation.base.NavEvent
 import mk.digital.kmpshowcase.presentation.base.NavRouter
 import mk.digital.kmpshowcase.presentation.base.Route
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
 import mk.digital.kmpshowcase.presentation.component.permission.rememberLocationPermissionState
@@ -58,6 +61,10 @@ import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometric
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copied_message
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_title
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_copy_text
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_email_body
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_email_subject
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_share_text
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_dial_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_email_action
@@ -80,44 +87,12 @@ import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_title
 import mk.digital.kmpshowcase.util.StringFormatter
 import org.jetbrains.compose.resources.stringResource
 
-private enum class PendingLocationAction { NONE, GET_LOCATION, START_UPDATES }
-
-@Composable
-private fun rememberLocationActionHandler(
-    onGetLocation: () -> Unit,
-    onStartUpdates: () -> Unit
-): (PendingLocationAction) -> Unit {
-    val locationPermission = rememberLocationPermissionState()
-    var pendingAction by remember { mutableStateOf(PendingLocationAction.NONE) }
-
-    LaunchedEffect(locationPermission.isGranted, pendingAction) {
-        if (locationPermission.isGranted && pendingAction != PendingLocationAction.NONE) {
-            when (pendingAction) {
-                PendingLocationAction.GET_LOCATION -> onGetLocation()
-                PendingLocationAction.START_UPDATES -> onStartUpdates()
-                PendingLocationAction.NONE -> Unit
-            }
-            pendingAction = PendingLocationAction.NONE
-        }
-    }
-
-    return { action ->
-        if (locationPermission.isGranted) {
-            when (action) {
-                PendingLocationAction.GET_LOCATION -> onGetLocation()
-                PendingLocationAction.START_UPDATES -> onStartUpdates()
-                PendingLocationAction.NONE -> Unit
-            }
-        } else {
-            pendingAction = action
-            locationPermission.requestPermission()
-        }
-    }
-}
-
 @Suppress("CyclomaticComplexMethod", "CognitiveComplexMethod")
 @Composable
-fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
+fun PlatformApisScreen(
+    router: NavRouter<Route>,
+    viewModel: PlatformApisViewModel = lifecycleAwareViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = LocalSnackbarHostState.current
     val copiedMessage = stringResource(Res.string.platform_apis_copied_message)
@@ -153,13 +128,14 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
         }
 
         item {
+            val shareText = stringResource(Res.string.platform_apis_demo_share_text)
             PlatformApiCard(
                 icon = Icons.Outlined.Share,
                 title = stringResource(Res.string.platform_apis_share_title)
             ) {
                 ApiCardButton(
                     text = stringResource(Res.string.platform_apis_share_action),
-                    onClick = viewModel::share
+                    onClick = { viewModel.share(shareText) }
                 )
             }
         }
@@ -189,25 +165,28 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
         }
 
         item {
+            val emailSubject = stringResource(Res.string.platform_apis_demo_email_subject)
+            val emailBody = stringResource(Res.string.platform_apis_demo_email_body)
             PlatformApiCard(
                 icon = Icons.Outlined.Email,
                 title = stringResource(Res.string.platform_apis_email_title)
             ) {
                 ApiCardButton(
                     text = stringResource(Res.string.platform_apis_email_action),
-                    onClick = viewModel::sendEmail
+                    onClick = { viewModel.sendEmail(emailSubject, emailBody) }
                 )
             }
         }
 
         item {
+            val copyText = stringResource(Res.string.platform_apis_demo_copy_text)
             PlatformApiCard(
                 icon = Icons.Outlined.ContentCopy,
                 title = stringResource(Res.string.platform_apis_copy_title)
             ) {
                 ApiCardButton(
                     text = stringResource(Res.string.platform_apis_copy_action),
-                    onClick = viewModel::copyToClipboard
+                    onClick = { viewModel.copyToClipboard(copyText) }
                 )
             }
         }
@@ -297,6 +276,8 @@ fun PlatformApisScreen(viewModel: PlatformApisViewModel) {
             }
         }
     }
+
+    PlatformApisNavEvents(router = router, viewModel.navEvent)
 }
 
 @Composable
@@ -336,6 +317,23 @@ private fun ApiCardButton(
     )
 }
 
+
+@Composable
+private fun PlatformApisNavEvents(
+    router: NavRouter<Route>,
+    navEvent: SharedFlow<NavEvent>,
+) {
+    CollectNavEvents(navEventFlow = navEvent) { event ->
+        when (event) {
+            is PlatformApisNavEvent.Share -> router.share(event.text)
+            is PlatformApisNavEvent.Dial -> router.dial(event.number)
+            is PlatformApisNavEvent.OpenLink -> router.openLink(event.url)
+            is PlatformApisNavEvent.SendEmail -> router.sendEmail(event.to, event.subject, event.body)
+            is PlatformApisNavEvent.CopyToClipboard -> router.copyToClipboard(event.text)
+        }
+    }
+}
+
 private const val COORDINATE_DECIMAL_PLACES = 6
 
 @Composable
@@ -347,19 +345,37 @@ private fun formatLocationText(lat: Double, lon: Double): String {
     )
 }
 
+private enum class PendingLocationAction { NONE, GET_LOCATION, START_UPDATES }
+
 @Composable
-fun PlatformApisNavEvents(
-    viewModel: PlatformApisViewModel,
-    router: NavRouter<Route>
-) {
-    CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
-        if (event !is PlatformApisNavEvent) return@CollectNavEvents
-        when (event) {
-            is PlatformApisNavEvent.Share -> router.share(event.text)
-            is PlatformApisNavEvent.Dial -> router.dial(event.number)
-            is PlatformApisNavEvent.OpenLink -> router.openLink(event.url)
-            is PlatformApisNavEvent.SendEmail -> router.sendEmail(event.to, event.subject, event.body)
-            is PlatformApisNavEvent.CopyToClipboard -> router.copyToClipboard(event.text)
+private fun rememberLocationActionHandler(
+    onGetLocation: () -> Unit,
+    onStartUpdates: () -> Unit
+): (PendingLocationAction) -> Unit {
+    val locationPermission = rememberLocationPermissionState()
+    var pendingAction by remember { mutableStateOf(PendingLocationAction.NONE) }
+
+    LaunchedEffect(locationPermission.isGranted, pendingAction) {
+        if (locationPermission.isGranted && pendingAction != PendingLocationAction.NONE) {
+            when (pendingAction) {
+                PendingLocationAction.GET_LOCATION -> onGetLocation()
+                PendingLocationAction.START_UPDATES -> onStartUpdates()
+                PendingLocationAction.NONE -> Unit
+            }
+            pendingAction = PendingLocationAction.NONE
+        }
+    }
+
+    return { action ->
+        if (locationPermission.isGranted) {
+            when (action) {
+                PendingLocationAction.GET_LOCATION -> onGetLocation()
+                PendingLocationAction.START_UPDATES -> onStartUpdates()
+                PendingLocationAction.NONE -> Unit
+            }
+        } else {
+            pendingAction = action
+            locationPermission.requestPermission()
         }
     }
 }

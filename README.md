@@ -117,5 +117,3 @@ shared/         Shared KMP module (UI, domain, data)
 - [ ] Maps
 - [ ] Video player
 - [ ] Offline-first
-- [ ] Compose UI tests
-- [ ] Instrumented tests (Android/iOS)
