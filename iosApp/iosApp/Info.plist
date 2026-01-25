@@ -52,5 +52,16 @@
 	<string>Location access is needed for this feature.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Authenticate using Face ID for secure access.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>mk.digital.kmpshowcase</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kmpshowcase</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
