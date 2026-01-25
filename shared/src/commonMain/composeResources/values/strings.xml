@@ -116,6 +116,7 @@
     <string name="database_sort_date_oldest">Date (oldest)</string>
     <string name="database_sort_title_asc">Title (A-Z)</string>
     <string name="database_sort_title_desc">Title (Z-A)</string>
+    <string name="database_error">Failed to load notes. Please try again.</string>
 
     <!-- Calendar Screen -->
     <string name="calendar_title">Date Range Picker</string>

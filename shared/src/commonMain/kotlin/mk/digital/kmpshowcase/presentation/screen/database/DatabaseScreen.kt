@@ -22,17 +22,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.datetime.TimeZone
-import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import kotlinx.datetime.toLocalDateTime
 import mk.digital.kmpshowcase.domain.model.Note
 import mk.digital.kmpshowcase.domain.model.NoteSortOption
+import mk.digital.kmpshowcase.presentation.base.lifecycleAwareViewModel
 import mk.digital.kmpshowcase.presentation.component.AppSearchField
 import mk.digital.kmpshowcase.presentation.component.AppTextField
+import mk.digital.kmpshowcase.presentation.component.ErrorView
+import mk.digital.kmpshowcase.presentation.component.LoadingView
 import mk.digital.kmpshowcase.presentation.component.buttons.ContainedButton
 import mk.digital.kmpshowcase.presentation.component.buttons.OutlinedButton
 import mk.digital.kmpshowcase.presentation.component.cards.AppElevatedCard
-import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.image.AppIconNeutral80
+import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.labelMedium.TextLabelMediumNeutral80
@@ -46,6 +48,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.database_content_hint
 import mk.digital.kmpshowcase.shared.generated.resources.database_content_label
 import mk.digital.kmpshowcase.shared.generated.resources.database_delete
 import mk.digital.kmpshowcase.shared.generated.resources.database_empty
+import mk.digital.kmpshowcase.shared.generated.resources.database_error
 import mk.digital.kmpshowcase.shared.generated.resources.database_filter
 import mk.digital.kmpshowcase.shared.generated.resources.database_search_hint
 import mk.digital.kmpshowcase.shared.generated.resources.database_sort_by
@@ -61,7 +64,33 @@ import kotlin.time.Instant
 @Composable
 fun DatabaseScreen(viewModel: DatabaseViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    DatabaseScreen(
+        state = state,
+        onSearchQueryChanged = viewModel::onSearchQueryChanged,
+        onSortOptionChanged = viewModel::onSortOptionChanged,
+        onToggleFilterMenu = viewModel::toggleFilterMenu,
+        onDismissFilterMenu = viewModel::dismissFilterMenu,
+        onTitleChanged = viewModel::onTitleChanged,
+        onContentChanged = viewModel::onContentChanged,
+        onAddNote = viewModel::addNote,
+        onDeleteNote = viewModel::deleteNote,
+        onDeleteAllNotes = viewModel::deleteAllNotes,
+    )
+}
 
+@Composable
+fun DatabaseScreen(
+    state: DatabaseUiState,
+    onSearchQueryChanged: (String) -> Unit = {},
+    onSortOptionChanged: (NoteSortOption) -> Unit = {},
+    onToggleFilterMenu: () -> Unit = {},
+    onDismissFilterMenu: () -> Unit = {},
+    onTitleChanged: (String) -> Unit = {},
+    onContentChanged: (String) -> Unit = {},
+    onAddNote: () -> Unit = {},
+    onDeleteNote: (Long) -> Unit = {},
+    onDeleteAllNotes: () -> Unit = {}
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -75,12 +104,12 @@ fun DatabaseScreen(viewModel: DatabaseViewModel = lifecycleAwareViewModel()) {
         item {
             SearchBar(
                 query = state.searchQuery,
-                onQueryChanged = viewModel::onSearchQueryChanged,
+                onQueryChanged = onSearchQueryChanged,
                 sortOption = state.sortOption,
-                onSortOptionChanged = viewModel::onSortOptionChanged,
+                onSortOptionChanged = onSortOptionChanged,
                 showFilterMenu = state.showFilterMenu,
-                onToggleFilterMenu = viewModel::toggleFilterMenu,
-                onDismissFilterMenu = viewModel::dismissFilterMenu
+                onToggleFilterMenu = onToggleFilterMenu,
+                onDismissFilterMenu = onDismissFilterMenu
             )
         }
 
@@ -88,13 +117,21 @@ fun DatabaseScreen(viewModel: DatabaseViewModel = lifecycleAwareViewModel()) {
             AddNoteCard(
                 title = state.newNoteTitle,
                 content = state.newNoteContent,
-                onTitleChanged = viewModel::onTitleChanged,
-                onContentChanged = viewModel::onContentChanged,
-                onAddClick = viewModel::addNote
+                onTitleChanged = onTitleChanged,
+                onContentChanged = onContentChanged,
+                onAddClick = onAddNote
             )
         }
 
-        if (state.notes.isEmpty() && !state.isLoading) {
+        if (state.error && state.notes.isEmpty()) {
+            item {
+                ErrorView(message = stringResource(Res.string.database_error))
+            }
+        } else if (state.isLoading && state.notes.isEmpty()) {
+            item {
+                LoadingView()
+            }
+        } else if (state.notes.isEmpty()) {
             item {
                 TextBodyMediumNeutral80(stringResource(Res.string.database_empty))
             }
@@ -103,7 +140,7 @@ fun DatabaseScreen(viewModel: DatabaseViewModel = lifecycleAwareViewModel()) {
         items(items = state.notes, key = { it.id }) { note ->
             NoteCard(
                 note = note,
-                onDeleteClick = { viewModel.deleteNote(note.id) }
+                onDeleteClick = { onDeleteNote(note.id) }
             )
         }
 
@@ -111,7 +148,7 @@ fun DatabaseScreen(viewModel: DatabaseViewModel = lifecycleAwareViewModel()) {
             item {
                 OutlinedButton(
                     text = stringResource(Res.string.database_clear_all),
-                    onClick = viewModel::deleteAllNotes
+                    onClick = onDeleteAllNotes
                 )
             }
         }
@@ -150,7 +187,7 @@ private fun SearchBar(
 
             DropdownMenu(
                 expanded = showFilterMenu,
-                onDismissRequest = onDismissFilterMenu
+                onDismissRequest = onDismissFilterMenu,
             ) {
                 TextLabelMediumNeutral80(
                     text = stringResource(Res.string.database_sort_by),

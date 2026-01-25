@@ -15,10 +15,20 @@ import mk.digital.kmpshowcase.presentation.foundation.floatingNavBarSpace
 import mk.digital.kmpshowcase.presentation.foundation.space4
 
 @Composable
-fun HomeScreen(router: NavRouter<Route>,viewModel: HomeViewModel = lifecycleAwareViewModel()) {
-    HomeNavEvents(router)
+fun HomeScreen(
+    router: NavRouter<Route>,
+    viewModel: HomeViewModel = lifecycleAwareViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    HomeScreen(state, viewModel::onFeatureClick)
+    HomeNavEvents(router)
+}
 
+@Composable
+fun HomeScreen(
+    state: HomeUiState = HomeUiState(),
+    onFeatureClick: (featureId: FeatureId) -> Unit = {}
+) {
     LazyColumn(
         contentPadding = PaddingValues(
             start = space4,
@@ -31,7 +41,7 @@ fun HomeScreen(router: NavRouter<Route>,viewModel: HomeViewModel = lifecycleAwar
         items(state.features, key = { it.id }) { feature ->
             FeatureCard(
                 feature = feature,
-                onClick = { viewModel.onFeatureClick(feature.id) }
+                onClick = { onFeatureClick(feature.id) }
             )
         }
     }

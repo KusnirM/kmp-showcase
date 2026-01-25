@@ -42,7 +42,25 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun StorageScreen(viewModel: StorageViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    StorageScreen(
+        state = state,
+        onIncrementSession = viewModel::incrementSessionCounter,
+        onDecrementSession = viewModel::decrementSessionCounter,
+        onIncrementPersistent = viewModel::incrementPersistentCounter,
+        onDecrementPersistent = viewModel::decrementPersistentCounter,
+        onClearSession = viewModel::clearSession,
+    )
+}
 
+@Composable
+fun StorageScreen(
+    state: StorageUiState,
+    onIncrementSession: () -> Unit = {},
+    onDecrementSession: () -> Unit = {},
+    onIncrementPersistent: () -> Unit = {},
+    onDecrementPersistent: () -> Unit = {},
+    onClearSession: () -> Unit = {},
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -65,8 +83,8 @@ fun StorageScreen(viewModel: StorageViewModel = lifecycleAwareViewModel()) {
                 label = stringResource(Res.string.storage_session_label),
                 hint = stringResource(Res.string.storage_session_hint),
                 counter = state.sessionCounter,
-                onIncrement = viewModel::incrementSessionCounter,
-                onDecrement = viewModel::decrementSessionCounter
+                onIncrement = onIncrementSession,
+                onDecrement = onDecrementSession
             )
         }
 
@@ -75,15 +93,15 @@ fun StorageScreen(viewModel: StorageViewModel = lifecycleAwareViewModel()) {
                 label = stringResource(Res.string.storage_persistent_label),
                 hint = stringResource(Res.string.storage_persistent_hint),
                 counter = state.persistentCounter,
-                onIncrement = viewModel::incrementPersistentCounter,
-                onDecrement = viewModel::decrementPersistentCounter
+                onIncrement = onIncrementPersistent,
+                onDecrement = onDecrementPersistent
             )
         }
 
         item {
             OutlinedButton(
                 text = stringResource(Res.string.storage_clear_session),
-                onClick = viewModel::clearSession
+                onClick = onClearSession
             )
         }
     }

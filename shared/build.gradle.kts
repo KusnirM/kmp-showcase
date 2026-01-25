@@ -19,7 +19,7 @@ kotlin {
         minSdk = libs.versions.androidMinSdk.get().toInt()
 
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
 
         androidResources {
@@ -151,7 +151,7 @@ kotlin {
         }
     }
 
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 compose.resources {

@@ -2,8 +2,8 @@
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.3-7F52FF.svg?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Compose-Multiplatform-4285F4.svg?logo=jetpackcompose&logoColor=white)](https://www.jetbrains.com/lp/compose-multiplatform/)
-[![Android](https://img.shields.io/badge/Android-36-3DDC84.svg?logo=android&logoColor=white)](/)
-[![iOS](https://img.shields.io/badge/iOS-16-000000.svg?logo=apple&logoColor=white)](/)
+![Android](https://img.shields.io/badge/Android-36-3DDC84.svg?logo=android&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-16-000000.svg?logo=apple&logoColor=white)
 
 **95% shared code** across Android & iOS
 
@@ -11,7 +11,7 @@
 
 <table>
 <tr>
-<td width="50%">
+<td style="width:50%">
 
 ### 🎨 UI & Navigation
 - Compose Multiplatform
@@ -20,7 +20,7 @@
 - 40+ Components
 
 </td>
-<td width="50%">
+<td style="width:50%">
 
 ### 📱 Platform APIs
 - Biometrics (Face ID / Fingerprint)
@@ -31,7 +31,7 @@
 </td>
 </tr>
 <tr>
-<td width="50%">
+<td style="width:50%">
 
 ### 🔌 Data & Network
 - Ktor 3 HTTP Client
@@ -40,7 +40,7 @@
 - Coil Image Loading
 
 </td>
-<td width="50%">
+<td style="width:50%">
 
 ### 🔔 Notifications
 - Push (FCM / APNs)
@@ -56,26 +56,47 @@
 
 ## Tech Stack
 
-<p>
-<img src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white" />
-<img src="https://img.shields.io/badge/Compose-4285F4?logo=jetpackcompose&logoColor=white" />
-<img src="https://img.shields.io/badge/Koin-F7A91E?logoColor=white" />
-<img src="https://img.shields.io/badge/Ktor-7F52FF?logoColor=white" />
-<img src="https://img.shields.io/badge/SQLDelight-005C99?logoColor=white" />
-<img src="https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black" />
-<img src="https://img.shields.io/badge/Detekt-6F42C1?logoColor=white" />
-<img src="https://img.shields.io/badge/Mokkery-FF6B6B?logoColor=white" />
-</p>
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)
+![Compose](https://img.shields.io/badge/Compose-4285F4?logo=jetpackcompose&logoColor=white)
+![Koin](https://img.shields.io/badge/Koin-F7A91E?logoColor=white)
+![Ktor](https://img.shields.io/badge/Ktor-7F52FF?logoColor=white)
+![SQLDelight](https://img.shields.io/badge/SQLDelight-005C99?logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+![Detekt](https://img.shields.io/badge/Detekt-6F42C1?logoColor=white)
+![Mokkery](https://img.shields.io/badge/Mokkery-FF6B6B?logoColor=white)
+![Roborazzi](https://img.shields.io/badge/Roborazzi-00C853?logoColor=white)
 
 ---
 
-## Screens
 
-| | | | |
-|:---:|:---:|:---:|:---:|
-| 🔐 **Login** | 📝 **Register** | 🏠 **Home** | 🎨 **Components** |
-| 🌐 **Networking** | 💾 **Storage** | 🗄️ **Database** | 📱 **Platform APIs** |
-| 📷 **Scanner** | 📅 **Calendar** | 🔔 **Notifications** | ⚙️ **Settings** |
+## Screenshots
+
+<table>
+<tr>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.login.LoginScreenScreenshotTest_LoginUiState_0_light.png" width="180" alt="Login"/></td>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.home.HomeScreenScreenshotTest_HomeUiState_0_light.png" width="180" alt="Home"/></td>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.database.DatabaseScreenScreenshotTest_DatabaseUiState_1_light.png" width="180" alt="Database"/></td>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.calendar.CalendarScreenScreenshotTest_CalendarUiState_1_light.png" width="180" alt="Calendar"/></td>
+</tr>
+<tr>
+<td style="text-align:center">Login</td>
+<td style="text-align:center">Home</td>
+<td style="text-align:center">Database</td>
+<td style="text-align:center">Calendar</td>
+</tr>
+<tr>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.networking.NetworkingScreenScreenshotTest_NetworkingUiState_1_light.png" width="180" alt="Networking"/></td>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.storage.StorageScreenScreenshotTest_StorageUiState_0_light.png" width="180" alt="Storage"/></td>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.notifications.NotificationsScreenScreenshotTest_NotificationsUiState_0_light.png" width="180" alt="Notifications"/></td>
+<td><img src="androidApp/src/test/snapshots/images/mk.digital.kmpshowcase.presentation.screen.settings.SettingsScreenScreenshotTest_SettingsState_0_light.png" width="180" alt="Settings"/></td>
+</tr>
+<tr>
+<td style="text-align:center">Networking</td>
+<td style="text-align:center">Storage</td>
+<td style="text-align:center">Notifications</td>
+<td style="text-align:center">Settings</td>
+</tr>
+</table>
 
 ---
 

@@ -43,19 +43,29 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun NetworkingScreen(viewModel: NetworkingViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    NetworkingScreen(
+        state = state,
+        onRefresh = viewModel::refresh,
+    )
+}
 
+@Composable
+fun NetworkingScreen(
+    state: NetworkingUiState,
+    onRefresh: () -> Unit = {},
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         when {
             state.isLoading && state.users.isEmpty() -> LoadingView()
             state.error != null && state.users.isEmpty() -> ErrorView(
-                message = state.error!!,
-                onRetry = viewModel::refresh
+                message = state.error,
+                onRetry = onRefresh
             )
             state.users.isEmpty() -> EmptyContent()
             else -> UserListContent(
                 users = state.users,
                 isRefreshing = state.isLoading,
-                onRefresh = viewModel::refresh
+                onRefresh = onRefresh
             )
         }
     }

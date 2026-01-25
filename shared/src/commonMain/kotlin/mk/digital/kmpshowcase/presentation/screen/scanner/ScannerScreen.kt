@@ -43,6 +43,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_format_barcode
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_format_qr
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_generate_button
+import mk.digital.kmpshowcase.shared.generated.resources.scanner_hint
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_input_hint
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_input_label
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_mode_generate
@@ -52,14 +53,33 @@ import mk.digital.kmpshowcase.shared.generated.resources.scanner_scan_again
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_scanned_result
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_subtitle
 import mk.digital.kmpshowcase.shared.generated.resources.scanner_title
-import mk.digital.kmpshowcase.shared.generated.resources.scanner_hint
 import org.jetbrains.compose.resources.stringResource
 
-@Suppress("CognitiveComplexMethod")
 @Composable
 fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    ScannerScreen(
+        state = state,
+        onModeChanged = viewModel::onModeChanged,
+        onFormatChanged = viewModel::onFormatChanged,
+        onTextChanged = viewModel::onTextChanged,
+        onGenerateCode = viewModel::generateCode,
+        onCodeScanned = viewModel::onCodeScanned,
+        onClearScannedResult = viewModel::clearScannedResult,
+    )
+}
 
+@Suppress("CognitiveComplexMethod")
+@Composable
+fun ScannerScreen(
+    state: ScannerUiState,
+    onModeChanged: (Int) -> Unit = {},
+    onFormatChanged: (Int) -> Unit = {},
+    onTextChanged: (String) -> Unit = {},
+    onGenerateCode: () -> Unit = {},
+    onCodeScanned: (String) -> Unit = {},
+    onClearScannedResult: () -> Unit = {},
+) {
     val modeOptions = listOf(
         stringResource(Res.string.scanner_mode_generate),
         stringResource(Res.string.scanner_mode_scan)
@@ -91,7 +111,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
             AppSegmentedButton(
                 options = modeOptions,
                 selectedIndex = state.selectedModeIndex,
-                onSelectionChanged = viewModel::onModeChanged,
+                onSelectionChanged = onModeChanged,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -102,13 +122,13 @@ fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
                     AppSegmentedButton(
                         options = formatOptions,
                         selectedIndex = state.selectedFormatIndex,
-                        onSelectionChanged = viewModel::onFormatChanged,
+                        onSelectionChanged = onFormatChanged,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer4()
                     AppTextField(
                         value = state.inputText,
-                        onValueChange = viewModel::onTextChanged,
+                        onValueChange = onTextChanged,
                         label = stringResource(Res.string.scanner_input_label),
                         placeholder = stringResource(Res.string.scanner_input_hint),
                         modifier = Modifier.fillMaxWidth()
@@ -116,7 +136,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
                     Spacer4()
                     ContainedButton(
                         text = stringResource(Res.string.scanner_generate_button),
-                        onClick = viewModel::generateCode,
+                        onClick = onGenerateCode,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -163,7 +183,7 @@ fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
                                 onDeniedDialogDismiss = {},
                             ) {
                                 CodeScanner(
-                                    onScanned = viewModel::onCodeScanned,
+                                    onScanned = onCodeScanned,
                                     onError = { },
                                     modifier = Modifier.fillMaxSize()
                                 )
@@ -177,11 +197,11 @@ fun ScannerScreen(viewModel: ScannerViewModel = lifecycleAwareViewModel()) {
                         ) {
                             TextBodyMediumNeutral80(stringResource(Res.string.scanner_scanned_result))
                             Spacer2()
-                            TextBodyLargeNeutral80(state.scannedResult ?: "")
+                            TextBodyLargeNeutral80(state.scannedResult)
                             Spacer4()
                             ContainedButton(
                                 text = stringResource(Res.string.scanner_scan_again),
-                                onClick = viewModel::clearScannedResult,
+                                onClick = onClearScannedResult,
                                 modifier = Modifier.fillMaxWidth()
                             )
                         }
