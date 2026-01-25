@@ -2,6 +2,8 @@ package mk.digital.kmpshowcase.di
 
 import mk.digital.kmpshowcase.data.biometric.BiometricClient
 import mk.digital.kmpshowcase.data.biometric.BiometricClientImpl
+import mk.digital.kmpshowcase.data.flashlight.FlashlightClient
+import mk.digital.kmpshowcase.data.flashlight.FlashlightClientImpl
 import mk.digital.kmpshowcase.data.database.DatabaseDriverFactory
 import mk.digital.kmpshowcase.data.local.preferences.Preferences
 import mk.digital.kmpshowcase.data.local.preferences.PreferencesImpl
@@ -27,6 +29,7 @@ actual val platformModule: Module = module {
     // Platform clients - need androidContext()
     single<LocationClient> { LocationClientImpl(androidContext()) }
     single<BiometricClient> { BiometricClientImpl(androidContext()) }
+    single<FlashlightClient> { FlashlightClientImpl(androidContext()) }
     single { DatabaseDriverFactory(androidContext()) }
 
     single<LocalNotificationService> { LocalNotificationServiceImpl(androidContext()) }

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Fingerprint
+import androidx.compose.material.icons.outlined.FlashlightOn
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MyLocation
@@ -59,6 +60,10 @@ import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometric
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_biometrics_unknown_error
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copied_message
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_flashlight_not_available
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_flashlight_off
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_flashlight_on
+import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_flashlight_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_action
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_copy_title
 import mk.digital.kmpshowcase.shared.generated.resources.platform_apis_demo_copy_text
@@ -272,6 +277,27 @@ fun PlatformApisScreen(
                     text = stringResource(Res.string.platform_apis_biometrics_action),
                     onClick = viewModel::authenticateWithBiometrics,
                     enabled = state.biometricsAvailable && !state.biometricsLoading
+                )
+            }
+        }
+
+        item {
+            val notAvailableText = stringResource(Res.string.platform_apis_flashlight_not_available)
+            PlatformApiCard(
+                icon = Icons.Outlined.FlashlightOn,
+                title = stringResource(Res.string.platform_apis_flashlight_title)
+            ) {
+                if (!state.flashlightAvailable) {
+                    TextBodyMediumNeutral80(notAvailableText)
+                }
+                Spacer2()
+                ApiCardButton(
+                    text = stringResource(
+                        if (state.flashlightOn) Res.string.platform_apis_flashlight_off
+                        else Res.string.platform_apis_flashlight_on
+                    ),
+                    onClick = viewModel::toggleFlashlight,
+                    enabled = state.flashlightAvailable
                 )
             }
         }

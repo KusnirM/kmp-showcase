@@ -2,6 +2,7 @@ package mk.digital.kmpshowcase.presentation.screen.platformapis
 
 import kotlinx.coroutines.Job
 import mk.digital.kmpshowcase.data.biometric.BiometricResult
+import mk.digital.kmpshowcase.data.flashlight.FlashlightClient
 import mk.digital.kmpshowcase.domain.model.Location
 import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
@@ -11,12 +12,25 @@ import mk.digital.kmpshowcase.presentation.base.NavEvent
 class PlatformApisViewModel(
     private val locationRepository: LocationRepository,
     private val biometricRepository: BiometricRepository,
+    private val flashlightClient: FlashlightClient,
 ) : BaseViewModel<PlatformApisUiState>(PlatformApisUiState()) {
 
     private var locationUpdatesJob: Job? = null
 
     override fun loadInitialData() {
-        newState { it.copy(biometricsAvailable = biometricRepository.enabled()) }
+        newState {
+            it.copy(
+                biometricsAvailable = biometricRepository.enabled(),
+                flashlightAvailable = flashlightClient.isAvailable()
+            )
+        }
+    }
+
+    fun toggleFlashlight() {
+        val success = flashlightClient.toggle()
+        if (success) {
+            newState { it.copy(flashlightOn = !it.flashlightOn) }
+        }
     }
 
     fun share(text: String) {
@@ -99,6 +113,9 @@ class PlatformApisViewModel(
     override fun onCleared() {
         super.onCleared()
         stopLocationUpdates()
+        if (state.value.flashlightOn) {
+            flashlightClient.turnOff()
+        }
     }
 
     private companion object {
@@ -120,6 +137,8 @@ data class PlatformApisUiState(
     val biometricsAvailable: Boolean = false,
     val biometricsLoading: Boolean = false,
     val biometricsResult: BiometricResult? = null,
+    val flashlightAvailable: Boolean = false,
+    val flashlightOn: Boolean = false,
 )
 
 sealed interface PlatformApisNavEvent : NavEvent {

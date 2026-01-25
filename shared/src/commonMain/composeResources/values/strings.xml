@@ -197,6 +197,10 @@
     <string name="platform_apis_biometrics_cancelled">Authentication cancelled</string>
     <string name="platform_apis_biometrics_not_available">Biometrics not available on this device</string>
     <string name="platform_apis_biometrics_activity_not_available">Activity not available</string>
+    <string name="platform_apis_flashlight_title">Flashlight</string>
+    <string name="platform_apis_flashlight_on">Turn On</string>
+    <string name="platform_apis_flashlight_off">Turn Off</string>
+    <string name="platform_apis_flashlight_not_available">Flashlight not available on this device</string>
     <string name="platform_apis_demo_email_subject">Hello from KMP Showcase</string>
     <string name="platform_apis_demo_email_body">This is a demo email sent from the KMP Showcase app.</string>
     <string name="platform_apis_demo_share_text">Check out KMP Showcase - a Kotlin Multiplatform demo app!</string>
