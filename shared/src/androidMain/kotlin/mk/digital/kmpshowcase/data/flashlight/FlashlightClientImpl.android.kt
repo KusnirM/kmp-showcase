@@ -3,7 +3,6 @@ package mk.digital.kmpshowcase.data.flashlight
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
-import android.os.Build
 
 actual class FlashlightClientImpl(
     context: Context,
@@ -17,6 +16,7 @@ actual class FlashlightClientImpl(
         cameraId = findCameraWithFlash()
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     private fun findCameraWithFlash(): String? {
         return try {
             cameraManager.cameraIdList.firstOrNull { id ->
@@ -32,6 +32,7 @@ actual class FlashlightClientImpl(
         return cameraId != null
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     actual override fun turnOn(): Boolean {
         val id = cameraId ?: return false
         return try {
@@ -43,6 +44,7 @@ actual class FlashlightClientImpl(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     actual override fun turnOff(): Boolean {
         val id = cameraId ?: return false
         return try {
