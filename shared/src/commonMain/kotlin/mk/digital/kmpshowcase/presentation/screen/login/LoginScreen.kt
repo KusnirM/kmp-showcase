@@ -42,14 +42,14 @@ import mk.digital.kmpshowcase.presentation.component.AppTextField
 import mk.digital.kmpshowcase.presentation.component.biometric.BiometricView
 import mk.digital.kmpshowcase.presentation.component.buttons.ContainedButton
 import mk.digital.kmpshowcase.presentation.component.image.AppIconNeutral80
-import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
-import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
-import mk.digital.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
-import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer2
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer4
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer6
 import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer8
+import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
+import mk.digital.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
+import mk.digital.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
+import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
 import mk.digital.kmpshowcase.presentation.foundation.appColorScheme
 import mk.digital.kmpshowcase.presentation.foundation.space2
 import mk.digital.kmpshowcase.presentation.foundation.space4
@@ -275,9 +275,12 @@ private fun LoginNavEvents(
 ) {
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
         when (event) {
-            is LoginNavEvent.ToHome -> {
-                router.replaceAll(Route.HomeSection.Home)
-            }
+            is LoginNavEvent.ToHome -> router.navigateTo(
+                Route.HomeSection.Home,
+                popUpTo = Route.Login::class,
+                inclusive = true
+            )
+
             is LoginNavEvent.ToRegister -> {
                 router.navigateTo(Route.Register)
             }

@@ -11,6 +11,9 @@ struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             IosAppView(appDelegate: appDelegate)
+                .onOpenURL { url in
+                    IOSPushNotificationService.companion.onDeepLinkReceived(deepLink: url.absoluteString)
+                }
         }
     }
 }

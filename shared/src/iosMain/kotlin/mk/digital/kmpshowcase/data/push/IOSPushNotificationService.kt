@@ -65,11 +65,17 @@ class IOSPushNotificationService(
         var refreshToken: (() -> Unit)? = null
 
         private var instance: IOSPushNotificationService? = null
+        private var pendingDeepLink: String? = null
 
         // Called from iOS DI (platformModule.ios.kt)
         @Suppress("unused")
         fun setInstance(service: IOSPushNotificationService) {
             instance = service
+            // Send any pending deep link that arrived before instance was ready
+            pendingDeepLink?.let { deepLink ->
+                service._deepLinks.trySend(deepLink)
+                pendingDeepLink = null
+            }
         }
 
         // Called from Swift (AppDelegate.swift)
@@ -104,10 +110,16 @@ class IOSPushNotificationService(
             deepLink?.let { instance?._deepLinks?.trySend(it) }
         }
 
-        // Called from Swift (AppDelegate.swift)
+        // Called from Swift (iOSApp.swift via onOpenURL)
         @Suppress("unused")
         fun onDeepLinkReceived(deepLink: String) {
-            instance?._deepLinks?.trySend(deepLink)
+            val service = instance
+            if (service != null) {
+                service._deepLinks.trySend(deepLink)
+            } else {
+                // Store for later when instance is ready (cold start from deep link)
+                pendingDeepLink = deepLink
+            }
         }
     }
 }

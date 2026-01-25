@@ -18,7 +18,7 @@ A production-ready Kotlin Multiplatform demo app showcasing modern mobile develo
 ### 🎨 UI & Navigation
 - Compose Multiplatform
 - Material 3 + Dark Mode
-- Navigation3
+- Navigation3 + Deep Links
 - 40+ Components
 
 </td>
@@ -136,7 +136,6 @@ shared/         Shared KMP module (UI, domain, data)
 ## Roadmap
 
 - [ ] Pagination
-- [ ] Deep links
 - [ ] Maps
 - [ ] Video player
 - [ ] Offline-first

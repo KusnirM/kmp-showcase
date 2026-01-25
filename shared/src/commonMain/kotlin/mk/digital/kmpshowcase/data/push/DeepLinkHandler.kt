@@ -23,11 +23,10 @@ object DeepLinkHandler {
         "register" to Route.Register,
     )
 
-    // Called from platform-specific code (AppDelegate.swift)
-    @Suppress("unused")
     fun parseDeepLink(deepLink: String): Route? {
-        if (!deepLink.startsWith("$SCHEME://")) return null
-        val path = deepLink.removePrefix("$SCHEME://").lowercase()
+        val trimmed = deepLink.trim()
+        if (!trimmed.startsWith("$SCHEME://")) return null
+        val path = trimmed.removePrefix("$SCHEME://").lowercase()
         return routeMap[path]
     }
 }
