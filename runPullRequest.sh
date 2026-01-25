@@ -1,1 +1,1 @@
- ./gradlew :shared:testAndroidHostTest detekt  --parallel
+ ./gradlew :shared:testAndroidHostTest :androidApp:verifyRoborazziDebug -PscreenshotOnly detekt  --parallel
