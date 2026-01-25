@@ -77,6 +77,27 @@ fun RegisterScreen(
 ) {
     RegisterNavEvents(router)
     val state by viewModel.state.collectAsStateWithLifecycle()
+    RegisterScreen(
+        state = state,
+        onNameChange = viewModel::onNameChange,
+        onEmailChange = viewModel::onEmailChange,
+        onPasswordChange = viewModel::onPasswordChange,
+        onConfirmPasswordChange = viewModel::onConfirmPasswordChange,
+        onRegister = viewModel::register,
+        onToLogin = viewModel::toLogin,
+    )
+}
+
+@Composable
+fun RegisterScreen(
+    state: RegisterUiState,
+    onNameChange: (String) -> Unit = {},
+    onEmailChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {},
+    onConfirmPasswordChange: (String) -> Unit = {},
+    onRegister: () -> Unit = {},
+    onToLogin: () -> Unit = {},
+) {
     val focusManager = LocalFocusManager.current
 
     Column(
@@ -94,7 +115,7 @@ fun RegisterScreen(
         // Name field
         AppTextField(
             value = state.name,
-            onValueChange = viewModel::onNameChange,
+            onValueChange = onNameChange,
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(Res.string.register_name_label),
             placeholder = stringResource(Res.string.register_name_placeholder),
@@ -123,7 +144,7 @@ fun RegisterScreen(
         // Email field
         AppTextField(
             value = state.email,
-            onValueChange = viewModel::onEmailChange,
+            onValueChange = onEmailChange,
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(Res.string.register_email_label),
             placeholder = stringResource(Res.string.register_email_placeholder),
@@ -153,7 +174,7 @@ fun RegisterScreen(
         // Password field
         AppPasswordTextField(
             value = state.password,
-            onValueChange = viewModel::onPasswordChange,
+            onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(Res.string.register_password_label),
             placeholder = stringResource(Res.string.register_password_placeholder),
@@ -175,7 +196,7 @@ fun RegisterScreen(
         // Confirm Password field
         AppPasswordTextField(
             value = state.confirmPassword,
-            onValueChange = viewModel::onConfirmPasswordChange,
+            onValueChange = onConfirmPasswordChange,
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(Res.string.register_confirm_password_label),
             placeholder = stringResource(Res.string.register_confirm_password_placeholder),
@@ -190,7 +211,7 @@ fun RegisterScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
-                    viewModel.register()
+                    onRegister()
                 }
             )
         )
@@ -208,7 +229,7 @@ fun RegisterScreen(
                 text = stringResource(Res.string.register_button),
                 onClick = {
                     focusManager.clearFocus()
-                    viewModel.register()
+                    onRegister()
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -221,7 +242,7 @@ fun RegisterScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextBodyMediumNeutral80(stringResource(Res.string.register_has_account))
-            TextButton(onClick = viewModel::toLogin) {
+            TextButton(onClick = onToLogin) {
                 TextButtonPrimary(stringResource(Res.string.register_login))
             }
         }

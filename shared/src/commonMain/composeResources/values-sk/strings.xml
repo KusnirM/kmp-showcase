@@ -116,6 +116,7 @@
     <string name="database_sort_date_oldest">Dátum (najstaršie)</string>
     <string name="database_sort_title_asc">Názov (A-Z)</string>
     <string name="database_sort_title_desc">Názov (Z-A)</string>
+    <string name="database_error">Nepodarilo sa načítať poznámky. Skúste to prosím znova.</string>
 
     <!-- Calendar Screen -->
     <string name="calendar_title">Výber rozsahu dátumov</string>

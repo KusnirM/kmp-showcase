@@ -73,6 +73,29 @@ fun NotificationsScreen(router: NavRouter<Route>, viewModel: NotificationsViewMo
         viewModel.updatePermissionStatus(status)
     }
 
+    NotificationsScreen(
+        state = state,
+        onRequestPermission = permissionRequester.request,
+        onRefreshToken = viewModel::refreshToken,
+        onLogToken = viewModel::logToken,
+        onSendReminderNotification = viewModel::sendReminderNotification,
+        onSendPromoNotification = viewModel::sendPromoNotification,
+        onOpenNotificationSettings = viewModel::openNotificationSettings,
+        onCancelAllNotifications = viewModel::cancelAllNotifications,
+    )
+}
+
+@Composable
+fun NotificationsScreen(
+    state: NotificationsUiState,
+    onRequestPermission: () -> Unit = {},
+    onRefreshToken: () -> Unit = {},
+    onLogToken: () -> Unit = {},
+    onSendReminderNotification: (String, String) -> Unit = { _, _ -> },
+    onSendPromoNotification: (String, String) -> Unit = { _, _ -> },
+    onOpenNotificationSettings: () -> Unit = {},
+    onCancelAllNotifications: () -> Unit = {},
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -107,7 +130,7 @@ fun NotificationsScreen(router: NavRouter<Route>, viewModel: NotificationsViewMo
                 if (state.permissionStatus != PushPermissionStatus.GRANTED) {
                     CardButton(
                         text = stringResource(Res.string.notifications_request_permission),
-                        onClick = permissionRequester.request,
+                        onClick = onRequestPermission,
                         enabled = !state.permissionLoading
                     )
                 }
@@ -129,13 +152,13 @@ fun NotificationsScreen(router: NavRouter<Route>, viewModel: NotificationsViewMo
                 Row(horizontalArrangement = Arrangement.spacedBy(space4)) {
                     OutlinedButton(
                         text = stringResource(Res.string.notifications_refresh_token),
-                        onClick = viewModel::refreshToken,
+                        onClick = onRefreshToken,
                         modifier = Modifier.weight(1f),
                         enabled = !state.tokenRefreshing
                     )
                     OutlinedButton(
                         text = stringResource(Res.string.notifications_log_token),
-                        onClick = viewModel::logToken,
+                        onClick = onLogToken,
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -160,13 +183,13 @@ fun NotificationsScreen(router: NavRouter<Route>, viewModel: NotificationsViewMo
                 Row(horizontalArrangement = Arrangement.spacedBy(space4)) {
                     OutlinedButton(
                         text = stringResource(Res.string.notifications_send_reminder),
-                        onClick = { viewModel.sendReminderNotification(reminderTitle, reminderMessage) },
+                        onClick = { onSendReminderNotification(reminderTitle, reminderMessage) },
                         modifier = Modifier.weight(1f),
                         enabled = state.permissionStatus == PushPermissionStatus.GRANTED
                     )
                     OutlinedButton(
                         text = stringResource(Res.string.notifications_send_promo),
-                        onClick = { viewModel.sendPromoNotification(promoTitle, promoMessage) },
+                        onClick = { onSendPromoNotification(promoTitle, promoMessage) },
                         modifier = Modifier.weight(1f),
                         enabled = state.permissionStatus == PushPermissionStatus.GRANTED
                     )
@@ -187,12 +210,12 @@ fun NotificationsScreen(router: NavRouter<Route>, viewModel: NotificationsViewMo
                 Row(horizontalArrangement = Arrangement.spacedBy(space4)) {
                     OutlinedButton(
                         text = stringResource(Res.string.notifications_open_settings),
-                        onClick = viewModel::openNotificationSettings,
+                        onClick = onOpenNotificationSettings,
                         modifier = Modifier.weight(1f)
                     )
                     OutlinedButton(
                         text = stringResource(Res.string.notifications_cancel_all),
-                        onClick = viewModel::cancelAllNotifications,
+                        onClick = onCancelAllNotifications,
                         modifier = Modifier.weight(1f)
                     )
                 }

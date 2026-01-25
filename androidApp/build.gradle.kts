@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.fb.crashlytics)
     alias(libs.plugins.firebase.distribution)
+    alias(libs.plugins.roborazzi)
 }
 
 val keystorePropertiesFile = project.file("keystore.properties")
@@ -43,6 +44,18 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            all { test ->
+                test.useJUnitPlatform()
+                // -PscreenshotOnly: run ONLY screenshot tests
+                // no flag: run ONLY regular unit tests (exclude screenshot tests)
+                val runScreenShotTests = project.hasProperty("screenshotOnly")
+                val screenshotTestFile = "*ScreenshotTest*"
+                test.filter {
+                    if (runScreenShotTests) includeTestsMatching(screenshotTestFile)
+                    else excludeTestsMatching(screenshotTestFile)
+
+                }
+            }
         }
     }
 
@@ -101,13 +114,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 dependencies {
@@ -127,4 +140,16 @@ dependencies {
     implementation(libs.firebase.app.check)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.messaging)
+
+    // Testing - JUnit 5 + Vintage for JUnit4 + Roborazzi
+    testImplementation(libs.junit4)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.roborazzi.junit.rule)
+    testImplementation(libs.robolectric)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testRuntimeOnly(libs.junit.vintage.engine)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

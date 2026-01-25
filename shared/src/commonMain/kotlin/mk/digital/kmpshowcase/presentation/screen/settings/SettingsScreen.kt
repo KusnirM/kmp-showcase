@@ -72,6 +72,36 @@ fun SettingsScreen(
         else -> AvatarState.Empty
     }
 
+    SettingsScreen(
+        state = state,
+        avatarState = avatarState,
+        onProfilePhotoClick = { imagePickerViewModel.showDialog() },
+        onThemeClick = viewModel::showThemeDialog,
+        onLanguageNavEvent = viewModel::onLanguageNavEvent,
+        onTriggerTestCrash = viewModel::triggerTestCrash,
+        onLogout = viewModel::logout,
+        onThemeSelected = { themeModeState ->
+            viewModel.setThemeMode(themeModeState)
+            viewModel.hideThemeDialog()
+        },
+        onThemeDialogDismiss = viewModel::hideThemeDialog,
+    )
+
+    ImagePickerView(viewModel = imagePickerViewModel)
+}
+
+@Composable
+fun SettingsScreen(
+    state: SettingsState,
+    avatarState: AvatarState = AvatarState.Empty,
+    onProfilePhotoClick: () -> Unit = {},
+    onThemeClick: () -> Unit = {},
+    onLanguageNavEvent: (SettingNavEvents) -> Unit = {},
+    onTriggerTestCrash: () -> Unit = {},
+    onLogout: () -> Unit = {},
+    onThemeSelected: (ThemeModeState) -> Unit = {},
+    onThemeDialogDismiss: () -> Unit = {},
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -89,7 +119,7 @@ fun SettingsScreen(
         item {
             AppElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { imagePickerViewModel.showDialog() }
+                onClick = onProfilePhotoClick
             ) {
                 ProfileItem(
                     avatarState = avatarState,
@@ -106,7 +136,7 @@ fun SettingsScreen(
         item {
             AppElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { viewModel.showThemeDialog() }
+                onClick = onThemeClick
             ) {
                 SettingsItem(
                     icon = {
@@ -124,7 +154,7 @@ fun SettingsScreen(
         item {
             LanguageSelector(
                 currentLanguage = state.currentLanguage,
-                onNavigate = viewModel::onLanguageNavEvent
+                onNavigate = onLanguageNavEvent
             )
         }
 
@@ -132,7 +162,7 @@ fun SettingsScreen(
             item {
                 AppElevatedCard(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = viewModel::triggerTestCrash
+                    onClick = onTriggerTestCrash
                 ) {
                     SettingsItem(
                         icon = {
@@ -158,22 +188,17 @@ fun SettingsScreen(
         item {
             AppTextButtonError(
                 text = stringResource(Res.string.settings_logout),
-                onClick = viewModel::logout,
+                onClick = onLogout,
                 modifier = Modifier.fillMaxWidth()
             )
         }
     }
 
-    ImagePickerView(viewModel = imagePickerViewModel)
-
     if (state.showThemeDialog) {
         ThemeSelectionDialog(
             currentTheme = state.themeModeState,
-            onThemeSelected = { themeModeState ->
-                viewModel.setThemeMode(themeModeState)
-                viewModel.hideThemeDialog()
-            },
-            onDismiss = viewModel::hideThemeDialog
+            onThemeSelected = onThemeSelected,
+            onDismiss = onThemeDialogDismiss
         )
     }
 }
