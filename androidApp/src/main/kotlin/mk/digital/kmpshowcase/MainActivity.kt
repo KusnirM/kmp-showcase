@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity(), AppLocaleProvider by AppLocaleProvider
     }
 
     private fun handleDeepLinkIntent(intent: Intent?) {
-        intent?.getStringExtra(LocalNotificationServiceImpl.EXTRA_DEEP_LINK)?.let { deepLink ->
-            (pushService as? AndroidPushNotificationService)?.onDeepLinkReceived(deepLink)
-        }
+        val notificationExtrasDeepLink = intent?.getStringExtra(LocalNotificationServiceImpl.EXTRA_DEEP_LINK)
+        val uriDeepLink = intent?.data?.toString()
+        val deepLink = notificationExtrasDeepLink ?: uriDeepLink ?: return
+        (pushService as? AndroidPushNotificationService)?.onDeepLinkReceived(deepLink.trim())
     }
 }

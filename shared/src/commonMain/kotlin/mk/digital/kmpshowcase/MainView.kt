@@ -24,13 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import androidx.savedstate.serialization.SavedStateConfiguration
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
+import mk.digital.kmpshowcase.data.push.DeepLinkHandler
+import mk.digital.kmpshowcase.domain.repository.PushNotificationService
 import mk.digital.kmpshowcase.domain.useCase.base.invoke
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.presentation.base.NavRouter
@@ -72,31 +69,13 @@ val LocalSnackbarHostState = compositionLocalOf<SnackbarHostState> {
     error("No SnackbarHostState provided")
 }
 
-private val saveStateConfiguration = SavedStateConfiguration {
-    serializersModule = SerializersModule {
-        polymorphic(NavKey::class) {
-            subclass(Login.serializer())
-            subclass(Register.serializer())
-            subclass(HomeSection.Home.serializer())
-            subclass(HomeSection.UiComponents.serializer())
-            subclass(HomeSection.Networking.serializer())
-            subclass(HomeSection.Storage.serializer())
-            subclass(HomeSection.PlatformApis.serializer())
-            subclass(HomeSection.Scanner.serializer())
-            subclass(HomeSection.Database.serializer())
-            subclass(HomeSection.Calendar.serializer())
-            subclass(HomeSection.Notifications.serializer())
-            subclass(Settings.serializer())
-        }
-    }
-}
 
 @Suppress("CognitiveComplexMethod")
 @Composable
 fun MainView(
     onSetLocale: ((String) -> Unit)? = null,
 ) {
-    val router: NavRouter<Route> = rememberNavRouter(saveStateConfiguration, Login)
+    val router: NavRouter<Route> = rememberNavRouter()
     val currentRoute: Route = router.backStack.last()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -106,6 +85,8 @@ fun MainView(
     LaunchedEffect(Unit) {
         themeMode = getThemeModeUseCase()
     }
+
+    DeepLinkEffect(router)
 
     AppTheme(themeMode = themeMode) {
         CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
@@ -197,6 +178,29 @@ fun MainView(
                             )
                         )
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DeepLinkEffect(
+    router: NavRouter<Route>,
+    pushNotificationService: PushNotificationService = koinInject<PushNotificationService>(),
+) {
+    LaunchedEffect(Unit) {
+        pushNotificationService.deepLinks.collect { deepLink ->
+            DeepLinkHandler.parseDeepLink(deepLink)?.let { route ->
+                when (route) {
+                    is HomeSection -> if (route != HomeSection.Home) {
+                        router.navigateTo(route, popUpTo = HomeSection.Home::class)
+                    }
+
+                    is Settings -> router.navigateTo(route, popUpTo = HomeSection.Home::class)
+
+                    Login,
+                    Register -> router.navigateTo(route, popUpTo = HomeSection.Home::class, inclusive = true)
                 }
             }
         }

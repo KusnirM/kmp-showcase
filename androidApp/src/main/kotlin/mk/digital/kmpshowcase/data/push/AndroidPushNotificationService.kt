@@ -44,6 +44,7 @@ class AndroidPushNotificationService(
                     context,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED -> PushPermissionStatus.GRANTED
+
                 else -> PushPermissionStatus.DENIED
             }
         } else {

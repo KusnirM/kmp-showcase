@@ -42,7 +42,7 @@ class DatabaseViewModelTest {
 
         override suspend fun insert(note: Note) {
             _insertedNotes.add(note)
-            notes.value = notes.value + note
+            notes.value += note
         }
 
         override suspend fun update(note: Note) {
@@ -83,7 +83,7 @@ class DatabaseViewModelTest {
         id = id,
         title = title,
         content = content,
-        createdAt = System.currentTimeMillis()
+        createdAt = 1234567890L
     )
 
     // === Default State Tests ===

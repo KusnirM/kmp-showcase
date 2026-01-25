@@ -41,10 +41,10 @@ import mk.digital.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer
 import mk.digital.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import mk.digital.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
 import mk.digital.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
+import mk.digital.kmpshowcase.presentation.foundation.space12
 import mk.digital.kmpshowcase.presentation.foundation.space2
 import mk.digital.kmpshowcase.presentation.foundation.space4
 import mk.digital.kmpshowcase.presentation.foundation.space6
-import mk.digital.kmpshowcase.presentation.foundation.space12
 import mk.digital.kmpshowcase.shared.generated.resources.Res
 import mk.digital.kmpshowcase.shared.generated.resources.register_button
 import mk.digital.kmpshowcase.shared.generated.resources.register_confirm_password_empty
@@ -259,7 +259,12 @@ private fun RegisterNavEvents(
     CollectNavEvents(navEventFlow = viewModel.navEvent) { event ->
 
         when (event) {
-            is RegisterNavEvent.ToHome -> router.replaceAll(Route.HomeSection.Home)
+            is RegisterNavEvent.ToHome -> router.navigateTo(
+                Route.HomeSection.Home,
+                popUpTo = Route.Register::class,
+                inclusive = true
+            )
+
             is RegisterNavEvent.ToLogin -> router.onBack()
         }
     }

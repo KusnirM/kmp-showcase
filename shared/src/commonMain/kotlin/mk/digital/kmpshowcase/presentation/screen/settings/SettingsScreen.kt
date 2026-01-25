@@ -306,7 +306,12 @@ private fun SettingsNavEvents(
         when (event) {
             is SettingNavEvents.SetLocaleTag -> onSetLocale?.invoke(event.tag)
             is SettingNavEvents.ToSettings -> router.openSettings()
-            is SettingNavEvents.Logout -> router.replaceAll(Route.Login)
+            is SettingNavEvents.Logout -> router.navigateTo(
+                Route.Login,
+                popUpTo = Route.HomeSection.Home::class,
+                inclusive = true
+            )
+
             is SettingNavEvents.ThemeChanged -> onThemeChanged(event.mode)
         }
     }
