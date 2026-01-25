@@ -8,7 +8,6 @@ import platform.AVFoundation.AVCaptureTorchModeOff
 import platform.AVFoundation.AVCaptureTorchModeOn
 import platform.AVFoundation.AVMediaTypeVideo
 import platform.AVFoundation.hasTorch
-import platform.AVFoundation.torchMode
 import platform.AVFoundation.isTorchAvailable
 import platform.AVFoundation.setTorchMode
 
@@ -30,6 +29,7 @@ actual class FlashlightClientImpl : FlashlightClient {
         return device.hasTorch && device.isTorchAvailable()
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     actual override fun turnOn(): Boolean {
         val device = getDevice() ?: return false
         if (!device.hasTorch || !device.isTorchAvailable()) return false
@@ -45,6 +45,7 @@ actual class FlashlightClientImpl : FlashlightClient {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught", "SwallowedException")
     actual override fun turnOff(): Boolean {
         val device = getDevice() ?: return false
         if (!device.hasTorch) return false

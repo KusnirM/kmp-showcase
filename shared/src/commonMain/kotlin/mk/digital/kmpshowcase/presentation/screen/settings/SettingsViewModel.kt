@@ -2,7 +2,6 @@ package mk.digital.kmpshowcase.presentation.screen.settings
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import mk.digital.kmpshowcase.AppConfig
-import mk.digital.kmpshowcase.data.analytics.AnalyticsClient
 import mk.digital.kmpshowcase.domain.useCase.base.invoke
 import mk.digital.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import mk.digital.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
@@ -42,7 +41,6 @@ enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
 class SettingsViewModel(
     private val getThemeModeUseCase: GetThemeModeUseCase,
     private val setThemeModeUseCase: SetThemeModeUseCase,
-    private val analyticsClient: AnalyticsClient,
     appConfig: AppConfig,
 ) : BaseViewModel<SettingsState>(
     SettingsState(
@@ -100,10 +98,9 @@ class SettingsViewModel(
         navigate(SettingNavEvents.Logout)
     }
 
+    @Suppress("TooGenericExceptionThrown")
     fun triggerTestCrash() {
-        val exception = RuntimeException("Test Crash for Firebase Crashlytics")
-        analyticsClient.recordException(exception)
-        throw exception
+        execute(action = { throw RuntimeException("Test Crash for Firebase Crashlytics") })
     }
 }
 

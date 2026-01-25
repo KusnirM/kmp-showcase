@@ -38,9 +38,6 @@ jobs:
     if: github.event.pull_request.draft == false
 
     steps:
-      - name: Skip tests (temporary)
-        run: echo "Skipping Android tests for faster iteration"
-
       - name: Checkout code
         uses: actions/checkout@v4
 
