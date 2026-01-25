@@ -2,29 +2,44 @@ package mk.digital.kmpshowcase.presentation.screen.notifications
 
 import mk.digital.kmpshowcase.domain.model.Notification
 import mk.digital.kmpshowcase.domain.model.NotificationChannel
-import mk.digital.kmpshowcase.domain.repository.LocalNotificationService
-import mk.digital.kmpshowcase.domain.repository.PushNotificationService
 import mk.digital.kmpshowcase.domain.repository.PushPermissionStatus
+import mk.digital.kmpshowcase.domain.useCase.base.invoke
+import mk.digital.kmpshowcase.domain.useCase.notifications.CancelAllNotificationsUseCase
+import mk.digital.kmpshowcase.domain.useCase.notifications.GetPushPermissionStatusUseCase
+import mk.digital.kmpshowcase.domain.useCase.notifications.LogPushTokenUseCase
+import mk.digital.kmpshowcase.domain.useCase.notifications.ObservePushNotificationsUseCase
+import mk.digital.kmpshowcase.domain.useCase.notifications.ObservePushTokenUseCase
+import mk.digital.kmpshowcase.domain.useCase.notifications.RefreshPushTokenUseCase
+import mk.digital.kmpshowcase.domain.useCase.notifications.ShowLocalNotificationUseCase
 import mk.digital.kmpshowcase.presentation.base.BaseViewModel
 import mk.digital.kmpshowcase.presentation.base.NavEvent
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@Suppress("LongParameterList")
 class NotificationsViewModel(
-    private val pushNotificationService: PushNotificationService,
-    private val localNotificationService: LocalNotificationService,
+    private val getPushPermissionStatusUseCase: GetPushPermissionStatusUseCase,
+    private val observePushTokenUseCase: ObservePushTokenUseCase,
+    private val observePushNotificationsUseCase: ObservePushNotificationsUseCase,
+    private val refreshPushTokenUseCase: RefreshPushTokenUseCase,
+    private val logPushTokenUseCase: LogPushTokenUseCase,
+    private val showLocalNotificationUseCase: ShowLocalNotificationUseCase,
+    private val cancelAllNotificationsUseCase: CancelAllNotificationsUseCase,
 ) : BaseViewModel<NotificationsUiState>(NotificationsUiState()) {
 
     override fun loadInitialData() {
-        newState { it.copy(permissionStatus = pushNotificationService.getPermissionStatus()) }
+        execute(
+            action = { getPushPermissionStatusUseCase() },
+            onSuccess = { status -> newState { it.copy(permissionStatus = status) } }
+        )
 
         observe(
-            flow = pushNotificationService.token,
+            flow = observePushTokenUseCase(),
             onEach = { token -> newState { it.copy(pushToken = token) } }
         )
 
         observe(
-            flow = pushNotificationService.notifications,
+            flow = observePushNotificationsUseCase(),
             onEach = { notification ->
                 newState { it.copy(lastReceivedNotification = "${notification.title}: ${notification.message}") }
             }
@@ -37,7 +52,7 @@ class NotificationsViewModel(
 
     fun refreshToken() {
         execute(
-            action = { pushNotificationService.refreshToken() },
+            action = { refreshPushTokenUseCase() },
             onLoading = { newState { it.copy(tokenRefreshing = true) } },
             onSuccess = { newState { it.copy(tokenRefreshing = false) } },
             onError = { newState { it.copy(tokenRefreshing = false) } }
@@ -45,7 +60,7 @@ class NotificationsViewModel(
     }
 
     fun logToken() {
-        pushNotificationService.logToken()
+        execute(action = { logPushTokenUseCase() })
     }
 
     @OptIn(ExperimentalUuidApi::class)
@@ -56,8 +71,10 @@ class NotificationsViewModel(
             message = message,
             channel = NotificationChannel.REMINDERS
         )
-        localNotificationService.showNotification(notification)
-        newState { it.copy(lastSentNotification = notification.title) }
+        execute(
+            action = { showLocalNotificationUseCase(notification) },
+            onSuccess = { newState { it.copy(lastSentNotification = notification.title) } }
+        )
     }
 
     @OptIn(ExperimentalUuidApi::class)
@@ -68,13 +85,17 @@ class NotificationsViewModel(
             message = message,
             channel = NotificationChannel.PROMOTIONS
         )
-        localNotificationService.showNotification(notification)
-        newState { it.copy(lastSentNotification = notification.title) }
+        execute(
+            action = { showLocalNotificationUseCase(notification) },
+            onSuccess = { newState { it.copy(lastSentNotification = notification.title) } }
+        )
     }
 
     fun cancelAllNotifications() {
-        localNotificationService.cancelAllNotifications()
-        newState { it.copy(lastSentNotification = null) }
+        execute(
+            action = { cancelAllNotificationsUseCase() },
+            onSuccess = { newState { it.copy(lastSentNotification = null) } }
+        )
     }
 
     fun openNotificationSettings() {

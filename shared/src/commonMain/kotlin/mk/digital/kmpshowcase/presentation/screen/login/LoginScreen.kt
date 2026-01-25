@@ -80,6 +80,29 @@ fun LoginScreen(
 ) {
     LoginNavEvents(router)
     val state by viewModel.state.collectAsStateWithLifecycle()
+    LoginScreen(
+        state = state,
+        onSkip = viewModel::skip,
+        onEmailChange = viewModel::onEmailChange,
+        onPasswordChange = viewModel::onPasswordChange,
+        onLogin = viewModel::login,
+        onToRegister = viewModel::toRegister,
+        onAuthenticateWithBiometrics = viewModel::authenticateWithBiometrics,
+        onFillTestAccount = viewModel::fillTestAccount,
+    )
+}
+
+@Composable
+fun LoginScreen(
+    state: LoginUiState,
+    onSkip: () -> Unit = {},
+    onEmailChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit = {},
+    onLogin: () -> Unit = {},
+    onToRegister: () -> Unit = {},
+    onAuthenticateWithBiometrics: () -> Unit = {},
+    onFillTestAccount: () -> Unit = {},
+) {
     val focusManager = LocalFocusManager.current
 
     Column(
@@ -95,7 +118,7 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            TextButton(onClick = viewModel::skip) {
+            TextButton(onClick = onSkip) {
                 TextButtonPrimary(stringResource(Res.string.login_skip))
             }
         }
@@ -109,7 +132,7 @@ fun LoginScreen(
         // Email field
         AppTextField(
             value = state.email,
-            onValueChange = viewModel::onEmailChange,
+            onValueChange = onEmailChange,
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(Res.string.login_email_label),
             placeholder = stringResource(Res.string.login_email_placeholder),
@@ -138,7 +161,7 @@ fun LoginScreen(
         // Password field
         AppPasswordTextField(
             value = state.password,
-            onValueChange = viewModel::onPasswordChange,
+            onValueChange = onPasswordChange,
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(Res.string.login_password_label),
             placeholder = stringResource(Res.string.login_password_placeholder),
@@ -153,7 +176,7 @@ fun LoginScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus()
-                    viewModel.login()
+                    onLogin()
                 }
             )
         )
@@ -165,7 +188,7 @@ fun LoginScreen(
             text = stringResource(Res.string.login_button),
             onClick = {
                 focusManager.clearFocus()
-                viewModel.login()
+                onLogin()
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -177,7 +200,7 @@ fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextBodyMediumNeutral80(stringResource(Res.string.login_no_account))
-            TextButton(onClick = viewModel::toRegister) {
+            TextButton(onClick = onToRegister) {
                 TextButtonPrimary(stringResource(Res.string.login_register))
             }
         }
@@ -204,7 +227,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
             } else {
-                BiometricView(onClick = viewModel::authenticateWithBiometrics)
+                BiometricView(onClick = onAuthenticateWithBiometrics)
             }
         }
 
@@ -234,7 +257,7 @@ fun LoginScreen(
                 Spacer2()
 
                 OutlinedButton(
-                    onClick = viewModel::fillTestAccount
+                    onClick = onFillTestAccount
                 ) {
                     TextButtonPrimary(stringResource(Res.string.login_test_account_fill))
                 }

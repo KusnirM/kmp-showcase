@@ -37,7 +37,19 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun CalendarScreen(viewModel: CalendarViewModel = lifecycleAwareViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    CalendarScreen(
+        state = state,
+        onDateClick = viewModel::onDateClick,
+        onClearSelection = viewModel::clearSelection,
+    )
+}
 
+@Composable
+fun CalendarScreen(
+    state: CalendarUiState,
+    onDateClick: (kotlinx.datetime.LocalDate) -> Unit = {},
+    onClearSelection: () -> Unit = {},
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -60,7 +72,7 @@ fun CalendarScreen(viewModel: CalendarViewModel = lifecycleAwareViewModel()) {
                 AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4)) {
                     CalendarView(
                         selectedRange = state.selectedRange,
-                        onDateClick = viewModel::onDateClick,
+                        onDateClick = onDateClick,
                         today = today,
                         disabledDates = state.disabledDates,
                         minDate = state.minDate,
@@ -82,7 +94,7 @@ fun CalendarScreen(viewModel: CalendarViewModel = lifecycleAwareViewModel()) {
         item {
             OutlinedButton(
                 text = stringResource(Res.string.calendar_clear_selection),
-                onClick = viewModel::clearSelection,
+                onClick = onClearSelection,
             )
         }
     }
