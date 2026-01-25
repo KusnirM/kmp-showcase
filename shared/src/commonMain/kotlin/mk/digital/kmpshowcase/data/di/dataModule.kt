@@ -12,6 +12,7 @@ import mk.digital.kmpshowcase.data.local.preferences.SessionPreferencesImpl
 import mk.digital.kmpshowcase.data.network.HttpClientProvider
 import mk.digital.kmpshowcase.data.repository.BiometricRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.DateRepositoryImpl
+import mk.digital.kmpshowcase.data.repository.FlashlightRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.LocationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.SettingsRepositoryImpl
 import mk.digital.kmpshowcase.data.notification.NotificationRepositoryImpl
@@ -26,6 +27,7 @@ import mk.digital.kmpshowcase.di.Qualifiers.session
 import mk.digital.kmpshowcase.domain.repository.AuthRepository
 import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.DateRepository
+import mk.digital.kmpshowcase.domain.repository.FlashlightRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
 import mk.digital.kmpshowcase.domain.repository.NoteRepository
 import mk.digital.kmpshowcase.domain.repository.NotificationRepository
@@ -52,6 +54,7 @@ val dataModule = module {
     singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
     singleOf(::LocationRepositoryImpl) { bind<LocationRepository>() }
     singleOf(::BiometricRepositoryImpl) { bind<BiometricRepository>() }
+    singleOf(::FlashlightRepositoryImpl) { bind<FlashlightRepository>() }
     singleOf(::DateRepositoryImpl) { bind<DateRepository>() }
     singleOf(::NoteRepositoryImpl) { bind<NoteRepository>() }
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }

@@ -2,35 +2,59 @@ package mk.digital.kmpshowcase.presentation.screen.platformapis
 
 import kotlinx.coroutines.Job
 import mk.digital.kmpshowcase.data.biometric.BiometricResult
-import mk.digital.kmpshowcase.data.flashlight.FlashlightClient
 import mk.digital.kmpshowcase.domain.model.Location
-import mk.digital.kmpshowcase.domain.repository.BiometricRepository
-import mk.digital.kmpshowcase.domain.repository.LocationRepository
+import mk.digital.kmpshowcase.domain.useCase.base.invoke
+import mk.digital.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
+import mk.digital.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
+import mk.digital.kmpshowcase.domain.useCase.flashlight.IsFlashlightAvailableUseCase
+import mk.digital.kmpshowcase.domain.useCase.flashlight.ToggleFlashlightUseCase
+import mk.digital.kmpshowcase.domain.useCase.flashlight.TurnOffFlashlightUseCase
+import mk.digital.kmpshowcase.domain.useCase.location.GetLastKnownLocationUseCase
+import mk.digital.kmpshowcase.domain.useCase.location.ObserveLocationUpdatesUseCase
 import mk.digital.kmpshowcase.presentation.base.BaseViewModel
 import mk.digital.kmpshowcase.presentation.base.NavEvent
 
+@Suppress("LongParameterList", "TooManyFunctions")
 class PlatformApisViewModel(
-    private val locationRepository: LocationRepository,
-    private val biometricRepository: BiometricRepository,
-    private val flashlightClient: FlashlightClient,
+    private val getLastKnownLocationUseCase: GetLastKnownLocationUseCase,
+    private val observeLocationUpdatesUseCase: ObserveLocationUpdatesUseCase,
+    private val isBiometricEnabledUseCase: IsBiometricEnabledUseCase,
+    private val authenticateWithBiometricUseCase: AuthenticateWithBiometricUseCase,
+    private val isFlashlightAvailableUseCase: IsFlashlightAvailableUseCase,
+    private val toggleFlashlightUseCase: ToggleFlashlightUseCase,
+    private val turnOffFlashlightUseCase: TurnOffFlashlightUseCase,
 ) : BaseViewModel<PlatformApisUiState>(PlatformApisUiState()) {
 
     private var locationUpdatesJob: Job? = null
 
     override fun loadInitialData() {
-        newState {
-            it.copy(
-                biometricsAvailable = biometricRepository.enabled(),
-                flashlightAvailable = flashlightClient.isAvailable()
-            )
-        }
+        execute(
+            action = {
+                Pair(
+                    isBiometricEnabledUseCase(),
+                    isFlashlightAvailableUseCase()
+                )
+            },
+            onSuccess = { (biometricsAvailable, flashlightAvailable) ->
+                newState {
+                    it.copy(
+                        biometricsAvailable = biometricsAvailable,
+                        flashlightAvailable = flashlightAvailable
+                    )
+                }
+            }
+        )
     }
 
     fun toggleFlashlight() {
-        val success = flashlightClient.toggle()
-        if (success) {
-            newState { it.copy(flashlightOn = !it.flashlightOn) }
-        }
+        execute(
+            action = { toggleFlashlightUseCase() },
+            onSuccess = { success ->
+                if (success) {
+                    newState { it.copy(flashlightOn = !it.flashlightOn) }
+                }
+            }
+        )
     }
 
     fun share(text: String) {
@@ -60,7 +84,7 @@ class PlatformApisViewModel(
 
     fun getLocation() {
         execute(
-            action = { locationRepository.lastKnownLocation() },
+            action = { getLastKnownLocationUseCase() },
             onLoading = { newState { it.copy(locationLoading = true, locationError = false) } },
             onSuccess = { location ->
                 newState { it.copy(location = location, locationLoading = false) }
@@ -86,7 +110,7 @@ class PlatformApisViewModel(
         if (locationUpdatesJob?.isActive == true) return
         newState { it.copy(isTrackingLocation = true, locationUpdatesError = false) }
         locationUpdatesJob = observe(
-            flow = locationRepository.locationUpdates(highAccuracy = true),
+            flow = observeLocationUpdatesUseCase(ObserveLocationUpdatesUseCase.Params(highAccuracy = true)),
             onEach = { location -> newState { it.copy(trackedLocation = location) } },
             onError = { newState { it.copy(isTrackingLocation = false, locationUpdatesError = true) } }
         )
@@ -100,7 +124,7 @@ class PlatformApisViewModel(
 
     fun authenticateWithBiometrics() {
         execute(
-            action = { biometricRepository.authenticate() },
+            action = { authenticateWithBiometricUseCase() },
             onLoading = { newState { it.copy(biometricsLoading = true, biometricsResult = null) } },
             onSuccess = { result -> newState { it.copy(biometricsLoading = false, biometricsResult = result) } },
             onError = { error ->
@@ -114,7 +138,7 @@ class PlatformApisViewModel(
         super.onCleared()
         stopLocationUpdates()
         if (state.value.flashlightOn) {
-            flashlightClient.turnOff()
+            execute(action = { turnOffFlashlightUseCase() })
         }
     }
 
