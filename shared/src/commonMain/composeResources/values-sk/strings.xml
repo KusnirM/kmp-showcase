@@ -197,6 +197,10 @@
     <string name="platform_apis_biometrics_cancelled">Autentifikácia zrušená</string>
     <string name="platform_apis_biometrics_not_available">Biometria nie je na tomto zariadení dostupná</string>
     <string name="platform_apis_biometrics_activity_not_available">Aktivita nie je dostupná</string>
+    <string name="platform_apis_flashlight_title">Baterka</string>
+    <string name="platform_apis_flashlight_on">Zapnúť</string>
+    <string name="platform_apis_flashlight_off">Vypnúť</string>
+    <string name="platform_apis_flashlight_not_available">Baterka nie je na tomto zariadení dostupná</string>
     <string name="platform_apis_demo_email_subject">Ahoj z KMP Showcase</string>
     <string name="platform_apis_demo_email_body">Toto je demo email odoslaný z aplikácie KMP Showcase.</string>
     <string name="platform_apis_demo_share_text">Pozri si KMP Showcase - ukážkovú Kotlin Multiplatform aplikáciu!</string>
