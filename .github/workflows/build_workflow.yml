@@ -1,0 +1,538 @@
+name: Build workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      buildApp:
+        description: "Build app"
+        required: false
+        default: "false"
+      buildType:
+        description: "Build type (debug/release)"
+        required: false
+        default: "debug"
+      buildFileType:
+        description: "Build file type (aab/apk)"
+        required: false
+        default: "apk"
+      runUnitTests:
+        description: "Run unit tests"
+        required: false
+        default: "true"
+      runPaparazzi:
+        description: "Run screenshot tests"
+        required: false
+        default: "false"
+      publishToFirebase:
+        description: "Publish build to firebase"
+        required: false
+        default: "false"
+      publishToPlayStore:
+        description: "Publish build to Play Store"
+        required: false
+        default: "false"
+      versionName:
+        description: "App version ${Major}.${Minor}.${Build Number} (ie: 5.0.0)"
+        required: false
+        default: "1.0.0"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  PR_RUN_NUMBER: ${{ github.run_number }}
+
+jobs:
+
+  prepare_meta_data:
+    name: "Extract variables for common use"
+    runs-on: ubuntu-latest
+    outputs:
+      build_type: ${{ steps.build_method.outputs.type }}
+      build_type_signing: ${{ steps.build_method.outputs.sign_build_type }}
+      build_dir: ${{ steps.build_directory_path.outputs.output_dir_path }}
+      build_variant: ${{ steps.build_variant.outputs.type }}
+      app_version_name: ${{ steps.app_version_name.outputs.version_name }}
+      app_version_code: ${{ steps.app_version_code.outputs.version_code }}
+      branch_name: ${{ steps.extract_branch.outputs.branch }}
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Determine build method type
+        id: build_method
+        run: |
+          if [ "${{ github.event.inputs.buildFileType }}" == "aab" ]; then
+            echo "type=bundle" >> $GITHUB_OUTPUT
+            echo "sign_build_type=bundle" >> $GITHUB_OUTPUT
+          else
+            echo "type=assemble" >> $GITHUB_OUTPUT
+            echo "sign_build_type=apk" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Determine Build Variant
+        id: build_variant
+        run: |
+          if [ "${{ github.event.inputs.buildType }}" == "release" ]; then
+            echo "type=release" >> $GITHUB_OUTPUT
+          else
+            echo "type=debug" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Determine build directory path
+        id: build_directory_path
+        run: |
+          if [ "${{ github.event.inputs.buildFileType }}" == "aab" ]; then
+            echo "output_dir_path=b_app/build/outputs/bundle/${{ steps.build_variant.outputs.type }}/b_app-${{ steps.build_variant.outputs.type }}.aab" >> $GITHUB_OUTPUT
+          else
+            echo "output_dir_path=b_app/build/outputs/apk/${{ steps.build_variant.outputs.type }}/b_app-${{ steps.build_variant.outputs.type }}.apk" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set the app version
+        id: app_version_name
+        run: |
+          if [ "${{ github.event.inputs.buildType }}" == "debug" ]; then
+            echo "version_name=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else 
+            echo "version_name=${{ github.event.inputs.versionName }}.${{ github.run_number }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set the app version code
+        id: app_version_code
+        env:
+          NUM: ${{ github.run_number }}
+        run: |
+          if [ "${{ github.event.inputs.buildType }}" == "debug" ]; then
+            echo "version_code=$(($NUM))" >> $GITHUB_OUTPUT
+          else
+#          constant represents play store number start if required
+            echo "version_code=$(($NUM + 0))" >> $GITHUB_OUTPUT
+          fi
+
+  code_analysis:
+    name: Code analysis
+    runs-on: ubuntu-latest
+    needs: prepare_meta_data
+    env:
+      BRANCH_NAME: ${{ needs.prepare_meta_data.outputs.branch_name }}
+    steps:
+      - name: Set Job in progress status
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "pending",
+              context: "Code analysis",
+              target_url: `https://github.com/KusnirM/kmp-showcase/actions/runs/${context.runId}`
+            });
+
+      - name: Checkout action
+        uses: actions/checkout@v4.1.1
+
+      - name: Decrypt secrets
+        run: |
+          chmod +x .github/scripts/decrypt.sh
+          ./.github/scripts/decrypt.sh ${{ secrets.PASSPHRASE }}
+        shell: bash
+
+      - name: Java Setup
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+      - name: Detekt
+        uses: gradle/gradle-build-action@v3.0.0
+        with:
+          gradle-version: wrapper
+          arguments: detekt --parallel
+
+      - name: Set Job completion status
+        if: always()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: `${{ job.status }}`,
+              context: "Code analysis",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
+
+  unit_tests:
+    name: Unit Tests
+    needs: prepare_meta_data
+    runs-on: ubuntu-20.04
+    if: github.event.inputs.runUnitTests == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+
+      - name: Decrypt secrets
+        run: |
+          chmod +x .github/scripts/decrypt.sh
+          ./.github/scripts/decrypt.sh ${{ secrets.PASSPHRASE }}
+        shell: bash
+
+      - name: Set Job pending status
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "pending",
+              context: "Unit Tests",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
+
+      - name: Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.gradle/build-cache
+          key: dev-${{ needs.prepare_meta_data.outputs.branch_name }}-${{github.run_number}}
+          restore-keys: |
+            dev-${{ needs.prepare_meta_data.outputs.branch_name }}-
+
+      - name: Java Setup
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+
+      - name: Unit tests
+        run: |
+          ./gradlew :shared:testAndroidHostTest
+
+      - name: Add failure as comment on PR
+        if: ${{ failure() }}
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-path: unit_test_failure_report.md
+          refresh-message-position: true
+
+      - name: Set Job completion status
+        if: always()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: `${{ job.status }}`,
+              context: "Unit Tests",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
+
+  build_app:
+    name: Generate app build
+    runs-on: ubuntu-20.04
+    needs: prepare_meta_data
+    env:
+      BUILD_TYPE: ${{ needs.prepare_meta_data.outputs.build_type }}
+      BUILD_TYPE_SIGN : ${{ needs.prepare_meta_data.outputs.build_type_signing }}
+      BUILD_DIR: ${{ needs.prepare_meta_data.outputs.build_dir }}
+      BUILD_VARIANT: ${{ needs.prepare_meta_data.outputs.build_variant }}
+      BUILD_FILE_TYPE: ${{ github.event.inputs.buildFileType }}
+      BRANCH_NAME: ${{ github.ref_name }}
+      VERSION_CODE: ${{ needs.prepare_meta_data.outputs.app_version_code }}
+      VERSION_NAME: ${{ needs.prepare_meta_data.outputs.app_version_name }}
+    if: github.event.inputs.buildApp == 'true'
+    steps:
+      - name: Checkout action
+        uses: actions/checkout@v2
+
+      - name: Decrypt secrets
+        run: |
+          chmod +x .github/scripts/decrypt.sh
+          ./.github/scripts/decrypt.sh ${{ secrets.PASSPHRASE }}
+        shell: bash
+
+      - name: Set Job in progress status
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "pending",
+              context: "Generate app build",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Build ${{ env.BUILD_VARIANT }} ${{ github.event.inputs.buildFileType }}
+        run: gradle b_app:${{ env.BUILD_TYPE }}${{ env.BUILD_VARIANT }} --configure-on-demand --daemon --parallel --stacktrace --build-cache -PversionName=${{ env.VERSION_NAME }} -PversionCode=${{ env.VERSION_CODE }} -PskipGradleSigning=true -P${{ env.BUILD_VARIANT }}Debuggable=${{ github.event.inputs.buildType == 'qa'}}
+
+      - name: Setup build tool version variable
+        shell: bash
+        run: |
+          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+          echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
+          echo Last build tool version is: $BUILD_TOOL_VERSION
+
+      - name: Sign Alpha bundle
+        if: env.BUILD_VARIANT == 'alpha'
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: b_app/build/outputs/${{ env.BUILD_TYPE_SIGN }}/${{ env.BUILD_VARIANT }}/
+          signingKeyBase64: ${{ secrets.ALPHA_SIGNING_KEY }}
+          alias: ${{ secrets.ALPHA_ALIAS }}
+          keyStorePassword: ${{ secrets.ALPHA_KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.ALPHA_KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
+
+      - name: Sign Release bundle
+        if: env.BUILD_VARIANT == 'release'
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: androidApp/build/outputs/${{ env.BUILD_TYPE_SIGN }}/${{ env.BUILD_VARIANT }}/
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: build
+          path: |
+            ${{ env.BUILD_DIR }}
+            b_app/build/outputs/logs/*
+            b_app/build/outputs/mapping/${{ env.BUILD_VARIANT }}/*
+
+      - name: Set Job completion status
+        if: always()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: `${{ job.status }}`,
+              context: "Generate app build",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
+
+  publish_app:
+    name: App distribution
+    runs-on: ubuntu-latest
+    needs: [build_app,prepare_meta_data]
+    env:
+      BUILD_FILE_TYPE: ${{ github.event.inputs.buildFileType }}
+      BUILD_VARIANT: ${{ needs.prepare_meta_data.outputs.build_variant }}
+      BRANCH_NAME: ${{ needs.prepare_meta_data.outputs.branch_name }}
+    if: github.event.inputs.publishToFirebase == 'true' || github.event.inputs.publishToPlayStore == 'true'
+    steps:
+      - name: Checkout action
+        uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: pip install -r .github/scripts/requirements.txt
+
+      - name: Export artifact path
+        id: artifact_path
+        run: |
+          echo "::set-output name=dir::build/bundle/debug/b_app-debug.aab"
+          if [ "${{ github.event.inputs.buildFileType }}" == "aab" ]; then
+            echo "dir=./bundle/${{ env.BUILD_VARIANT }}/b_app-${{ env.BUILD_VARIANT }}.aab" >> $GITHUB_OUTPUT
+          else
+            echo "dir=./apk/${{ env.BUILD_VARIANT }}/b_app-${{ env.BUILD_VARIANT }}.apk" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Firebase App Distribution
+        id: firebase_distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
+        if: github.event.inputs.publishToFirebase == 'true'
+        with:
+          releaseNotes: ' '
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{ secrets.FIREBASE_TOKEN }}
+          groups: vhi-qa
+          file: ${{ steps.artifact_path.outputs.dir }}
+
+      - name: Add build comment to pull request
+        if: success() && github.event.inputs.processAsPullRequest == 'true' && github.event.inputs.publishToFirebase == 'true'
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            Build ${{ github.run_number }} ready for testing 🚀 [🔗](${{ steps.firebase_distribution.outputs.FIREBASE_CONSOLE_URI }})
+
+      - name: Play Store App Distribution
+        uses: r0adkll/upload-google-play@v1.1.2
+        if: github.event.inputs.publishToPlayStore == 'true'
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          packageName: com.vhi
+          releaseFiles: ${{ steps.artifact_path.outputs.dir }}
+          track: closed
+          mappingFile: ./mapping/${{ env.BUILD_VARIANT }}/mapping.txt
+
+
+  run_screenshots_test:
+    name: Screenshots Test
+    runs-on: ubuntu-20.04
+    if: github.event.inputs.runPaparazzi == 'true'
+    needs: prepare_meta_data
+    env:
+      BRANCH_NAME: ${{ needs.prepare_meta_data.outputs.branch_name }}
+    steps:
+      - name: Set Job in progress status
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: "pending",
+              context: "Screenshots Test",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
+
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+
+      - name: Decrypt secrets
+        run: |
+          chmod +x .github/scripts/decrypt.sh
+          ./.github/scripts/decrypt.sh ${{ secrets.PASSPHRASE }}
+        shell: bash
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.gradle/build-cache
+          key: dev-${{ needs.prepare_meta_data.outputs.branch_name }}-${{github.run_number}}
+          restore-keys: |
+            dev-${{ needs.prepare_meta_data.outputs.branch_name }}-
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+
+      - name: Java Setup
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+      - name: Run screenshot Tests
+        run: ./gradlew androidApp:verifyRoborazziDebug --tests="*Compose*" --build-cache --parallel
+
+      - name: Delete Previous Caches
+        if: ${{ success() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh extension install actions/gh-actions-cache
+
+          REPO=${{ github.repository }}
+          BRANCH="refs/pull/${{ github.event.pull_request.number }}/merge"
+
+          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+
+          ## Setting this to not fail the workflow while deleting cache keys. 
+          set +e
+          for cacheKey in $cacheKeysForPR
+          do
+          gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+          done
+          echo "Done"
+
+      - name: Generate Failure report
+        if: ${{ failure() }}
+        run: |
+          python -u .github/scripts/screenshots_failure_report.py ${{ github.workspace }}
+          cat screenshots_test_failure_report.md
+
+      - name: Store Failure Images as Artifacts
+        id: upload_failed_artefacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: paparazzi-failures
+          path: ${{ github.workspace }}/screenshots-failures
+
+      - name: Append artifact URL
+        if: ${{ failure() }}
+        run: |
+          echo '[Click here to download the test failure screenshots ](${{steps.upload_failed_artefacts.outputs.artifact-url}})' >> screenshots_test_failure_report.md
+
+      - name: Add failure comment on PR
+        if: ${{ failure() }}
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-path: screenshots_test_failure_report.md
+          refresh-message-position: true
+
+      - name: Set Job completion status
+        if: always()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: `${{ job.status }}`,
+              context: "Screenshots Test",
+              target_url: `https://github.com/VhiMobile/vhi-android/actions/runs/${context.runId}`
+            });
