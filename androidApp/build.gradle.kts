@@ -31,10 +31,10 @@ val hasSigningProperties = keystoreProperties.isNotEmpty()
 
 android {
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    namespace = "mk.digital.kmpshowcase"
+    namespace = "com.mk.kmpshowcase"
 
     defaultConfig {
-        applicationId = "mk.digital.kmpshowcase"
+        applicationId = "com.mk.kmpshowcase"
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = (project.findProperty("versionCode") as String?)?.toIntOrNull() ?: 1

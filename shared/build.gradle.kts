@@ -15,7 +15,7 @@ plugins {
 kotlin {
     androidLibrary {
         compileSdk = libs.versions.androidCompileSdk.get().toInt()
-        namespace = "mk.digital.kmpshowcase.shared"
+        namespace = "com.mk.kmpshowcase.shared"
         minSdk = libs.versions.androidMinSdk.get().toInt()
 
         compilerOptions {
@@ -37,7 +37,7 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
-            freeCompilerArgs += listOf("-Xbinary=bundleId=mk.digital.kmpshowcase.shared")
+            freeCompilerArgs += listOf("-Xbinary=bundleId=com.mk.kmpshowcase.shared")
             isStatic = true
         }
     }
@@ -155,13 +155,13 @@ kotlin {
 }
 
 compose.resources {
-    packageOfResClass = "mk.digital.kmpshowcase.shared.generated.resources"
+    packageOfResClass = "com.mk.kmpshowcase.shared.generated.resources"
 }
 
 sqldelight {
     databases {
         create("AppDatabase") {
-            packageName.set("mk.digital.kmpshowcase.data.database")
+            packageName.set("com.mk.kmpshowcase.data.database")
         }
     }
 }
