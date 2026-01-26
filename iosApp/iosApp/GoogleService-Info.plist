@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>mk.digital.kmpshowcase</string>
+	<string>com.mk.kmpshowcase</string>
 	<key>PROJECT_ID</key>
 	<string>kmp-showcase-29e07</string>
 	<key>STORAGE_BUCKET</key>
