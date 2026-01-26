@@ -13,6 +13,7 @@ import mk.digital.kmpshowcase.presentation.screen.register.RegisterViewModel
 import mk.digital.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import mk.digital.kmpshowcase.presentation.screen.settings.SettingsViewModel
 import mk.digital.kmpshowcase.presentation.screen.storage.StorageViewModel
+import mk.digital.kmpshowcase.presentation.screen.example.ExampleViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -32,4 +33,5 @@ val presentationModule = module {
     viewModelOf(::NotificationsViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
+    viewModelOf(::ExampleViewModel)
 }

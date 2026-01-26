@@ -10,14 +10,17 @@ import mk.digital.kmpshowcase.data.local.preferences.PersistentPreferencesImpl
 import mk.digital.kmpshowcase.data.local.preferences.SessionPreferences
 import mk.digital.kmpshowcase.data.local.preferences.SessionPreferencesImpl
 import mk.digital.kmpshowcase.data.network.HttpClientProvider
+import mk.digital.kmpshowcase.data.notification.NotificationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.BiometricRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.DateRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.FlashlightRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.LocationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.SettingsRepositoryImpl
-import mk.digital.kmpshowcase.data.notification.NotificationRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.database.AuthRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.database.NoteRepositoryImpl
+import mk.digital.kmpshowcase.data.repository.example.ExampleClient
+import mk.digital.kmpshowcase.data.repository.example.ExampleClientImpl
+import mk.digital.kmpshowcase.data.repository.example.ExampleRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.storage.StorageRepositoryImpl
 import mk.digital.kmpshowcase.data.repository.user.UserClient
 import mk.digital.kmpshowcase.data.repository.user.UserClientImpl
@@ -27,6 +30,7 @@ import mk.digital.kmpshowcase.di.Qualifiers.session
 import mk.digital.kmpshowcase.domain.repository.AuthRepository
 import mk.digital.kmpshowcase.domain.repository.BiometricRepository
 import mk.digital.kmpshowcase.domain.repository.DateRepository
+import mk.digital.kmpshowcase.domain.repository.ExampleRepository
 import mk.digital.kmpshowcase.domain.repository.FlashlightRepository
 import mk.digital.kmpshowcase.domain.repository.LocationRepository
 import mk.digital.kmpshowcase.domain.repository.NoteRepository
@@ -43,6 +47,8 @@ val dataModule = module {
     singleOf(::Logger)
     singleOf(::UserClientImpl) { bind<UserClient>() }
     singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
+    singleOf(::ExampleClientImpl) { bind<ExampleClient>() }
+    singleOf(::ExampleRepositoryImpl) { bind<ExampleRepository>() }
     single { provideHttpClient() }
 
     // Qualified preferences - need explicit qualifier

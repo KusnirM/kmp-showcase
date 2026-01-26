@@ -1,10 +1,9 @@
 package mk.digital.kmpshowcase.data.dto
 
-import mk.digital.kmpshowcase.data.repository.dto.DTOTestRunner
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class UserDTOTest : DTOTestRunner() {
+class UserDTOTest : BaseDTOTest() {
 
     @Test
     fun testSuccess() = runTest<UserDTO>(

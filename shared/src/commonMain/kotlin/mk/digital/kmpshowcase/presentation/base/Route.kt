@@ -15,6 +15,7 @@ import mk.digital.kmpshowcase.shared.generated.resources.screen_notifications
 import mk.digital.kmpshowcase.shared.generated.resources.screen_ui_components
 import mk.digital.kmpshowcase.shared.generated.resources.screen_login
 import mk.digital.kmpshowcase.shared.generated.resources.screen_register
+import mk.digital.kmpshowcase.shared.generated.resources.screen_example
 import org.jetbrains.compose.resources.StringResource
 
 @Serializable
@@ -86,6 +87,11 @@ sealed interface Route : NavKey {
         @Serializable
         data object Notifications : HomeSection {
             override val titleRes = Res.string.screen_notifications
+        }
+
+        @Serializable
+        data object Example : HomeSection {
+            override val titleRes = Res.string.screen_example
         }
     }
 

@@ -33,6 +33,7 @@ import mk.digital.kmpshowcase.domain.useCase.storage.LoadStorageDataUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.ObserveStorageDataUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.SetPersistentCounterUseCase
 import mk.digital.kmpshowcase.domain.useCase.storage.SetSessionCounterUseCase
+import mk.digital.kmpshowcase.domain.useCase.example.GetExamplesUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -76,4 +77,7 @@ val domainModule = module {
     singleOf(::LogPushTokenUseCase)
     singleOf(::ShowLocalNotificationUseCase)
     singleOf(::CancelAllNotificationsUseCase)
+
+    // Example
+    singleOf(::GetExamplesUseCase)
 }
