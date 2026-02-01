@@ -2,6 +2,6 @@
 #include "Config.xcconfig"
 
 BUILD_TYPE = debug
-BUNDLE_ID = mk.digital.kmpshowcase
+BUNDLE_ID = com.mk.kmpshowcase
 APP_NAME = KMP Showcase Debug
 APP_DISPLAY_NAME = KMP Showcase Debug

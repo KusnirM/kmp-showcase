@@ -7,5 +7,5 @@
     <!-- Letter K -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M36,30 L36,78 L48,78 L48,60 L64,78 L80,78 L58,54 L78,30 L62,30 L48,48 L48,30 Z" />
+        android:pathData="M32,30 L32,78 L44,78 L44,60 L60,78 L76,78 L54,54 L74,30 L58,30 L44,48 L44,30 Z" />
 </vector>

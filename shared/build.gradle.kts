@@ -15,7 +15,7 @@ plugins {
 kotlin {
     androidLibrary {
         compileSdk = libs.versions.androidCompileSdk.get().toInt()
-        namespace = "mk.digital.kmpshowcase.shared"
+        namespace = "com.mk.kmpshowcase.shared"
         minSdk = libs.versions.androidMinSdk.get().toInt()
 
         compilerOptions {
@@ -31,13 +31,12 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
-            freeCompilerArgs += listOf("-Xbinary=bundleId=mk.digital.kmpshowcase.shared")
+            freeCompilerArgs += listOf("-Xbinary=bundleId=com.mk.kmpshowcase.shared")
             isStatic = true
         }
     }
@@ -155,13 +154,13 @@ kotlin {
 }
 
 compose.resources {
-    packageOfResClass = "mk.digital.kmpshowcase.shared.generated.resources"
+    packageOfResClass = "com.mk.kmpshowcase.shared.generated.resources"
 }
 
 sqldelight {
     databases {
         create("AppDatabase") {
-            packageName.set("mk.digital.kmpshowcase.data.database")
+            packageName.set("com.mk.kmpshowcase.data.database")
         }
     }
 }
@@ -181,7 +180,7 @@ if (project.hasProperty("configuration")) {
 
         dependsOn(
             "link${effectiveBuildType}FrameworkIosArm64",
-            "link${effectiveBuildType}FrameworkIosX64"
+            "link${effectiveBuildType}FrameworkIosSimulatorArm64"
         )
 
         doLast {
@@ -199,7 +198,7 @@ if (project.hasProperty("configuration")) {
             val frameworks = listOf(
                 layout.buildDirectory.dir("bin/iosArm64/${effectiveBuildType.lowercase()}Framework/shared.framework")
                     .get().asFile,
-                layout.buildDirectory.dir("bin/iosX64/${effectiveBuildType.lowercase()}Framework/shared.framework")
+                layout.buildDirectory.dir("bin/iosSimulatorArm64/${effectiveBuildType.lowercase()}Framework/shared.framework")
                     .get().asFile
             )
 
