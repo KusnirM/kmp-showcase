@@ -36,11 +36,8 @@ class NotificationsViewModelTest {
         var refreshTokenCalled = false
 
         override fun getPermissionStatus(): PushPermissionStatus = currentStatus
-        override suspend fun requestPermission(): PushPermissionStatus = currentStatus
         override suspend fun refreshToken() { refreshTokenCalled = true }
         override fun logToken() { logTokenCalled = true }
-
-        fun updateToken(token: String) { _token.value = token }
     }
 
     private class FakeLocalNotificationService : LocalNotificationService {

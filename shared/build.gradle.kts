@@ -31,7 +31,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
@@ -181,7 +180,7 @@ if (project.hasProperty("configuration")) {
 
         dependsOn(
             "link${effectiveBuildType}FrameworkIosArm64",
-            "link${effectiveBuildType}FrameworkIosX64"
+            "link${effectiveBuildType}FrameworkIosSimulatorArm64"
         )
 
         doLast {
@@ -199,7 +198,7 @@ if (project.hasProperty("configuration")) {
             val frameworks = listOf(
                 layout.buildDirectory.dir("bin/iosArm64/${effectiveBuildType.lowercase()}Framework/shared.framework")
                     .get().asFile,
-                layout.buildDirectory.dir("bin/iosX64/${effectiveBuildType.lowercase()}Framework/shared.framework")
+                layout.buildDirectory.dir("bin/iosSimulatorArm64/${effectiveBuildType.lowercase()}Framework/shared.framework")
                     .get().asFile
             )
 
