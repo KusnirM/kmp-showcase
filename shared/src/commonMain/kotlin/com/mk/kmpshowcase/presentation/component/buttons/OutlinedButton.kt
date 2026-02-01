@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
+import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargePrimary
 import com.mk.kmpshowcase.presentation.foundation.appColorScheme
 import com.mk.kmpshowcase.presentation.foundation.cardCornerRadius6
 import com.mk.kmpshowcase.presentation.foundation.space4
@@ -40,7 +40,7 @@ fun OutlinedButton(
         contentPadding = PaddingValues(space4),
         shape = RoundedCornerShape(cardCornerRadius6),
         content = {
-            TextButtonPrimary(text = text.uppercase())
+            TextLabelLargePrimary(text = text)
         },
     )
 }

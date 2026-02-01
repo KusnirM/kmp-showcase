@@ -10,7 +10,6 @@ interface PushNotificationService {
     val deepLinks: Flow<String>
 
     fun getPermissionStatus(): PushPermissionStatus
-    suspend fun requestPermission(): PushPermissionStatus
     suspend fun refreshToken()
     fun logToken()
 }

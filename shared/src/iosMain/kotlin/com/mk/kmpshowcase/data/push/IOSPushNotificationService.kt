@@ -1,5 +1,10 @@
 package com.mk.kmpshowcase.data.push
 
+import com.mk.kmpshowcase.domain.model.Notification
+import com.mk.kmpshowcase.domain.model.NotificationChannel
+import com.mk.kmpshowcase.domain.repository.NotificationRepository
+import com.mk.kmpshowcase.domain.repository.PushNotificationService
+import com.mk.kmpshowcase.domain.repository.PushPermissionStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -11,11 +16,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import com.mk.kmpshowcase.domain.model.Notification
-import com.mk.kmpshowcase.domain.model.NotificationChannel
-import com.mk.kmpshowcase.domain.repository.NotificationRepository
-import com.mk.kmpshowcase.domain.repository.PushNotificationService
-import com.mk.kmpshowcase.domain.repository.PushPermissionStatus
 import kotlin.time.Clock
 
 private const val TOKEN_PREVIEW_LENGTH = 10
@@ -38,10 +38,6 @@ class IOSPushNotificationService(
         return permissionStatus?.invoke() ?: PushPermissionStatus.NOT_DETERMINED
     }
 
-    override suspend fun requestPermission(): PushPermissionStatus {
-        return requestPermission?.invoke() ?: PushPermissionStatus.NOT_DETERMINED
-    }
-
     override suspend fun refreshToken() {
         refreshToken?.invoke()
     }
@@ -59,8 +55,10 @@ class IOSPushNotificationService(
         // Called from Swift (PushNotificationBridge.swift)
         @Suppress("unused")
         var permissionStatus: (() -> PushPermissionStatus)? = null
+
         @Suppress("unused")
         var requestPermission: (() -> PushPermissionStatus)? = null
+
         @Suppress("unused")
         var refreshToken: (() -> Unit)? = null
 

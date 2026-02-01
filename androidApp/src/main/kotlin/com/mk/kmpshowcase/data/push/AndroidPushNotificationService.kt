@@ -52,10 +52,6 @@ class AndroidPushNotificationService(
         }
     }
 
-    override suspend fun requestPermission(): PushPermissionStatus {
-        return getPermissionStatus()
-    }
-
     override suspend fun refreshToken() {
         try {
             val token = firebaseMessaging.token.await()
@@ -69,7 +65,6 @@ class AndroidPushNotificationService(
         val currentToken = _token.value
         if (currentToken != null) {
             Log.d(TAG, "FCM Token: $currentToken")
-            analyticsClient.log("FCM Token logged: ${currentToken.take(TOKEN_PREVIEW_LENGTH)}...")
         } else {
             Log.d(TAG, "FCM Token: not available yet")
         }
@@ -79,7 +74,6 @@ class AndroidPushNotificationService(
         _token.value = token
         notificationRepository.setToken(token)
         Log.d(TAG, "FCM Token updated: ${token.take(TOKEN_PREVIEW_LENGTH)}...")
-        analyticsClient.log("FCM token updated")
     }
 
     fun onNotificationReceived(

@@ -12,7 +12,7 @@ actual fun getCurrentLanguageTag(): String {
     var tag = NSLocale.currentLocale.localeIdentifier
     val atIndex = tag.indexOf('@')
     if (atIndex >= 0) {
-        tag = tag.substring(0, atIndex)
+        tag = tag.take(atIndex)
     }
     return tag.replace("_", "-")
 }

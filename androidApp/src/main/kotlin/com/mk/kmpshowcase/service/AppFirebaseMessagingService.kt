@@ -50,7 +50,11 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
         val deepLink = remoteMessage.data[KEY_DEEP_LINK]
 
         // Notify PushNotificationService for flow subscribers
-        androidPushNotificationService?.onNotificationReceived(title = title, body = body, data = remoteMessage.data)
+        androidPushNotificationService?.onNotificationReceived(
+            title = title,
+            body = body,
+            data = remoteMessage.data
+        )
 
         // Show local notification (handles foreground case)
         val notification = Notification(

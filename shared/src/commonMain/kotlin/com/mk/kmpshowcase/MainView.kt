@@ -187,7 +187,7 @@ fun MainView(
 @Composable
 private fun DeepLinkEffect(
     router: NavRouter<Route>,
-    pushNotificationService: PushNotificationService = koinInject<PushNotificationService>(),
+    pushNotificationService: PushNotificationService = koinInject(),
 ) {
     LaunchedEffect(Unit) {
         pushNotificationService.deepLinks.collect { deepLink ->

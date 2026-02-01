@@ -39,7 +39,7 @@ import com.mk.kmpshowcase.presentation.component.image.AppIconNeutral80
 import com.mk.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer4
 import com.mk.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer8
 import com.mk.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
+import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargePrimary
 import com.mk.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
 import com.mk.kmpshowcase.presentation.foundation.space12
 import com.mk.kmpshowcase.presentation.foundation.space2
@@ -243,7 +243,7 @@ fun RegisterScreen(
         ) {
             TextBodyMediumNeutral80(stringResource(Res.string.register_has_account))
             TextButton(onClick = onToLogin) {
-                TextButtonPrimary(stringResource(Res.string.register_login))
+                TextLabelLargePrimary(stringResource(Res.string.register_login))
             }
         }
 

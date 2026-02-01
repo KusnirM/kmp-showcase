@@ -7,7 +7,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextButtonNeutral0
+import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargeNeutral0
 import com.mk.kmpshowcase.presentation.foundation.cardCornerRadius6
 import com.mk.kmpshowcase.presentation.foundation.space4
 import org.jetbrains.compose.resources.StringResource
@@ -31,7 +31,7 @@ fun ContainedButton(
         enabled = enabled,
         shape = RoundedCornerShape(cardCornerRadius6)
     ) {
-        TextButtonNeutral0(text = text)
+        TextLabelLargeNeutral0(text = text)
     }
 }
 

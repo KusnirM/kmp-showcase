@@ -48,7 +48,7 @@ import com.mk.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer6
 import com.mk.kmpshowcase.presentation.component.spacers.ColumnSpacer.Spacer8
 import com.mk.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
 import com.mk.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
+import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargePrimary
 import com.mk.kmpshowcase.presentation.component.text.titleLarge.TextTitleLargePrimary
 import com.mk.kmpshowcase.presentation.foundation.appColorScheme
 import com.mk.kmpshowcase.presentation.foundation.space2
@@ -119,7 +119,7 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.End
         ) {
             TextButton(onClick = onSkip) {
-                TextButtonPrimary(stringResource(Res.string.login_skip))
+                TextLabelLargePrimary(stringResource(Res.string.login_skip))
             }
         }
 
@@ -201,7 +201,7 @@ fun LoginScreen(
         ) {
             TextBodyMediumNeutral80(stringResource(Res.string.login_no_account))
             TextButton(onClick = onToRegister) {
-                TextButtonPrimary(stringResource(Res.string.login_register))
+                TextLabelLargePrimary(stringResource(Res.string.login_register))
             }
         }
 
@@ -259,7 +259,7 @@ fun LoginScreen(
                 OutlinedButton(
                     onClick = onFillTestAccount
                 ) {
-                    TextButtonPrimary(stringResource(Res.string.login_test_account_fill))
+                    TextLabelLargePrimary(stringResource(Res.string.login_test_account_fill))
                 }
             }
         }

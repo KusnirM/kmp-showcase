@@ -3,8 +3,8 @@ package com.mk.kmpshowcase.presentation.component.buttons
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextButtonError
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextButtonPrimary
+import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargeError
+import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargePrimary
 
 @Composable
 fun AppTextButton(
@@ -16,7 +16,7 @@ fun AppTextButton(
         modifier = modifier,
         onClick = onClick,
         content = {
-            TextButtonPrimary(text)
+            TextLabelLargePrimary(text)
         }
     )
 }
@@ -31,7 +31,7 @@ fun AppTextButtonError(
         modifier = modifier,
         onClick = onClick,
         content = {
-            TextButtonError(text)
+            TextLabelLargeError(text)
         }
     )
 }

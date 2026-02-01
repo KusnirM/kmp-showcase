@@ -18,7 +18,7 @@ internal fun TextLabelLarge(
 ) {
     Text(
         modifier = modifier,
-        text = text.uppercase(),
+        text = text,
         style = MaterialTheme.typography.labelLarge,
         color = { color },
         fontWeight = FontWeight.Medium,
@@ -27,42 +27,42 @@ internal fun TextLabelLarge(
 }
 
 @Composable
-internal fun TextButtonPrimary(
+internal fun TextLabelLargePrimary(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
     TextLabelLarge(
         modifier = modifier,
-        text = text.uppercase(),
+        text = text,
         color = MaterialTheme.colorScheme.primary,
         textAlign = textAlign
     )
 }
 
 @Composable
-internal fun TextButtonNeutral0(
+internal fun TextLabelLargeNeutral0(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
     TextLabelLarge(
         modifier = modifier,
-        text = text.uppercase(),
+        text = text,
         color = MaterialTheme.appColorScheme.neutral0,
         textAlign = textAlign
     )
 }
 
 @Composable
-internal fun TextButtonError(
+internal fun TextLabelLargeError(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign? = null,
 ) {
     TextLabelLarge(
         modifier = modifier,
-        text = text.uppercase(),
+        text = text,
         color = MaterialTheme.colorScheme.error,
         textAlign = textAlign
     )

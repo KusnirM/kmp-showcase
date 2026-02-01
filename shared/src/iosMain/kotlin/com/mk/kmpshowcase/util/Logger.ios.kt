@@ -3,9 +3,7 @@ package com.mk.kmpshowcase.util
 import com.mk.kmpshowcase.data.analytics.AnalyticsClient
 import platform.Foundation.NSLog
 
-actual class Logger actual constructor(
-    private val analyticsClient: AnalyticsClient
-) {
+actual class Logger actual constructor(private val analyticsClient: AnalyticsClient) {
 
     actual fun e(log: String) {
         NSLog("$TAG: $log")
@@ -25,7 +23,7 @@ actual class Logger actual constructor(
         NSLog("$TAG: $log")
     }
 
-    companion object {
+    private companion object {
         private const val TAG = "Logger"
     }
 }

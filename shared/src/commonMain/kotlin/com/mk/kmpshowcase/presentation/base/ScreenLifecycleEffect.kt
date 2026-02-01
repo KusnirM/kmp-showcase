@@ -10,9 +10,17 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import kotlinx.coroutines.flow.Flow
+import org.koin.compose.currentKoinScope
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.scope.Scope
+import org.koin.viewmodel.defaultExtras
 
 @Composable
 fun ScreenLifecycleEffect(
@@ -88,8 +96,23 @@ fun ScreenLifecycleEffect(
  * ViewModel's onResumed/onPaused to the composable's lifecycle.
  */
 @Composable
-inline fun <reified VM : BaseViewModel<*>> lifecycleAwareViewModel(): VM {
-    val viewModel = koinViewModel<VM>()
+inline fun <reified VM : BaseViewModel<*>> lifecycleAwareViewModel(
+    qualifier: Qualifier? = null,
+    viewModelStoreOwner: ViewModelStoreOwner = LocalViewModelStoreOwner.current
+        ?: error("No ViewModelStoreOwner was provided via LocalViewModelStoreOwner"),
+    key: String? = null,
+    extras: CreationExtras = defaultExtras(viewModelStoreOwner),
+    scope: Scope = currentKoinScope(),
+    noinline parameters: ParametersDefinition? = null,
+): VM {
+    val viewModel = koinViewModel<VM>(
+        qualifier = qualifier,
+        viewModelStoreOwner = viewModelStoreOwner,
+        key = key,
+        extras = extras,
+        scope = scope,
+        parameters = parameters
+    )
     ScreenLifecycleEffect(
         key = viewModel,
         onCreate = viewModel::onCreated,
