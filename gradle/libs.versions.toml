@@ -29,7 +29,7 @@ datastore = "1.2.0"
 material3Android = "1.4.0"
 
 # Navigation & Lifecycle
-lifecycle = "2.10.0-alpha07"
+lifecycle = "2.10.0-alpha08"
 navigation3 = "1.0.0-alpha06"
 
 # DI

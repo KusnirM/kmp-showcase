@@ -26,6 +26,7 @@
     <string name="screen_calendar">Calendar</string>
     <string name="screen_notifications">Notifications</string>
     <string name="screen_settings">Settings</string>
+    <string name="screen_example">Example</string>
 
     <!-- Home Screen Features -->
     <string name="feature_ui_components_title">UI Components</string>
