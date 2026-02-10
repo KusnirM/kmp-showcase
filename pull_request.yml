@@ -42,7 +42,8 @@ jobs:
         run: ./gradlew :app:testDebugUnitTest
 
       - name: Verify Screenshot Tests
-        run: ./gradlew verifyPaparazziDebug -PscreenshotOnly
+        run: ./gradlew:androidApp:verifyRoborazziDebug -PscreenshotOnly
+
 
       - name: Upload test results
         if: always()
