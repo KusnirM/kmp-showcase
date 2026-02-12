@@ -56,7 +56,7 @@ jobs:
         run: ./gradlew :shared:testAndroidHostTest detekt --parallel
 
       - name: Verify Screenshot Tests
-        run: ./gradlew verifyRoborazziDebug -PscreenshotOnly
+        run: ./gradlew :androidApp:verifyRoborazziDebug
 
       - name: Upload test results
         if: always()

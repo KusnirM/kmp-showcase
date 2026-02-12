@@ -9,11 +9,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
-import com.mk.kmpshowcase.presentation.component.text.bodyMedium.TextBodyMediumNeutral80
-import com.mk.kmpshowcase.presentation.component.text.bodySmall.TextBodySmallNeutral80
 import com.mk.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
@@ -27,7 +26,6 @@ fun AppTextField(
     readOnly: Boolean = false,
     isError: Boolean = false,
     singleLine: Boolean = true,
-    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     showClearButton: Boolean = true,
@@ -55,6 +53,7 @@ fun AppTextField(
                 }
             }
         }
+
         else -> null
     }
 
@@ -62,27 +61,29 @@ fun AppTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier,
-        label = label?.let { { TextBodySmallNeutral80(it) } },
-        placeholder = placeholder?.let { { TextBodyMediumNeutral80(it) } },
+        textStyle = MaterialTheme.typography.bodyMedium,
+        label = label?.let { { Text(text = it, style = MaterialTheme.typography.bodySmall) } },
+        placeholder = placeholder?.let { { Text(text = it, style = MaterialTheme.typography.bodyMedium) } },
+        supportingText = supportingText?.let { { Text(text = it, style = MaterialTheme.typography.bodySmall) } },
         enabled = enabled,
         readOnly = readOnly,
-        isError = isError,
         singleLine = singleLine,
-        maxLines = maxLines,
         leadingIcon = leadingIcon,
         trailingIcon = clearButton,
-        supportingText = supportingText?.let { { TextBodySmallNeutral80(it) } },
-        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
+        isError = isError,
+        visualTransformation = visualTransformation,
         colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
             focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.appColorScheme.neutral80,
+            unfocusedBorderColor = MaterialTheme.appColorScheme.neutral40,
             focusedLabelColor = MaterialTheme.colorScheme.primary,
-            unfocusedLabelColor = MaterialTheme.appColorScheme.neutral80,
+            unfocusedLabelColor = MaterialTheme.appColorScheme.neutral60,
+            focusedPlaceholderColor = MaterialTheme.appColorScheme.neutral60,
+            unfocusedPlaceholderColor = MaterialTheme.appColorScheme.neutral60,
             cursorColor = MaterialTheme.colorScheme.primary,
-            errorBorderColor = MaterialTheme.appColorScheme.error,
-            errorLabelColor = MaterialTheme.appColorScheme.error
-        )
+        ),
     )
 }
