@@ -42,7 +42,7 @@ jobs:
         run: ./gradlew :app:testDebugUnitTest
 
       - name: Verify Screenshot Tests
-        run: ./gradlew:androidApp:verifyRoborazziDebug -PscreenshotOnly
+        run: ./gradlew :androidApp:verifyRoborazziDebug -PscreenshotOnly
 
 
       - name: Upload test results
