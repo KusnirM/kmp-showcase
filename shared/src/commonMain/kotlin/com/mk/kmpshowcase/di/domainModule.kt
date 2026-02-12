@@ -34,50 +34,50 @@ import com.mk.kmpshowcase.domain.useCase.storage.ObserveStorageDataUseCase
 import com.mk.kmpshowcase.domain.useCase.storage.SetPersistentCounterUseCase
 import com.mk.kmpshowcase.domain.useCase.storage.SetSessionCounterUseCase
 import com.mk.kmpshowcase.domain.useCase.example.GetExamplesUseCase
-import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val domainModule = module {
-    singleOf(::TrackScreenUseCase)
-    singleOf(::TrackButtonClickUseCase)
-    singleOf(::GetUsersUseCase)
-    singleOf(::LoadStorageDataUseCase)
-    singleOf(::ObserveStorageDataUseCase)
-    singleOf(::SetSessionCounterUseCase)
-    singleOf(::SetPersistentCounterUseCase)
-    singleOf(::ClearCacheUseCase)
-    singleOf(::GetThemeModeUseCase)
-    singleOf(::SetThemeModeUseCase)
-    singleOf(::ObserveNotesUseCase)
-    singleOf(::SearchNotesUseCase)
-    singleOf(::InsertNoteUseCase)
-    singleOf(::UpdateNoteUseCase)
-    singleOf(::DeleteNoteUseCase)
-    singleOf(::DeleteAllNotesUseCase)
-    singleOf(::GetTodayDateUseCase)
-    singleOf(::IsBiometricEnabledUseCase)
-    singleOf(::AuthenticateWithBiometricUseCase)
-    singleOf(::CheckEmailExistsUseCase)
-    singleOf(::RegisterUserUseCase)
+    factoryOf(::TrackScreenUseCase)
+    factoryOf(::TrackButtonClickUseCase)
+    factoryOf(::GetUsersUseCase)
+    factoryOf(::LoadStorageDataUseCase)
+    factoryOf(::ObserveStorageDataUseCase)
+    factoryOf(::SetSessionCounterUseCase)
+    factoryOf(::SetPersistentCounterUseCase)
+    factoryOf(::ClearCacheUseCase)
+    factoryOf(::GetThemeModeUseCase)
+    factoryOf(::SetThemeModeUseCase)
+    factoryOf(::ObserveNotesUseCase)
+    factoryOf(::SearchNotesUseCase)
+    factoryOf(::InsertNoteUseCase)
+    factoryOf(::UpdateNoteUseCase)
+    factoryOf(::DeleteNoteUseCase)
+    factoryOf(::DeleteAllNotesUseCase)
+    factoryOf(::GetTodayDateUseCase)
+    factoryOf(::IsBiometricEnabledUseCase)
+    factoryOf(::AuthenticateWithBiometricUseCase)
+    factoryOf(::CheckEmailExistsUseCase)
+    factoryOf(::RegisterUserUseCase)
 
     // Location
-    singleOf(::GetLastKnownLocationUseCase)
-    singleOf(::ObserveLocationUpdatesUseCase)
+    factoryOf(::GetLastKnownLocationUseCase)
+    factoryOf(::ObserveLocationUpdatesUseCase)
 
     // Flashlight
-    singleOf(::IsFlashlightAvailableUseCase)
-    singleOf(::ToggleFlashlightUseCase)
-    singleOf(::TurnOffFlashlightUseCase)
+    factoryOf(::IsFlashlightAvailableUseCase)
+    factoryOf(::ToggleFlashlightUseCase)
+    factoryOf(::TurnOffFlashlightUseCase)
 
     // Notifications
-    singleOf(::GetPushPermissionStatusUseCase)
-    singleOf(::ObservePushTokenUseCase)
-    singleOf(::ObservePushNotificationsUseCase)
-    singleOf(::RefreshPushTokenUseCase)
-    singleOf(::LogPushTokenUseCase)
-    singleOf(::ShowLocalNotificationUseCase)
-    singleOf(::CancelAllNotificationsUseCase)
+    factoryOf(::GetPushPermissionStatusUseCase)
+    factoryOf(::ObservePushTokenUseCase)
+    factoryOf(::ObservePushNotificationsUseCase)
+    factoryOf(::RefreshPushTokenUseCase)
+    factoryOf(::LogPushTokenUseCase)
+    factoryOf(::ShowLocalNotificationUseCase)
+    factoryOf(::CancelAllNotificationsUseCase)
 
     // Example
-    singleOf(::GetExamplesUseCase)
+    factoryOf(::GetExamplesUseCase)
 }

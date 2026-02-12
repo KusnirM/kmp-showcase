@@ -1,1 +1,1 @@
-./gradlew :androidApp:recordRoborazziDebug -PscreenshotOnly
+./gradlew :androidApp:recordRoborazziDebug

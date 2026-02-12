@@ -1,10 +1,12 @@
 package com.mk.kmpshowcase.presentation.component.buttons
 
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargeError
-import com.mk.kmpshowcase.presentation.component.text.labelLarge.TextLabelLargePrimary
+import com.mk.kmpshowcase.presentation.foundation.appColorScheme
 
 @Composable
 fun AppTextButton(
@@ -15,8 +17,11 @@ fun AppTextButton(
     TextButton(
         modifier = modifier,
         onClick = onClick,
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = MaterialTheme.colorScheme.primary,
+        ),
         content = {
-            TextLabelLargePrimary(text)
+            Text(text = text, style = MaterialTheme.typography.labelLarge)
         }
     )
 }
@@ -30,8 +35,11 @@ fun AppTextButtonError(
     TextButton(
         modifier = modifier,
         onClick = onClick,
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = MaterialTheme.appColorScheme.error,
+        ),
         content = {
-            TextLabelLargeError(text)
+            Text(text = text, style = MaterialTheme.typography.labelLarge)
         }
     )
 }

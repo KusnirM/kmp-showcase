@@ -46,15 +46,7 @@ android {
             isIncludeAndroidResources = true
             all { test ->
                 test.useJUnitPlatform()
-                // -PscreenshotOnly: run ONLY screenshot tests
-                // no flag: run ONLY regular unit tests (exclude screenshot tests)
-                val runScreenShotTests = project.hasProperty("screenshotOnly")
-                val screenshotTestFile = "*ScreenshotTest*"
-                test.filter {
-                    if (runScreenShotTests) includeTestsMatching(screenshotTestFile)
-                    else excludeTestsMatching(screenshotTestFile)
-
-                }
+                test.systemProperties["robolectric.pixelCopyRenderMode"] = "hardware"
             }
         }
     }

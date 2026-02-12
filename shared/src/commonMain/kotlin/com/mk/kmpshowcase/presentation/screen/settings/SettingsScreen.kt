@@ -45,6 +45,8 @@ import com.mk.kmpshowcase.shared.generated.resources.settings_logout
 import com.mk.kmpshowcase.shared.generated.resources.settings_profile
 import com.mk.kmpshowcase.shared.generated.resources.settings_profile_photo
 import com.mk.kmpshowcase.shared.generated.resources.settings_profile_photo_hint
+import com.mk.kmpshowcase.shared.generated.resources.settings_test_crash_subtitle
+import com.mk.kmpshowcase.shared.generated.resources.settings_test_crash_title
 import com.mk.kmpshowcase.shared.generated.resources.settings_theme
 import com.mk.kmpshowcase.shared.generated.resources.settings_version
 import org.jetbrains.compose.resources.stringResource
@@ -168,11 +170,11 @@ fun SettingsScreen(
                         icon = {
                             AppIconPrimary(
                                 Icons.Outlined.BugReport,
-                                contentDescription = "Test Crash"
+                                contentDescription = stringResource(Res.string.settings_test_crash_title)
                             )
                         },
-                        title = "Test Crash",
-                        value = "Trigger a crash to test Crashlytics"
+                        title = stringResource(Res.string.settings_test_crash_title),
+                        value = stringResource(Res.string.settings_test_crash_subtitle)
                     )
                 }
             }
