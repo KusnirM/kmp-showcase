@@ -1,14 +1,15 @@
 package com.mk.kmpshowcase.server
 
 import com.mk.kmpshowcase.server.config.DatabaseConfig
-import com.mk.kmpshowcase.server.model.CreateNoteRequest
-import com.mk.kmpshowcase.server.model.NoteDTO
-import com.mk.kmpshowcase.server.plugins.JwtConfig
+import com.mk.kmpshowcase.server.core.security.JwtConfig
+import com.mk.kmpshowcase.server.di.AppDependencies
+import com.mk.kmpshowcase.server.feature.note.api.CreateNoteRequest
+import com.mk.kmpshowcase.server.feature.note.api.NoteDTO
+import com.mk.kmpshowcase.server.feature.user.persistence.UserRepositoryImpl
 import com.mk.kmpshowcase.server.plugins.configureAuth
 import com.mk.kmpshowcase.server.plugins.configureRouting
 import com.mk.kmpshowcase.server.plugins.configureSerialization
 import com.mk.kmpshowcase.server.plugins.configureStatusPages
-import com.mk.kmpshowcase.server.repository.UserRepository
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
@@ -22,6 +23,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
 import java.util.UUID
+import kotlinx.coroutines.runBlocking
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -41,22 +43,24 @@ class NotesRoutesTest {
         }
     }
 
-    private fun createTestUser(): Pair<Long, String> {
-        val userRepository = UserRepository()
+    private fun createTestUser(): Pair<Long, String> = runBlocking {
+        val userRepository = UserRepositoryImpl()
         val uniqueEmail = "test-${UUID.randomUUID()}@test.com"
         val user = userRepository.create(uniqueEmail, "password123", "Test User")
         val token = JwtConfig.generateToken(user.id, user.email)
-        return user.id to token
+        user.id to token
+    }
+
+    private fun io.ktor.server.application.Application.testModule() {
+        configureSerialization()
+        configureStatusPages()
+        configureAuth()
+        configureRouting(AppDependencies())
     }
 
     @Test
     fun `get notes returns empty list for new user`() = testApplication {
-        application {
-            configureSerialization()
-            configureStatusPages()
-            configureAuth()
-            configureRouting()
-        }
+        application { testModule() }
 
         val client = createClient {
             install(ContentNegotiation) { json() }
@@ -75,12 +79,7 @@ class NotesRoutesTest {
 
     @Test
     fun `create note returns created note`() = testApplication {
-        application {
-            configureSerialization()
-            configureStatusPages()
-            configureAuth()
-            configureRouting()
-        }
+        application { testModule() }
 
         val client = createClient {
             install(ContentNegotiation) { json() }
@@ -102,12 +101,7 @@ class NotesRoutesTest {
 
     @Test
     fun `search notes filters by title`() = testApplication {
-        application {
-            configureSerialization()
-            configureStatusPages()
-            configureAuth()
-            configureRouting()
-        }
+        application { testModule() }
 
         val client = createClient {
             install(ContentNegotiation) { json() }
@@ -115,7 +109,6 @@ class NotesRoutesTest {
 
         val (_, token) = createTestUser()
 
-        // Create test notes
         client.post("/api/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
@@ -127,7 +120,6 @@ class NotesRoutesTest {
             setBody(CreateNoteRequest(title = "Work tasks", content = "Meeting at 10"))
         }
 
-        // Search for "Shop" (case-sensitive in H2)
         val response = client.get("/api/notes/search?q=Shop") {
             header(HttpHeaders.Authorization, "Bearer $token")
         }
@@ -140,12 +132,7 @@ class NotesRoutesTest {
 
     @Test
     fun `get notes without auth returns unauthorized`() = testApplication {
-        application {
-            configureSerialization()
-            configureStatusPages()
-            configureAuth()
-            configureRouting()
-        }
+        application { testModule() }
 
         val response = client.get("/api/notes")
 

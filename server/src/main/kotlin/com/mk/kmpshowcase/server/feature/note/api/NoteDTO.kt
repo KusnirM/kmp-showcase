@@ -1,5 +1,6 @@
-package com.mk.kmpshowcase.server.model
+package com.mk.kmpshowcase.server.feature.note.api
 
+import com.mk.kmpshowcase.server.feature.note.service.Note
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -20,4 +21,11 @@ data class CreateNoteRequest(
 data class UpdateNoteRequest(
     val title: String,
     val content: String,
+)
+
+fun Note.toDTO() = NoteDTO(
+    id = id,
+    title = title,
+    content = content,
+    createdAt = createdAt,
 )

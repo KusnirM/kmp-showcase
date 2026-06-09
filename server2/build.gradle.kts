@@ -29,6 +29,17 @@ dependencies {
     implementation(libs.h2)
     implementation(libs.hikari)
 
+    // Security
+    implementation(libs.bcrypt)
+
+    // Logging
+    implementation(libs.logback)
+
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
+
+    // Testing
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.kotlin.test)
 }

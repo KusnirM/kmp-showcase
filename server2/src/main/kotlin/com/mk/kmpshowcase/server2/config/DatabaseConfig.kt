@@ -3,16 +3,21 @@ package com.mk.kmpshowcase.server2.config
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("DatabaseConfig")
 
 object DatabaseConfig {
 
-
     fun init() {
+        logger.info("Initializing database connection...")
         val database = Database.connect(hikari())
 
+        transaction(database) {
+            // TODO: SchemaUtils.create(UsersTable, NotesTable) — once tables exist
+            logger.info("Database tables created/verified")
+        }
     }
 
     private fun hikari(): HikariDataSource {
@@ -29,11 +34,17 @@ object DatabaseConfig {
                 logger.info("Using PostgreSQL database (production)")
                 driverClassName = "org.postgresql.Driver"
                 jdbcUrl = System.getenv("DATABASE_URL")
-                username = System.getenv("DATABASE_USER")
-                password = System.getenv("DATABASE_PASSWORD")
+                    ?: "jdbc:postgresql://localhost:5432/kmpshowcase"
+                username = System.getenv("DATABASE_USER") ?: "postgres"
+                password = System.getenv("DATABASE_PASSWORD") ?: "postgres"
             }
-            maximumPoolSize = 10
+            maximumPoolSize = MAX_POOL_SIZE
+            isAutoCommit = false
+            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
+            validate()
         }
         return HikariDataSource(config)
     }
+
+    private const val MAX_POOL_SIZE = 10
 }

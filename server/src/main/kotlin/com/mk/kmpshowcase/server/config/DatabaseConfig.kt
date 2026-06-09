@@ -1,7 +1,7 @@
 package com.mk.kmpshowcase.server.config
 
-import com.mk.kmpshowcase.server.repository.NotesTable
-import com.mk.kmpshowcase.server.repository.UsersTable
+import com.mk.kmpshowcase.server.feature.note.persistence.NotesTable
+import com.mk.kmpshowcase.server.feature.user.persistence.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("DatabaseConfig")
 
-//todo read -> https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#artifacts
 object DatabaseConfig {
 
     fun init() {
@@ -42,11 +41,13 @@ object DatabaseConfig {
                 username = System.getenv("DATABASE_USER") ?: "postgres"
                 password = System.getenv("DATABASE_PASSWORD") ?: "postgres"
             }
-            maximumPoolSize = 10
+            maximumPoolSize = MAX_POOL_SIZE
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"
             validate()
         }
         return HikariDataSource(config)
     }
+
+    private const val MAX_POOL_SIZE = 10
 }

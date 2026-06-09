@@ -1,14 +1,6 @@
-package com.mk.kmpshowcase.server.model
+package com.mk.kmpshowcase.server.feature.user.api
 
 import kotlinx.serialization.Serializable
-
-@Serializable
-data class UserDTO(
-    val id: Long,
-    val email: String,
-    val name: String,
-    val createdAt: Long,
-)
 
 @Serializable
 data class RegisterRequest(
