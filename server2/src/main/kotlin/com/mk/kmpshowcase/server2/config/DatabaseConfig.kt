@@ -1,27 +1,18 @@
-package com.mk.kmpshowcase.server.config
+package com.mk.kmpshowcase.server2.config
 
-import com.mk.kmpshowcase.server.repository.NotesTable
-import com.mk.kmpshowcase.server.repository.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("DatabaseConfig")
 
-//todo read -> https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#artifacts
 object DatabaseConfig {
 
+
     fun init() {
-        logger.info("Initializing database connection...")
         val database = Database.connect(hikari())
 
-        transaction(database) {
-            SchemaUtils.create(UsersTable, NotesTable)
-            logger.info("Database tables created/verified")
-        }
     }
 
     private fun hikari(): HikariDataSource {
@@ -38,14 +29,10 @@ object DatabaseConfig {
                 logger.info("Using PostgreSQL database (production)")
                 driverClassName = "org.postgresql.Driver"
                 jdbcUrl = System.getenv("DATABASE_URL")
-                    ?: "jdbc:postgresql://localhost:5432/kmpshowcase"
-                username = System.getenv("DATABASE_USER") ?: "postgres"
-                password = System.getenv("DATABASE_PASSWORD") ?: "postgres"
+                username = System.getenv("DATABASE_USER")
+                password = System.getenv("DATABASE_PASSWORD")
             }
             maximumPoolSize = 10
-            isAutoCommit = false
-            transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-            validate()
         }
         return HikariDataSource(config)
     }

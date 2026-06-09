@@ -1,6 +1,7 @@
 package com.mk.kmpshowcase.server.routes
 
 import com.mk.kmpshowcase.server.model.CreateNoteRequest
+import com.mk.kmpshowcase.server.model.NoteDTO
 import com.mk.kmpshowcase.server.model.UpdateNoteRequest
 import com.mk.kmpshowcase.server.repository.NoteRepository
 import io.ktor.http.HttpStatusCode
@@ -91,6 +92,23 @@ fun Route.notesRoutes() {
                 } else {
                     call.respond(HttpStatusCode.NotFound)
                 }
+            }
+
+            //notes search query
+            get("/search") {
+                val userId = call.principal<JWTPrincipal>()
+                    ?.payload?.getClaim("userId")?.asLong()
+                    ?: return@get call.respond(HttpStatusCode.Unauthorized)
+
+                val search: String = call.request.queryParameters["q"] ?: ""
+
+                val result: List<NoteDTO> = if (search.isBlank()) {
+                    noteRepository.findAllByUserId(userId)
+                } else {
+                    noteRepository.findByTitleQuery(userId, search)
+                }
+
+                call.respond(HttpStatusCode.OK, result)
             }
         }
     }

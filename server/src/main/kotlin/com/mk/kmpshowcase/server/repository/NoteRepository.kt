@@ -18,6 +18,12 @@ class NoteRepository {
             .orderBy(NotesTable.createdAt)
             .map { it.toNoteDTO() }
     }
+    fun findByTitleQuery(userId: Long, query: String): List<NoteDTO> = transaction {
+        NotesTable.selectAll()
+            .where { (NotesTable.userId eq userId) and (NotesTable.title like "%$query%") }
+            .orderBy(NotesTable.createdAt)
+            .map { it.toNoteDTO() }
+    }
 
     fun findById(id: Long, userId: Long): NoteDTO? = transaction {
         NotesTable.selectAll()

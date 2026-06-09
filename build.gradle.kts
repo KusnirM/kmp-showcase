@@ -13,6 +13,19 @@ plugins {
     alias(libs.plugins.firebase.distribution) apply false
 }
 
+subprojects {
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension> {
+            jvmToolchain(21)
+        }
+    }
+    plugins.withId("org.jetbrains.kotlin.multiplatform") {
+        extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+            jvmToolchain(21)
+        }
+    }
+}
+
 detekt {
     buildUponDefaultConfig = true
     allRules = false
