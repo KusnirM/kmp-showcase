@@ -17,7 +17,7 @@ private val logger = LoggerFactory.getLogger("Application")
 
 fun main(args: Array<String>) = EngineMain.main(args)
 
-fun Application.module() {
+internal fun Application.module() {
     logger.info("Server starting...")
     val config = environment.config
 

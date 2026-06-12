@@ -3,7 +3,7 @@ package com.mk.kmpshowcase.server.feature.note.persistence
 import com.mk.kmpshowcase.server.feature.user.persistence.UsersTable
 import org.jetbrains.exposed.dao.id.LongIdTable
 
-object NotesTable : LongIdTable("notes") {
+internal object NotesTable : LongIdTable("notes") {
     val userId = reference("user_id", UsersTable)
     val title = varchar("title", TITLE_LENGTH)
     val content = text("content")

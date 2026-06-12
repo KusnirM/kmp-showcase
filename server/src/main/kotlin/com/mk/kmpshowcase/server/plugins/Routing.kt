@@ -9,7 +9,7 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 
-fun Application.configureRouting(dependencies: AppDependencies) {
+internal fun Application.configureRouting(dependencies: AppDependencies) {
     routing {
         get("/") {
             call.respondText("KMP Showcase API")

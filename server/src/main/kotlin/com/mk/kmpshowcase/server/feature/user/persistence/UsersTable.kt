@@ -2,7 +2,7 @@ package com.mk.kmpshowcase.server.feature.user.persistence
 
 import org.jetbrains.exposed.dao.id.LongIdTable
 
-object UsersTable : LongIdTable("users") {
+internal object UsersTable : LongIdTable("users") {
     val email = varchar("email", EMAIL_LENGTH).uniqueIndex()
     val passwordHash = varchar("password_hash", PASSWORD_HASH_LENGTH)
     val name = varchar("name", NAME_LENGTH)

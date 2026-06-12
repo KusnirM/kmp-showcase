@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("StatusPages")
 
-fun Application.configureStatusPages() {
+internal fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<IllegalArgumentException> { call, cause ->
             logger.debug("Bad request: ${cause.message}")
@@ -35,4 +35,4 @@ fun Application.configureStatusPages() {
 }
 
 @Serializable
-data class ErrorResponse(val message: String)
+internal data class ErrorResponse(val message: String)

@@ -8,7 +8,7 @@ import com.mk.kmpshowcase.server.feature.user.persistence.UserRepository
 import com.mk.kmpshowcase.server.feature.user.persistence.UserRepositoryImpl
 import com.mk.kmpshowcase.server.feature.user.service.UserService
 
-class AppDependencies(val jwtConfig: JwtConfig) {
+internal class AppDependencies(val jwtConfig: JwtConfig) {
 
     private val userRepository: UserRepository = UserRepositoryImpl()
     private val noteRepository: NoteRepository = NoteRepositoryImpl()

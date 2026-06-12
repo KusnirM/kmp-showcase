@@ -7,7 +7,7 @@ import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 
-fun Application.configureAuth(jwtConfig: JwtConfig) {
+internal fun Application.configureAuth(jwtConfig: JwtConfig) {
     install(Authentication) {
         jwt("auth-jwt") {
             verifier(jwtConfig.verifier)

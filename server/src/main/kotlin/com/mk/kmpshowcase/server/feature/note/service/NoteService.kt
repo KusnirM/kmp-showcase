@@ -2,7 +2,7 @@ package com.mk.kmpshowcase.server.feature.note.service
 
 import com.mk.kmpshowcase.server.feature.note.persistence.NoteRepository
 
-class NoteService(
+internal class NoteService(
     private val repository: NoteRepository,
 ) {
     suspend fun listForUser(userId: Long, query: String? = null): List<Note> =

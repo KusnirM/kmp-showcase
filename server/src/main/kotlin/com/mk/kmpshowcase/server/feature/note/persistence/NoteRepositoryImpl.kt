@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.update
 
-class NoteRepositoryImpl : NoteRepository {
+internal class NoteRepositoryImpl : NoteRepository {
 
     override suspend fun findAllByUserId(userId: Long): List<Note> = newSuspendedTransaction {
         NotesTable.selectAll()
