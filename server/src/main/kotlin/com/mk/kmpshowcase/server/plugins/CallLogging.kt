@@ -7,7 +7,7 @@ import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import org.slf4j.event.Level
 
-fun Application.configureCallLogging() {
+internal fun Application.configureCallLogging() {
     install(CallLogging) {
         level = Level.INFO
         format { call ->

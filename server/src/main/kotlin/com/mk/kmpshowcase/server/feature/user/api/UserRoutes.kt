@@ -9,7 +9,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 
-fun Route.userRoutes(userService: UserService) {
+internal fun Route.userRoutes(userService: UserService) {
     route("/api/users") {
         authenticate("auth-jwt") {
             get("/me") {

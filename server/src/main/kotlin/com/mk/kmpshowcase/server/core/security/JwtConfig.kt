@@ -5,7 +5,7 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import java.util.Date
 
-class JwtConfig(
+internal class JwtConfig(
     secret: String,
     private val issuer: String,
     private val audience: String,

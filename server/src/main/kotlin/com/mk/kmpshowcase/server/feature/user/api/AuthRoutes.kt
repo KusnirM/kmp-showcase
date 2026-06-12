@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("AuthRoutes")
 
-fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
+internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
     route("/api/auth") {
         post("/register") {
             val request = call.receive<RegisterRequest>()
