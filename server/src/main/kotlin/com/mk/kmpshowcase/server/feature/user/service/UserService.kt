@@ -20,6 +20,8 @@ internal class UserService(
 
     suspend fun getById(id: Long): User? = repository.findById(id)
 
+    suspend fun getAll(): List<User> = repository.findAll()
+
     private companion object {
         const val MIN_PASSWORD_LENGTH = 8
     }

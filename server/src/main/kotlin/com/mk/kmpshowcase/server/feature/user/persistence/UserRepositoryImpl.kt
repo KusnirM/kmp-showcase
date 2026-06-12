@@ -10,6 +10,10 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 
 internal class UserRepositoryImpl : UserRepository {
 
+    override suspend fun findAll(): List<User> = newSuspendedTransaction {
+        UsersTable.selectAll().map { it.toUser() }
+    }
+
     override suspend fun findByEmail(email: String): User? = newSuspendedTransaction {
         UsersTable.selectAll()
             .where { UsersTable.email eq email }
