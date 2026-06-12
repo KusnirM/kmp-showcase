@@ -3,6 +3,7 @@ package com.mk.kmpshowcase.server.feature.user.persistence
 import com.mk.kmpshowcase.server.feature.user.service.User
 
 internal interface UserRepository {
+    suspend fun findAll(): List<User>
     suspend fun findByEmail(email: String): User?
     suspend fun findById(id: Long): User?
     suspend fun create(email: String, password: String, name: String): User
