@@ -7,10 +7,10 @@ import io.ktor.server.auth.Authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 
-fun Application.configureAuth() {
+fun Application.configureAuth(jwtConfig: JwtConfig) {
     install(Authentication) {
         jwt("auth-jwt") {
-            verifier(JwtConfig.verifier)
+            verifier(jwtConfig.verifier)
             validate { credential ->
                 if (credential.payload.getClaim("userId").asLong() != null) {
                     JWTPrincipal(credential.payload)

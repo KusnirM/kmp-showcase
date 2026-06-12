@@ -4,6 +4,7 @@ import com.mk.kmpshowcase.server.feature.note.persistence.NotesTable
 import com.mk.kmpshowcase.server.feature.user.persistence.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.ktor.server.config.ApplicationConfig
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -13,9 +14,9 @@ private val logger = LoggerFactory.getLogger("DatabaseConfig")
 
 object DatabaseConfig {
 
-    fun init() {
+    fun init(appConfig: ApplicationConfig) {
         logger.info("Initializing database connection...")
-        val database = Database.connect(hikari())
+        val database = Database.connect(hikari(appConfig))
 
         transaction(database) {
             SchemaUtils.create(UsersTable, NotesTable)
@@ -23,8 +24,8 @@ object DatabaseConfig {
         }
     }
 
-    private fun hikari(): HikariDataSource {
-        val useH2 = System.getenv("USE_H2")?.toBoolean() ?: true
+    private fun hikari(appConfig: ApplicationConfig): HikariDataSource {
+        val useH2 = appConfig.property("database.useH2").getString().toBoolean()
 
         val config = HikariConfig().apply {
             if (useH2) {
@@ -36,10 +37,9 @@ object DatabaseConfig {
             } else {
                 logger.info("Using PostgreSQL database (production)")
                 driverClassName = "org.postgresql.Driver"
-                jdbcUrl = System.getenv("DATABASE_URL")
-                    ?: "jdbc:postgresql://localhost:5432/kmpshowcase"
-                username = System.getenv("DATABASE_USER") ?: "postgres"
-                password = System.getenv("DATABASE_PASSWORD") ?: "postgres"
+                jdbcUrl = appConfig.property("database.url").getString()
+                username = appConfig.property("database.user").getString()
+                password = appConfig.property("database.password").getString()
             }
             maximumPoolSize = MAX_POOL_SIZE
             isAutoCommit = false

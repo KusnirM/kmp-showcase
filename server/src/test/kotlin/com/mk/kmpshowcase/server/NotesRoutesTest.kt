@@ -21,6 +21,8 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.config.MapApplicationConfig
+import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.util.UUID
 import kotlinx.coroutines.runBlocking
@@ -33,12 +35,17 @@ class NotesRoutesTest {
 
     companion object {
         private var initialized = false
+        private val jwtConfig = JwtConfig(
+            secret = "test-secret",
+            issuer = "kmp-showcase",
+            audience = "kmp-showcase-users",
+        )
     }
 
     @BeforeTest
     fun setup() {
         if (!initialized) {
-            DatabaseConfig.init()
+            DatabaseConfig.init(MapApplicationConfig("database.useH2" to "true"))
             initialized = true
         }
     }
@@ -47,20 +54,23 @@ class NotesRoutesTest {
         val userRepository = UserRepositoryImpl()
         val uniqueEmail = "test-${UUID.randomUUID()}@test.com"
         val user = userRepository.create(uniqueEmail, "password123", "Test User")
-        val token = JwtConfig.generateToken(user.id, user.email)
+        val token = jwtConfig.generateToken(user.id, user.email)
         user.id to token
     }
 
-    private fun io.ktor.server.application.Application.testModule() {
-        configureSerialization()
-        configureStatusPages()
-        configureAuth()
-        configureRouting(AppDependencies())
+    private fun notesTest(block: suspend ApplicationTestBuilder.() -> Unit) = testApplication {
+        environment { config = MapApplicationConfig() }
+        application {
+            configureSerialization()
+            configureStatusPages()
+            configureAuth(jwtConfig)
+            configureRouting(AppDependencies(jwtConfig))
+        }
+        block()
     }
 
     @Test
-    fun `get notes returns empty list for new user`() = testApplication {
-        application { testModule() }
+    fun `get notes returns empty list for new user`() = notesTest {
 
         val client = createClient {
             install(ContentNegotiation) { json() }
@@ -78,8 +88,7 @@ class NotesRoutesTest {
     }
 
     @Test
-    fun `create note returns created note`() = testApplication {
-        application { testModule() }
+    fun `create note returns created note`() = notesTest {
 
         val client = createClient {
             install(ContentNegotiation) { json() }
@@ -100,8 +109,7 @@ class NotesRoutesTest {
     }
 
     @Test
-    fun `search notes filters by title`() = testApplication {
-        application { testModule() }
+    fun `search notes filters by title`() = notesTest {
 
         val client = createClient {
             install(ContentNegotiation) { json() }
@@ -131,8 +139,7 @@ class NotesRoutesTest {
     }
 
     @Test
-    fun `get notes without auth returns unauthorized`() = testApplication {
-        application { testModule() }
+    fun `get notes without auth returns unauthorized`() = notesTest {
 
         val response = client.get("/api/notes")
 
