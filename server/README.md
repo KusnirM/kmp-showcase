@@ -60,6 +60,7 @@ docker compose up --build
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `PORT` | 8080 | Server port |
+| `USE_H2` | true | H2 in-memory DB (development) vs PostgreSQL |
 | `DATABASE_URL` | jdbc:postgresql://localhost:5432/kmpshowcase | DB connection |
 | `DATABASE_USER` | postgres | DB username |
 | `DATABASE_PASSWORD` | postgres | DB password |
