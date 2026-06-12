@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("AuthRoutes")
 
-fun Route.authRoutes(userService: UserService) {
+fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
     route("/api/auth") {
         post("/register") {
             val request = call.receive<RegisterRequest>()
             val user = userService.register(request.email, request.password, request.name)
-            val token = JwtConfig.generateToken(user.id, user.email)
+            val token = jwtConfig.generateToken(user.id, user.email)
             logger.info("User registered: ${user.id} (${user.email})")
             call.respond(HttpStatusCode.Created, AuthResponse(token, user.toDTO()))
         }
@@ -30,7 +30,7 @@ fun Route.authRoutes(userService: UserService) {
                     call.respond(HttpStatusCode.Unauthorized, mapOf("message" to "Invalid credentials"))
                     return@post
                 }
-            val token = JwtConfig.generateToken(user.id, user.email)
+            val token = jwtConfig.generateToken(user.id, user.email)
             logger.info("User logged in: ${user.id} (${user.email})")
             call.respond(AuthResponse(token, user.toDTO()))
         }

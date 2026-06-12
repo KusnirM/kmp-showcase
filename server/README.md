@@ -55,7 +55,9 @@ docker compose up --build
 | PUT | `/api/notes/{id}` | Update note |
 | DELETE | `/api/notes/{id}` | Delete note |
 
-## Environment Variables
+## Configuration
+
+Config lives in [`src/main/resources/application.yaml`](src/main/resources/application.yaml) (Ktor `EngineMain` style). Every value supports environment-variable override via `"$ENV_VAR:default"` substitution:
 
 | Variable | Default | Description |
 |----------|---------|-------------|

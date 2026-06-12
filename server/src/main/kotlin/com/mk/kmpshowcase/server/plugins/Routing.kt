@@ -19,7 +19,7 @@ fun Application.configureRouting(dependencies: AppDependencies) {
             call.respondText("OK")
         }
 
-        authRoutes(dependencies.userService)
+        authRoutes(dependencies.userService, dependencies.jwtConfig)
         userRoutes(dependencies.userService)
         noteRoutes(dependencies.noteService)
     }
