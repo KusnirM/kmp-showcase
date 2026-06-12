@@ -1,5 +1,6 @@
 package com.mk.kmpshowcase.server.feature.note.persistence
 
+import com.mk.kmpshowcase.server.core.persistence.mapToSingleOrNull
 import com.mk.kmpshowcase.server.feature.note.service.Note
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -29,8 +30,7 @@ internal class NoteRepositoryImpl : NoteRepository {
     override suspend fun findById(id: Long, userId: Long): Note? = newSuspendedTransaction {
         NotesTable.selectAll()
             .where { (NotesTable.id eq id) and (NotesTable.userId eq userId) }
-            .map { it.toNote() }
-            .singleOrNull()
+            .mapToSingleOrNull { it.toNote() }
     }
 
     override suspend fun create(userId: Long, title: String, content: String): Note = newSuspendedTransaction {
@@ -66,8 +66,7 @@ internal class NoteRepositoryImpl : NoteRepository {
         if (updated > 0) {
             NotesTable.selectAll()
                 .where { (NotesTable.id eq id) and (NotesTable.userId eq userId) }
-                .map { it.toNote() }
-                .singleOrNull()
+                .mapToSingleOrNull { it.toNote() }
         } else {
             null
         }

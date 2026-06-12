@@ -1,6 +1,7 @@
 package com.mk.kmpshowcase.server.feature.user.persistence
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.mk.kmpshowcase.server.core.persistence.mapToSingleOrNull
 import com.mk.kmpshowcase.server.feature.user.service.User
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
@@ -12,15 +13,13 @@ internal class UserRepositoryImpl : UserRepository {
     override suspend fun findByEmail(email: String): User? = newSuspendedTransaction {
         UsersTable.selectAll()
             .where { UsersTable.email eq email }
-            .map { it.toUser() }
-            .singleOrNull()
+            .mapToSingleOrNull { it.toUser() }
     }
 
     override suspend fun findById(id: Long): User? = newSuspendedTransaction {
         UsersTable.selectAll()
             .where { UsersTable.id eq id }
-            .map { it.toUser() }
-            .singleOrNull()
+            .mapToSingleOrNull { it.toUser() }
     }
 
     override suspend fun create(email: String, password: String, name: String): User = newSuspendedTransaction {
