@@ -9,5 +9,6 @@ captures
 .cxx
 local.properties
 .env
+test-server/
 xcuserdata
 .claude/

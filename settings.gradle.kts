@@ -15,4 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "KMP Showcase"
 include(":shared", ":androidApp", ":iosApp", ":server")
-include(":server2")
+
+// Local-only learning module, gitignored — present only on machines that have it
+if (file("test-server").exists()) {
+    include(":test-server")
+}

@@ -7,7 +7,6 @@ import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import org.slf4j.event.Level
 
-//todo pouzit aj v clentovi?
 fun Application.configureCallLogging() {
     install(CallLogging) {
         level = Level.INFO
