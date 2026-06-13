@@ -13,7 +13,6 @@ import com.mk.kmpshowcase.presentation.screen.register.RegisterViewModel
 import com.mk.kmpshowcase.presentation.screen.scanner.ScannerViewModel
 import com.mk.kmpshowcase.presentation.screen.settings.SettingsViewModel
 import com.mk.kmpshowcase.presentation.screen.storage.StorageViewModel
-import com.mk.kmpshowcase.presentation.screen.example.ExampleViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -33,5 +32,4 @@ val presentationModule = module {
     viewModelOf(::NotificationsViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
-    viewModelOf(::ExampleViewModel)
 }

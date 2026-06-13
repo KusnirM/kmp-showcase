@@ -1,14 +1,12 @@
 package com.mk.kmpshowcase.presentation.screen.register
 
 import com.mk.kmpshowcase.domain.exceptions.base.BaseException
-import com.mk.kmpshowcase.domain.useCase.auth.CheckEmailExistsUseCase
 import com.mk.kmpshowcase.domain.useCase.auth.RegisterUserUseCase
 import com.mk.kmpshowcase.presentation.base.BaseViewModel
 import com.mk.kmpshowcase.presentation.base.NavEvent
 import com.mk.kmpshowcase.presentation.util.ValidationPatterns
 
 class RegisterViewModel(
-    private val checkEmailExistsUseCase: CheckEmailExistsUseCase,
     private val registerUserUseCase: RegisterUserUseCase,
 ) : BaseViewModel<RegisterUiState>(RegisterUiState()) {
 
@@ -53,12 +51,7 @@ class RegisterViewModel(
 
     private fun performRegistration(name: String, email: String, password: String) {
         execute(
-            action = {
-                val emailExists = checkEmailExistsUseCase(email)
-                if (emailExists) throw EmailAlreadyExistsException()
-
-                registerUserUseCase(RegisterUserUseCase.Params(name, email, password))
-            },
+            action = { registerUserUseCase(RegisterUserUseCase.Params(name, email, password)) },
             onLoading = { newState { it.copy(isLoading = true) } },
             onSuccess = {
                 newState { it.copy(isLoading = false) }
@@ -68,9 +61,8 @@ class RegisterViewModel(
                 newState {
                     it.copy(
                         isLoading = false,
-                        emailError = if (error is EmailAlreadyExistsException) {
-                            RegisterEmailError.ALREADY_EXISTS
-                        } else null
+                        // TODO: map ApiException(409) -> EmailAlreadyExistsException -> ALREADY_EXISTS
+                        emailError = if (error is EmailAlreadyExistsException) RegisterEmailError.ALREADY_EXISTS else null
                     )
                 }
             }
@@ -158,11 +150,9 @@ sealed interface RegisterNavEvent : NavEvent {
     data object ToLogin : RegisterNavEvent
 }
 
-private class EmailAlreadyExistsException : BaseException(
-    message = "Email already exists",
-    cause = null
-) {
-    override val errorCode: String = "5001"
-    override val userMessage: String = "This email is already registered"
-    override val shouldReport: Boolean = false
-}
+private class EmailAlreadyExistsException(
+    override val errorCode: String = "5001",
+    override val userMessage: String = "This email is already registered",
+    override val shouldReport: Boolean = false,
+) : BaseException(message = "Email already exists")
+

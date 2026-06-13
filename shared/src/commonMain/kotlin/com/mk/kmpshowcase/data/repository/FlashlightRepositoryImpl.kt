@@ -1,6 +1,6 @@
 package com.mk.kmpshowcase.data.repository
 
-import com.mk.kmpshowcase.data.flashlight.FlashlightClient
+import com.mk.kmpshowcase.data.client.FlashlightClient
 import com.mk.kmpshowcase.domain.repository.FlashlightRepository
 
 class FlashlightRepositoryImpl(

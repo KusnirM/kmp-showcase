@@ -3,7 +3,7 @@ package com.mk.kmpshowcase.di
 import com.mk.kmpshowcase.domain.useCase.GetUsersUseCase
 import com.mk.kmpshowcase.domain.useCase.TrackButtonClickUseCase
 import com.mk.kmpshowcase.domain.useCase.analytics.TrackScreenUseCase
-import com.mk.kmpshowcase.domain.useCase.auth.CheckEmailExistsUseCase
+import com.mk.kmpshowcase.domain.useCase.auth.LoginUseCase
 import com.mk.kmpshowcase.domain.useCase.auth.RegisterUserUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
@@ -33,7 +33,6 @@ import com.mk.kmpshowcase.domain.useCase.storage.LoadStorageDataUseCase
 import com.mk.kmpshowcase.domain.useCase.storage.ObserveStorageDataUseCase
 import com.mk.kmpshowcase.domain.useCase.storage.SetPersistentCounterUseCase
 import com.mk.kmpshowcase.domain.useCase.storage.SetSessionCounterUseCase
-import com.mk.kmpshowcase.domain.useCase.example.GetExamplesUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -57,7 +56,7 @@ val domainModule = module {
     factoryOf(::GetTodayDateUseCase)
     factoryOf(::IsBiometricEnabledUseCase)
     factoryOf(::AuthenticateWithBiometricUseCase)
-    factoryOf(::CheckEmailExistsUseCase)
+    factoryOf(::LoginUseCase)
     factoryOf(::RegisterUserUseCase)
 
     // Location
@@ -78,6 +77,4 @@ val domainModule = module {
     factoryOf(::ShowLocalNotificationUseCase)
     factoryOf(::CancelAllNotificationsUseCase)
 
-    // Example
-    factoryOf(::GetExamplesUseCase)
 }

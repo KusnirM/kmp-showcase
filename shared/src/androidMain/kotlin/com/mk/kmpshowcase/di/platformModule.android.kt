@@ -2,8 +2,8 @@ package com.mk.kmpshowcase.di
 
 import com.mk.kmpshowcase.data.client.BiometricClient
 import com.mk.kmpshowcase.data.client.BiometricClientImpl
-import com.mk.kmpshowcase.data.flashlight.FlashlightClient
-import com.mk.kmpshowcase.data.flashlight.FlashlightClientImpl
+import com.mk.kmpshowcase.data.client.FlashlightClient
+import com.mk.kmpshowcase.data.client.FlashlightClientImpl
 import com.mk.kmpshowcase.data.local.database.DatabaseDriverFactory
 import com.mk.kmpshowcase.data.local.preferences.Preferences
 import com.mk.kmpshowcase.data.local.preferences.PreferencesImpl
