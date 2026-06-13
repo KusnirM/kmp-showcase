@@ -1,5 +1,7 @@
 package com.mk.kmpshowcase.data.dto
 
+import com.mk.kmpshowcase.data.base.TransformToDomainModel
+import com.mk.kmpshowcase.domain.model.AuthSession
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -26,4 +28,13 @@ data class AuthUserDTO(
 data class AuthResponseDTO(
     val token: String,
     val user: AuthUserDTO,
-)
+): TransformToDomainModel<AuthSession> {
+    override fun transform(): AuthSession = AuthSession(
+        token = token,
+        userId = user.id,
+        email = user.email,
+        name = user.name,
+    )
+
+}
+
