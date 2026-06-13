@@ -4,6 +4,7 @@ import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import com.mk.kmpshowcase.data.database.AppDatabase
+import com.mk.kmpshowcase.data.repository.NoteRepositoryImpl
 import com.mk.kmpshowcase.domain.model.Note
 import com.mk.kmpshowcase.domain.model.NoteSortOption
 import kotlin.test.AfterTest

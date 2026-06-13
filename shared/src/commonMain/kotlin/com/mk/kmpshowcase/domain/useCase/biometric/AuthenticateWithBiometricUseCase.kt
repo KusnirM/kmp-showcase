@@ -1,6 +1,6 @@
 package com.mk.kmpshowcase.domain.useCase.biometric
 
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.repository.BiometricRepository
 import com.mk.kmpshowcase.domain.useCase.base.None
 import com.mk.kmpshowcase.domain.useCase.base.UseCase

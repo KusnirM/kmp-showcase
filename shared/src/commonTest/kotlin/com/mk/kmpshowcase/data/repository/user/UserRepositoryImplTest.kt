@@ -1,11 +1,13 @@
 package com.mk.kmpshowcase.data.repository.user
 
+import com.mk.kmpshowcase.data.client.UserClient
 import dev.mokkery.answering.returns
 import dev.mokkery.everySuspend
 import dev.mokkery.mock
 import kotlinx.coroutines.test.runTest
 import com.mk.kmpshowcase.data.dto.AddressDTO
 import com.mk.kmpshowcase.data.dto.UserDTO
+import com.mk.kmpshowcase.data.repository.UserRepositoryImpl
 import com.mk.kmpshowcase.domain.BaseTest
 import com.mk.kmpshowcase.domain.test
 import kotlin.test.Test

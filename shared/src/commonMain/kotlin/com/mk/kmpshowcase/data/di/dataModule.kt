@@ -2,7 +2,7 @@ package com.mk.kmpshowcase.data.di
 
 import io.ktor.client.HttpClient
 import com.mk.kmpshowcase.data.database.AppDatabase
-import com.mk.kmpshowcase.data.database.DatabaseDriverFactory
+import com.mk.kmpshowcase.data.local.database.DatabaseDriverFactory
 import com.mk.kmpshowcase.data.local.StorageLocalStore
 import com.mk.kmpshowcase.data.local.StorageLocalStoreImpl
 import com.mk.kmpshowcase.data.local.preferences.PersistentPreferences
@@ -10,21 +10,21 @@ import com.mk.kmpshowcase.data.local.preferences.PersistentPreferencesImpl
 import com.mk.kmpshowcase.data.local.preferences.SessionPreferences
 import com.mk.kmpshowcase.data.local.preferences.SessionPreferencesImpl
 import com.mk.kmpshowcase.data.network.HttpClientProvider
-import com.mk.kmpshowcase.data.notification.NotificationRepositoryImpl
+import com.mk.kmpshowcase.data.repository.NotificationRepositoryImpl
 import com.mk.kmpshowcase.data.repository.BiometricRepositoryImpl
 import com.mk.kmpshowcase.data.repository.DateRepositoryImpl
 import com.mk.kmpshowcase.data.repository.FlashlightRepositoryImpl
 import com.mk.kmpshowcase.data.repository.LocationRepositoryImpl
 import com.mk.kmpshowcase.data.repository.SettingsRepositoryImpl
-import com.mk.kmpshowcase.data.repository.database.AuthRepositoryImpl
-import com.mk.kmpshowcase.data.repository.database.NoteRepositoryImpl
+import com.mk.kmpshowcase.data.repository.AuthRepositoryImpl
+import com.mk.kmpshowcase.data.repository.NoteRepositoryImpl
 import com.mk.kmpshowcase.data.repository.example.ExampleClient
 import com.mk.kmpshowcase.data.repository.example.ExampleClientImpl
 import com.mk.kmpshowcase.data.repository.example.ExampleRepositoryImpl
-import com.mk.kmpshowcase.data.repository.storage.StorageRepositoryImpl
-import com.mk.kmpshowcase.data.repository.user.UserClient
-import com.mk.kmpshowcase.data.repository.user.UserClientImpl
-import com.mk.kmpshowcase.data.repository.user.UserRepositoryImpl
+import com.mk.kmpshowcase.data.repository.StorageRepositoryImpl
+import com.mk.kmpshowcase.data.client.UserClient
+import com.mk.kmpshowcase.data.client.UserClientImpl
+import com.mk.kmpshowcase.data.repository.UserRepositoryImpl
 import com.mk.kmpshowcase.di.Qualifiers.app
 import com.mk.kmpshowcase.di.Qualifiers.session
 import com.mk.kmpshowcase.domain.repository.AuthRepository

@@ -1,7 +1,7 @@
 package com.mk.kmpshowcase.presentation.screen.platformapis
 
 import kotlinx.coroutines.Job
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.model.Location
 import com.mk.kmpshowcase.domain.useCase.base.invoke
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase

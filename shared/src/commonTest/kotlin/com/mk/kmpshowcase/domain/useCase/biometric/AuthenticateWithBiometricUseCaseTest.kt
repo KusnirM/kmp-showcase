@@ -5,7 +5,7 @@ import dev.mokkery.everySuspend
 import dev.mokkery.mock
 import dev.mokkery.verifySuspend
 import kotlinx.coroutines.test.runTest
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.BaseTest
 import com.mk.kmpshowcase.domain.repository.BiometricRepository
 import com.mk.kmpshowcase.domain.test
