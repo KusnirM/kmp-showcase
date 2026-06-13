@@ -1,17 +1,9 @@
 package com.mk.kmpshowcase.server.feature.user.api
 
+import com.mk.kmpshowcase.contracts.user.UserResponseDTO
 import com.mk.kmpshowcase.server.feature.user.service.User
-import kotlinx.serialization.Serializable
 
-@Serializable
-internal data class UserDTO(
-    val id: Long,
-    val email: String,
-    val name: String,
-    val createdAt: Long,
-)
-
-internal fun User.toDTO() = UserDTO(
+internal fun User.toUserResponseDTO() = UserResponseDTO(
     id = id,
     email = email,
     name = name,

@@ -63,6 +63,7 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(project(":contracts"))
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             api(libs.kotlinx.datetime)

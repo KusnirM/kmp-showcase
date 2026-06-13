@@ -1,15 +1,15 @@
 package com.mk.kmpshowcase.data.client
 
+import com.mk.kmpshowcase.contracts.auth.AuthResponseDTO
+import com.mk.kmpshowcase.contracts.auth.LoginRequestDTO
+import com.mk.kmpshowcase.contracts.auth.RegisterRequestDTO
+import com.mk.kmpshowcase.data.network.handleApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import com.mk.kmpshowcase.data.dto.AuthResponseDTO
-import com.mk.kmpshowcase.data.dto.LoginRequestDTO
-import com.mk.kmpshowcase.data.dto.RegisterRequestDTO
-import com.mk.kmpshowcase.data.network.handleApiCall
 
 interface AuthClient {
     suspend fun login(email: String, password: String): AuthResponseDTO

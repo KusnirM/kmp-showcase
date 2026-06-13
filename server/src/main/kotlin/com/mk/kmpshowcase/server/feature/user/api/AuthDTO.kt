@@ -1,22 +1,6 @@
 package com.mk.kmpshowcase.server.feature.user.api
 
-import kotlinx.serialization.Serializable
+import com.mk.kmpshowcase.contracts.auth.AuthUserDTO
+import com.mk.kmpshowcase.server.feature.user.service.User
 
-@Serializable
-internal data class RegisterRequest(
-    val email: String,
-    val password: String,
-    val name: String,
-)
-
-@Serializable
-internal data class LoginRequest(
-    val email: String,
-    val password: String,
-)
-
-@Serializable
-internal data class AuthResponse(
-    val token: String,
-    val user: UserDTO,
-)
+internal fun User.toAuthUserDTO() = AuthUserDTO(id = id, email = email, name = name)

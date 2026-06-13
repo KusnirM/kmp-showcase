@@ -13,12 +13,12 @@ internal fun Route.userRoutes(userService: UserService) {
     route("/api/users") {
         authenticate("auth-jwt") {
             get {
-                call.respond(userService.getAll().map { it.toDTO() })
+                call.respond(userService.getAll().map { it.toUserResponseDTO() })
             }
             get("/me") {
                 val userId = call.userId() ?: return@get call.respond(HttpStatusCode.Unauthorized)
                 val user = userService.getById(userId) ?: return@get call.respond(HttpStatusCode.NotFound)
-                call.respond(user.toDTO())
+                call.respond(user.toUserResponseDTO())
             }
         }
     }

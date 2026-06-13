@@ -3,8 +3,8 @@ package com.mk.kmpshowcase.server
 import com.mk.kmpshowcase.server.config.DatabaseConfig
 import com.mk.kmpshowcase.server.core.security.JwtConfig
 import com.mk.kmpshowcase.server.di.AppDependencies
-import com.mk.kmpshowcase.server.feature.note.api.CreateNoteRequest
-import com.mk.kmpshowcase.server.feature.note.api.NoteDTO
+import com.mk.kmpshowcase.contracts.note.CreateNoteRequestDTO
+import com.mk.kmpshowcase.contracts.note.NoteResponseDTO
 import com.mk.kmpshowcase.server.feature.user.persistence.UserRepositoryImpl
 import com.mk.kmpshowcase.server.plugins.configureAuth
 import com.mk.kmpshowcase.server.plugins.configureRouting
@@ -83,7 +83,7 @@ class NotesRoutesTest {
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
-        val notes = response.body<List<NoteDTO>>()
+        val notes = response.body<List<NoteResponseDTO>>()
         assertTrue(notes.isEmpty())
     }
 
@@ -99,11 +99,11 @@ class NotesRoutesTest {
         val response = client.post("/api/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
-            setBody(CreateNoteRequest(title = "Test Note", content = "Test content"))
+            setBody(CreateNoteRequestDTO(title = "Test Note", content = "Test content"))
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
-        val note = response.body<NoteDTO>()
+        val note = response.body<NoteResponseDTO>()
         assertEquals("Test Note", note.title)
         assertEquals("Test content", note.content)
     }
@@ -120,12 +120,12 @@ class NotesRoutesTest {
         client.post("/api/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
-            setBody(CreateNoteRequest(title = "Shopping list", content = "Milk, eggs"))
+            setBody(CreateNoteRequestDTO(title = "Shopping list", content = "Milk, eggs"))
         }
         client.post("/api/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
-            setBody(CreateNoteRequest(title = "Work tasks", content = "Meeting at 10"))
+            setBody(CreateNoteRequestDTO(title = "Work tasks", content = "Meeting at 10"))
         }
 
         val response = client.get("/api/notes/search?q=Shop") {
@@ -133,7 +133,7 @@ class NotesRoutesTest {
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
-        val notes = response.body<List<NoteDTO>>()
+        val notes = response.body<List<NoteResponseDTO>>()
         assertEquals(1, notes.size)
         assertEquals("Shopping list", notes[0].title)
     }

@@ -1,5 +1,8 @@
 package com.mk.kmpshowcase.server.feature.user.api
 
+import com.mk.kmpshowcase.contracts.auth.AuthResponseDTO
+import com.mk.kmpshowcase.contracts.auth.LoginRequestDTO
+import com.mk.kmpshowcase.contracts.auth.RegisterRequestDTO
 import com.mk.kmpshowcase.server.core.auth.userId
 import com.mk.kmpshowcase.server.core.security.JwtConfig
 import com.mk.kmpshowcase.server.feature.user.service.UserService
@@ -18,11 +21,11 @@ private val logger = LoggerFactory.getLogger("AuthRoutes")
 internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
     route("/api/auth") {
         post("/register") {
-            val request = call.receive<RegisterRequest>()
+            val request = call.receive<RegisterRequestDTO>()
             val user = userService.register(request.email, request.password, request.name)
             val token = jwtConfig.generateToken(user.id, user.email)
             logger.info("User registered: ${user.id} (${user.email})")
-            call.respond(HttpStatusCode.Created, AuthResponse(token, user.toDTO()))
+            call.respond(HttpStatusCode.Created, AuthResponseDTO(token, user.toAuthUserDTO()))
         }
 
         authenticate("auth-jwt") {
@@ -32,12 +35,12 @@ internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
                 val user = userService.getById(userId)
                     ?: return@get call.respond(HttpStatusCode.NotFound)
                 logger.info("Token login: ${user.id} (${user.email})")
-                call.respond(AuthResponse(jwtConfig.generateToken(user.id, user.email), user.toDTO()))
+                call.respond(AuthResponseDTO(jwtConfig.generateToken(user.id, user.email), user.toAuthUserDTO()))
             }
         }
 
         post("/login") {
-            val request = call.receive<LoginRequest>()
+            val request = call.receive<LoginRequestDTO>()
             val user = userService.authenticate(request.email, request.password)
                 ?: run {
                     logger.warn("Login failed: invalid credentials for ${request.email}")
@@ -46,7 +49,7 @@ internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
                 }
             val token = jwtConfig.generateToken(user.id, user.email)
             logger.info("User logged in: ${user.id} (${user.email})")
-            call.respond(AuthResponse(token, user.toDTO()))
+            call.respond(AuthResponseDTO(token, user.toAuthUserDTO()))
         }
     }
 }
