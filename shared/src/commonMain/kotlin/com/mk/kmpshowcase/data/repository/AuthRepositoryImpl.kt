@@ -1,33 +1,30 @@
 package com.mk.kmpshowcase.data.repository
 
-import com.mk.kmpshowcase.data.database.AppDatabase
-import com.mk.kmpshowcase.data.local.database.transform
-import com.mk.kmpshowcase.domain.model.RegisteredUser
+import com.mk.kmpshowcase.data.client.AuthClient
+import com.mk.kmpshowcase.domain.model.AuthSession
 import com.mk.kmpshowcase.domain.repository.AuthRepository
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 class AuthRepositoryImpl(
-    database: AppDatabase
+    private val client: AuthClient
 ) : AuthRepository {
 
-    private val queries = database.registeredUserQueries
-
-    @OptIn(ExperimentalTime::class)
-    override suspend fun register(name: String, email: String, password: String): RegisteredUser {
-        val createdAt = Clock.System.now().toEpochMilliseconds()
-        queries.insert(name, email, password, createdAt)
-        return queries.selectByEmail(email).executeAsOne().transform()
+    override suspend fun login(email: String, password: String): AuthSession {
+        val response = client.login(email, password)
+        return AuthSession(
+            token = response.token,
+            userId = response.user.id,
+            email = response.user.email,
+            name = response.user.name,
+        )
     }
 
-    override suspend fun login(email: String, password: String): RegisteredUser? {
-        val user = queries.selectByEmail(email).executeAsOneOrNull()?.transform()
-        return if (user?.password == password) user else null
+    override suspend fun register(name: String, email: String, password: String): AuthSession {
+        val response = client.register(email, password, name)
+        return AuthSession(
+            token = response.token,
+            userId = response.user.id,
+            email = response.user.email,
+            name = response.user.name,
+        )
     }
-
-    override suspend fun getUserByEmail(email: String): RegisteredUser? =
-        queries.selectByEmail(email).executeAsOneOrNull()?.transform()
-
-    override suspend fun emailExists(email: String): Boolean =
-        queries.selectByEmail(email).executeAsOneOrNull() != null
 }

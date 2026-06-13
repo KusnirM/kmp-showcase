@@ -10,27 +10,25 @@ import com.mk.kmpshowcase.data.local.preferences.PersistentPreferencesImpl
 import com.mk.kmpshowcase.data.local.preferences.SessionPreferences
 import com.mk.kmpshowcase.data.local.preferences.SessionPreferencesImpl
 import com.mk.kmpshowcase.data.network.HttpClientProvider
-import com.mk.kmpshowcase.data.repository.NotificationRepositoryImpl
+import com.mk.kmpshowcase.data.client.AuthClient
+import com.mk.kmpshowcase.data.client.AuthClientImpl
+import com.mk.kmpshowcase.data.client.UserClient
+import com.mk.kmpshowcase.data.client.UserClientImpl
+import com.mk.kmpshowcase.data.repository.AuthRepositoryImpl
 import com.mk.kmpshowcase.data.repository.BiometricRepositoryImpl
 import com.mk.kmpshowcase.data.repository.DateRepositoryImpl
 import com.mk.kmpshowcase.data.repository.FlashlightRepositoryImpl
 import com.mk.kmpshowcase.data.repository.LocationRepositoryImpl
-import com.mk.kmpshowcase.data.repository.SettingsRepositoryImpl
-import com.mk.kmpshowcase.data.repository.AuthRepositoryImpl
 import com.mk.kmpshowcase.data.repository.NoteRepositoryImpl
-import com.mk.kmpshowcase.data.repository.example.ExampleClient
-import com.mk.kmpshowcase.data.repository.example.ExampleClientImpl
-import com.mk.kmpshowcase.data.repository.example.ExampleRepositoryImpl
+import com.mk.kmpshowcase.data.repository.NotificationRepositoryImpl
+import com.mk.kmpshowcase.data.repository.SettingsRepositoryImpl
 import com.mk.kmpshowcase.data.repository.StorageRepositoryImpl
-import com.mk.kmpshowcase.data.client.UserClient
-import com.mk.kmpshowcase.data.client.UserClientImpl
 import com.mk.kmpshowcase.data.repository.UserRepositoryImpl
 import com.mk.kmpshowcase.di.Qualifiers.app
 import com.mk.kmpshowcase.di.Qualifiers.session
 import com.mk.kmpshowcase.domain.repository.AuthRepository
 import com.mk.kmpshowcase.domain.repository.BiometricRepository
 import com.mk.kmpshowcase.domain.repository.DateRepository
-import com.mk.kmpshowcase.domain.repository.ExampleRepository
 import com.mk.kmpshowcase.domain.repository.FlashlightRepository
 import com.mk.kmpshowcase.domain.repository.LocationRepository
 import com.mk.kmpshowcase.domain.repository.NoteRepository
@@ -45,11 +43,11 @@ import org.koin.dsl.module
 
 val dataModule = module {
     singleOf(::Logger)
-    singleOf(::UserClientImpl) { bind<UserClient>() }
-    singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
-    singleOf(::ExampleClientImpl) { bind<ExampleClient>() }
-    singleOf(::ExampleRepositoryImpl) { bind<ExampleRepository>() }
     single { provideHttpClient() }
+    singleOf(::AuthClientImpl) { bind<AuthClient>() }
+    singleOf(::UserClientImpl) { bind<UserClient>() }
+    singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
+    singleOf(::UserRepositoryImpl) { bind<UserRepository>() }
 
     // Qualified preferences - need explicit qualifier
     single<SessionPreferences> { SessionPreferencesImpl(get(session)) }
@@ -63,7 +61,6 @@ val dataModule = module {
     singleOf(::FlashlightRepositoryImpl) { bind<FlashlightRepository>() }
     singleOf(::DateRepositoryImpl) { bind<DateRepository>() }
     singleOf(::NoteRepositoryImpl) { bind<NoteRepository>() }
-    singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
     singleOf(::NotificationRepositoryImpl) { bind<NotificationRepository>() }
 
     // Database - needs special factory

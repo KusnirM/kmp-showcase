@@ -7,7 +7,7 @@ internal class UserService(
 ) {
     suspend fun register(email: String, password: String, name: String): User {
         require(email.contains("@")) { "Invalid email format" }
-        require(password.length >= MIN_PASSWORD_LENGTH) { "Password must be at least $MIN_PASSWORD_LENGTH characters" }
+        require(PASSWORD_REGEX.matches(password)) { "Password must be at least 8 characters and contain uppercase, lowercase, digit and special character (@\$!%*?&)" }
         require(name.isNotBlank()) { "Name cannot be blank" }
 
         check(repository.findByEmail(email) == null) { "User already exists" }
@@ -23,6 +23,8 @@ internal class UserService(
     suspend fun getAll(): List<User> = repository.findAll()
 
     private companion object {
-        const val MIN_PASSWORD_LENGTH = 8
+        val PASSWORD_REGEX = Regex(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$"
+        )
     }
 }

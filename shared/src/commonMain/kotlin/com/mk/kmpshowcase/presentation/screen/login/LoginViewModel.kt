@@ -1,6 +1,7 @@
 package com.mk.kmpshowcase.presentation.screen.login
 
 import com.mk.kmpshowcase.domain.model.BiometricResult
+import com.mk.kmpshowcase.domain.useCase.auth.LoginUseCase
 import com.mk.kmpshowcase.domain.useCase.base.invoke
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
@@ -9,6 +10,7 @@ import com.mk.kmpshowcase.presentation.base.NavEvent
 import com.mk.kmpshowcase.presentation.util.ValidationPatterns
 
 class LoginViewModel(
+    private val loginUseCase: LoginUseCase,
     private val isBiometricEnabledUseCase: IsBiometricEnabledUseCase,
     private val authenticateWithBiometricUseCase: AuthenticateWithBiometricUseCase,
 ) : BaseViewModel<LoginUiState>(LoginUiState()) {
@@ -45,17 +47,21 @@ class LoginViewModel(
             val passwordError = validatePassword(state.password)
 
             if (emailError != null || passwordError != null) {
-                newState {
-                    it.copy(
-                        emailError = emailError,
-                        passwordError = passwordError
-                    )
-                }
+                newState { it.copy(emailError = emailError, passwordError = passwordError) }
                 return@requireState
             }
 
-            // Login successful - navigate to home
-            navigate(LoginNavEvent.ToHome)
+            execute(
+                action = { loginUseCase(LoginUseCase.Params(state.email, state.password)) },
+                onLoading = { newState { it.copy(isLoading = true) } },
+                onSuccess = {
+                    newState { it.copy(isLoading = false) }
+                    navigate(LoginNavEvent.ToHome)
+                },
+                onError = { error ->
+                    newState { it.copy(isLoading = false, serverError = error.message) }
+                }
+            )
         }
     }
 
@@ -64,15 +70,8 @@ class LoginViewModel(
             action = { authenticateWithBiometricUseCase() },
             onLoading = { newState { it.copy(biometricsLoading = true, biometricsResult = null) } },
             onSuccess = { result ->
-                newState {
-                    it.copy(
-                        biometricsLoading = false,
-                        biometricsResult = result
-                    )
-                }
-                if (result is BiometricResult.Success) {
-                    navigate(LoginNavEvent.ToHome)
-                }
+                newState { it.copy(biometricsLoading = false, biometricsResult = result) }
+                if (result is BiometricResult.Success) navigate(LoginNavEvent.ToHome)
             },
             onError = { error ->
                 newState {
@@ -85,21 +84,17 @@ class LoginViewModel(
         )
     }
 
-    private fun validateEmail(email: String): EmailError? {
-        return when {
-            email.isBlank() -> EmailError.EMPTY
-            !ValidationPatterns.isValidEmail(email) -> EmailError.INVALID_FORMAT
-            else -> null
-        }
+    private fun validateEmail(email: String): EmailError? = when {
+        email.isBlank() -> EmailError.EMPTY
+        !ValidationPatterns.isValidEmail(email) -> EmailError.INVALID_FORMAT
+        else -> null
     }
 
-    private fun validatePassword(password: String): PasswordError? {
-        return when {
-            password.isBlank() -> PasswordError.EMPTY
-            !ValidationPatterns.isPasswordLongEnough(password) -> PasswordError.TOO_SHORT
-            !ValidationPatterns.isValidPassword(password) -> PasswordError.WEAK
-            else -> null
-        }
+    private fun validatePassword(password: String): PasswordError? = when {
+        password.isBlank() -> PasswordError.EMPTY
+        !ValidationPatterns.isPasswordLongEnough(password) -> PasswordError.TOO_SHORT
+        !ValidationPatterns.isValidPassword(password) -> PasswordError.WEAK
+        else -> null
     }
 
     companion object {
@@ -108,22 +103,16 @@ class LoginViewModel(
     }
 }
 
-enum class EmailError {
-    EMPTY,
-    INVALID_FORMAT
-}
-
-enum class PasswordError {
-    EMPTY,
-    TOO_SHORT,
-    WEAK
-}
+enum class EmailError { EMPTY, INVALID_FORMAT }
+enum class PasswordError { EMPTY, TOO_SHORT, WEAK }
 
 data class LoginUiState(
     val email: String = "",
     val password: String = "",
     val emailError: EmailError? = null,
     val passwordError: PasswordError? = null,
+    val isLoading: Boolean = false,
+    val serverError: String? = null,
     val biometricsAvailable: Boolean = false,
     val biometricsLoading: Boolean = false,
     val biometricsResult: BiometricResult? = null,

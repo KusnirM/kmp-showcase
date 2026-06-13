@@ -8,7 +8,9 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
+import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -19,9 +21,11 @@ expect class HttpClientProvider() {
 fun HttpClientConfig<*>.applyCommonConfig() {
     defaultRequest {
         url {
-            protocol = URLProtocol.HTTPS
+            protocol = URLProtocol.HTTP
             host = BASE_URL
+            port = BASE_PORT
         }
+        contentType(ContentType.Application.Json)
     }
     install(ContentNegotiation) {
         json(
@@ -45,7 +49,8 @@ fun HttpClientConfig<*>.applyCommonConfig() {
     }
 }
 
-private const val BASE_URL = "jsonplaceholder.typicode.com"
+internal expect val BASE_URL: String
+internal const val BASE_PORT = 8080
 private const val REQUEST_TIME_OUT_MILLIS: Long = 30_000
 private const val CONNECT_TIME_OUT_MILLIS: Long = 30_000
 
