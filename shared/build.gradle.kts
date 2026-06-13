@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import kotlin.time.ExperimentalTime
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -56,6 +57,7 @@ kotlin {
                 optIn("kotlin.uuid.ExperimentalUuidApi")
                 optIn("kotlinx.cinterop.ExperimentalForeignApi")
                 optIn("kotlinx.cinterop.BetaInteropApi")
+                optIn("kotlin.annotation.AnnotationTarget")
                 enableLanguageFeature("ExpectActualClasses")
             }
         }

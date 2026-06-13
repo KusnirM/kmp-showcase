@@ -1,6 +1,6 @@
 package com.mk.kmpshowcase.domain.repository
 
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.domain.model.BiometricResult
 
 interface BiometricRepository {
     fun enabled(): Boolean

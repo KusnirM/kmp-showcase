@@ -1,7 +1,7 @@
 package com.mk.kmpshowcase.data.repository
 
-import com.mk.kmpshowcase.data.biometric.BiometricClient
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.data.client.BiometricClient
+import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.repository.BiometricRepository
 
 class BiometricRepositoryImpl(

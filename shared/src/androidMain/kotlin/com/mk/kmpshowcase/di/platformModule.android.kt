@@ -1,14 +1,14 @@
 package com.mk.kmpshowcase.di
 
-import com.mk.kmpshowcase.data.biometric.BiometricClient
-import com.mk.kmpshowcase.data.biometric.BiometricClientImpl
+import com.mk.kmpshowcase.data.client.BiometricClient
+import com.mk.kmpshowcase.data.client.BiometricClientImpl
 import com.mk.kmpshowcase.data.flashlight.FlashlightClient
 import com.mk.kmpshowcase.data.flashlight.FlashlightClientImpl
-import com.mk.kmpshowcase.data.database.DatabaseDriverFactory
+import com.mk.kmpshowcase.data.local.database.DatabaseDriverFactory
 import com.mk.kmpshowcase.data.local.preferences.Preferences
 import com.mk.kmpshowcase.data.local.preferences.PreferencesImpl
-import com.mk.kmpshowcase.data.location.LocationClient
-import com.mk.kmpshowcase.data.location.LocationClientImpl
+import com.mk.kmpshowcase.data.client.LocationClient
+import com.mk.kmpshowcase.data.client.LocationClientImpl
 import com.mk.kmpshowcase.data.service.LocalNotificationServiceImpl
 import com.mk.kmpshowcase.di.Qualifiers.app
 import com.mk.kmpshowcase.di.Qualifiers.session

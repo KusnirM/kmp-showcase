@@ -35,7 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharedFlow
 import com.mk.kmpshowcase.LocalSnackbarHostState
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.presentation.base.CollectNavEvents
 import com.mk.kmpshowcase.presentation.base.NavEvent
 import com.mk.kmpshowcase.presentation.base.NavRouter

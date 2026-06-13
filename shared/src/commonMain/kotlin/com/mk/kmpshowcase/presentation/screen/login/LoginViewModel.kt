@@ -1,6 +1,6 @@
 package com.mk.kmpshowcase.presentation.screen.login
 
-import com.mk.kmpshowcase.data.biometric.BiometricResult
+import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.useCase.base.invoke
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
