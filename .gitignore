@@ -1,8 +1,10 @@
 *.iml
 .gradle
 .idea
+.vscode
 .kotlin
 .DS_Store
+node_modules
 build
 captures
 .externalNativeBuild
