@@ -12,3 +12,5 @@ local.properties
 test-server/
 xcuserdata
 .claude/
+.agents/
+skills-lock.json
