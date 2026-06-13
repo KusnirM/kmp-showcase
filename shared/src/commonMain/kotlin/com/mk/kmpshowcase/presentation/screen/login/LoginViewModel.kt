@@ -2,6 +2,8 @@ package com.mk.kmpshowcase.presentation.screen.login
 
 import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.useCase.auth.LoginUseCase
+import com.mk.kmpshowcase.domain.useCase.auth.LoginWithTokenUseCase
+import com.mk.kmpshowcase.domain.useCase.base.None
 import com.mk.kmpshowcase.domain.useCase.base.invoke
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
@@ -11,6 +13,7 @@ import com.mk.kmpshowcase.presentation.util.ValidationPatterns
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
+    private val loginWithTokenUseCase: LoginWithTokenUseCase,
     private val isBiometricEnabledUseCase: IsBiometricEnabledUseCase,
     private val authenticateWithBiometricUseCase: AuthenticateWithBiometricUseCase,
 ) : BaseViewModel<LoginUiState>(LoginUiState()) {
@@ -20,6 +23,15 @@ class LoginViewModel(
     fun toRegister() = navigate(LoginNavEvent.ToRegister)
 
     override fun loadInitialData() {
+        execute(
+            action = { loginWithTokenUseCase() },
+            onLoading = { newState { it.copy(isLoading = true) } },
+            onSuccess = { session ->
+                newState { it.copy(isLoading = false) }
+                if (session != null) navigate(LoginNavEvent.ToHome)
+            },
+            onError = { newState { it.copy(isLoading = false) } }
+        )
         execute(
             action = { isBiometricEnabledUseCase() },
             onSuccess = { enabled -> newState { it.copy(biometricsAvailable = enabled) } }

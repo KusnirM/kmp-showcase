@@ -1,11 +1,14 @@
 package com.mk.kmpshowcase.server.feature.user.api
 
+import com.mk.kmpshowcase.server.core.auth.userId
 import com.mk.kmpshowcase.server.core.security.JwtConfig
 import com.mk.kmpshowcase.server.feature.user.service.UserService
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import org.slf4j.LoggerFactory
@@ -20,6 +23,17 @@ internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
             val token = jwtConfig.generateToken(user.id, user.email)
             logger.info("User registered: ${user.id} (${user.email})")
             call.respond(HttpStatusCode.Created, AuthResponse(token, user.toDTO()))
+        }
+
+        authenticate("auth-jwt") {
+            get("/me") {
+                val userId = call.userId()
+                    ?: return@get call.respond(HttpStatusCode.Unauthorized)
+                val user = userService.getById(userId)
+                    ?: return@get call.respond(HttpStatusCode.NotFound)
+                logger.info("Token login: ${user.id} (${user.email})")
+                call.respond(AuthResponse(jwtConfig.generateToken(user.id, user.email), user.toDTO()))
+            }
         }
 
         post("/login") {

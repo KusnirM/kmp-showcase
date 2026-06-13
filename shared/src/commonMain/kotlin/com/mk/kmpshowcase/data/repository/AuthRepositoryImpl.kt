@@ -24,6 +24,13 @@ class AuthRepositoryImpl(
         return session
     }
 
+    override suspend fun loginWithToken(): AuthSession? {
+        val token = preferences.getToken() ?: return null
+        return runCatching { client.me(token).transform() }
+            .onSuccess { preferences.setToken(it.token) }
+            .getOrNull()
+    }
+
     override suspend fun logout() {
         preferences.clearToken()
     }
