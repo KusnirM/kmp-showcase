@@ -8,6 +8,18 @@ application {
     mainClass = "com.mk.kmpshowcase.server.ApplicationKt"
 }
 
+tasks.named<JavaExec>("run") {
+    val envFile = rootProject.file(".env")
+    if (envFile.exists()) {
+        envFile.readLines()
+            .filter { it.isNotBlank() && !it.startsWith("#") }
+            .forEach { line ->
+                val idx = line.indexOf('=')
+                if (idx > 0) environment(line.substring(0, idx), line.substring(idx + 1))
+            }
+    }
+}
+
 dependencies {
     // Ktor Server
     implementation(libs.ktor.server.core)
