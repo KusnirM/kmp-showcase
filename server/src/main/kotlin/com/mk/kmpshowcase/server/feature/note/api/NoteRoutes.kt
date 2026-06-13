@@ -1,5 +1,7 @@
 package com.mk.kmpshowcase.server.feature.note.api
 
+import com.mk.kmpshowcase.contracts.note.CreateNoteRequestDTO
+import com.mk.kmpshowcase.contracts.note.UpdateNoteRequestDTO
 import com.mk.kmpshowcase.server.core.auth.userId
 import com.mk.kmpshowcase.server.feature.note.service.NoteService
 import io.ktor.http.HttpStatusCode
@@ -18,13 +20,13 @@ internal fun Route.noteRoutes(noteService: NoteService) {
         authenticate("auth-jwt") {
             get {
                 val userId = call.userId() ?: return@get call.respond(HttpStatusCode.Unauthorized)
-                call.respond(noteService.listForUser(userId).map { it.toDTO() })
+                call.respond(noteService.listForUser(userId).map { it.toNoteResponseDTO() })
             }
 
             get("/search") {
                 val userId = call.userId() ?: return@get call.respond(HttpStatusCode.Unauthorized)
                 val query = call.request.queryParameters["q"]
-                call.respond(noteService.listForUser(userId, query).map { it.toDTO() })
+                call.respond(noteService.listForUser(userId, query).map { it.toNoteResponseDTO() })
             }
 
             get("/{id}") {
@@ -33,24 +35,24 @@ internal fun Route.noteRoutes(noteService: NoteService) {
                     ?: return@get call.respond(HttpStatusCode.BadRequest)
                 val note = noteService.getById(noteId, userId)
                     ?: return@get call.respond(HttpStatusCode.NotFound)
-                call.respond(note.toDTO())
+                call.respond(note.toNoteResponseDTO())
             }
 
             post {
                 val userId = call.userId() ?: return@post call.respond(HttpStatusCode.Unauthorized)
-                val request = call.receive<CreateNoteRequest>()
+                val request = call.receive<CreateNoteRequestDTO>()
                 val note = noteService.create(userId, request.title, request.content)
-                call.respond(HttpStatusCode.Created, note.toDTO())
+                call.respond(HttpStatusCode.Created, note.toNoteResponseDTO())
             }
 
             put("/{id}") {
                 val userId = call.userId() ?: return@put call.respond(HttpStatusCode.Unauthorized)
                 val noteId = call.parameters["id"]?.toLongOrNull()
                     ?: return@put call.respond(HttpStatusCode.BadRequest)
-                val request = call.receive<UpdateNoteRequest>()
+                val request = call.receive<UpdateNoteRequestDTO>()
                 val note = noteService.update(noteId, userId, request.title, request.content)
                     ?: return@put call.respond(HttpStatusCode.NotFound)
-                call.respond(note.toDTO())
+                call.respond(note.toNoteResponseDTO())
             }
 
             delete("/{id}") {

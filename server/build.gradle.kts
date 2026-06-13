@@ -21,6 +21,8 @@ tasks.named<JavaExec>("run") {
 }
 
 dependencies {
+    implementation(project(":contracts"))
+
     // Ktor Server
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
