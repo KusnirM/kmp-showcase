@@ -1,6 +1,10 @@
 package com.mk.kmpshowcase.data.di
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpSend
+import io.ktor.client.plugins.plugin
+import io.ktor.client.request.header
+import io.ktor.http.HttpHeaders
 import com.mk.kmpshowcase.data.database.AppDatabase
 import com.mk.kmpshowcase.data.local.database.DatabaseDriverFactory
 import com.mk.kmpshowcase.data.local.StorageLocalStore
@@ -43,7 +47,7 @@ import org.koin.dsl.module
 
 val dataModule = module {
     singleOf(::Logger)
-    single { provideHttpClient() }
+    single { provideHttpClient(get()) }
     singleOf(::AuthClientImpl) { bind<AuthClient>() }
     singleOf(::UserClientImpl) { bind<UserClient>() }
     singleOf(::AuthRepositoryImpl) { bind<AuthRepository>() }
@@ -67,4 +71,15 @@ val dataModule = module {
     single { AppDatabase(get<DatabaseDriverFactory>().createDriver()) }
 }
 
-fun provideHttpClient(): HttpClient = HttpClientProvider().create()
+fun provideHttpClient(preferences: PersistentPreferences): HttpClient {
+    val client = HttpClientProvider().create()
+    client.plugin(HttpSend).intercept { request ->
+        val token = preferences.getToken()
+        if (token != null) {
+            request.headers.remove(HttpHeaders.Authorization)
+            request.header(HttpHeaders.Authorization, "Bearer $token")
+        }
+        execute(request)
+    }
+    return client
+}
