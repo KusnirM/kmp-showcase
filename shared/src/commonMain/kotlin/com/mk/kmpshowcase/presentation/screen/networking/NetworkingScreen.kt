@@ -149,17 +149,5 @@ private fun UserCard(user: User) {
                 modifier = Modifier.padding(start = space4)
             )
         }
-        Spacer2()
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.LocationOn,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-            TextBodyMediumNeutral80(
-                text = "${user.address.city}, ${user.address.street}",
-                modifier = Modifier.padding(start = space4)
-            )
-        }
     }
 }

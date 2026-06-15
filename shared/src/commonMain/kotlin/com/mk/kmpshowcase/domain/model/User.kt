@@ -1,8 +1,7 @@
 package com.mk.kmpshowcase.domain.model
 
 data class User(
-    val address: Address,
+    val id: Long,
     val email: String,
-    val id: Int,
     val name: String,
 )
