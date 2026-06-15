@@ -1,25 +1,25 @@
 package com.mk.kmpshowcase.data.client
 
+import com.mk.kmpshowcase.contracts.user.UserResponseDTO
+import com.mk.kmpshowcase.data.network.handleApiCall
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import com.mk.kmpshowcase.data.dto.UserDTO
-import com.mk.kmpshowcase.data.network.handleApiCall
 
 interface UserClient {
-    suspend fun fetchUser(id: Int): UserDTO
-    suspend fun fetchUsers(): List<UserDTO>
+    suspend fun fetchUser(id: Long): UserResponseDTO
+    suspend fun fetchUsers(): List<UserResponseDTO>
 }
 
 class UserClientImpl(
     private val client: HttpClient
 ) : UserClient {
 
-    override suspend fun fetchUser(id: Int): UserDTO = handleApiCall {
+    override suspend fun fetchUser(id: Long): UserResponseDTO = handleApiCall {
         client.get("users/$id").body()
     }
 
-    override suspend fun fetchUsers(): List<UserDTO> = handleApiCall {
+    override suspend fun fetchUsers(): List<UserResponseDTO> = handleApiCall {
         client.get("users").body()
     }
 }

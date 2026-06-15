@@ -11,6 +11,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
+import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -24,6 +25,7 @@ fun HttpClientConfig<*>.applyCommonConfig() {
             protocol = URLProtocol.HTTP
             host = BASE_URL
             port = BASE_PORT
+            path("api/")
         }
         contentType(ContentType.Application.Json)
     }

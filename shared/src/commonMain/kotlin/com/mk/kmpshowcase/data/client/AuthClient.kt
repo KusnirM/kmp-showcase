@@ -22,19 +22,19 @@ class AuthClientImpl(
 ) : AuthClient {
 
     override suspend fun login(email: String, password: String): AuthResponseDTO = handleApiCall {
-        client.post("api/auth/login") {
+        client.post("auth/login") {
             setBody(LoginRequestDTO(email, password))
         }.body()
     }
 
     override suspend fun register(email: String, password: String, name: String): AuthResponseDTO = handleApiCall {
-        client.post("api/auth/register") {
+        client.post("auth/register") {
             setBody(RegisterRequestDTO(email, password, name))
         }.body()
     }
 
     override suspend fun me(token: String): AuthResponseDTO = handleApiCall {
-        client.get("api/auth/me") {
+        client.get("auth/me") {
             bearerAuth(token)
         }.body()
     }
