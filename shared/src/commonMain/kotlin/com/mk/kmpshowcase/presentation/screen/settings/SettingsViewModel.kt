@@ -2,6 +2,7 @@ package com.mk.kmpshowcase.presentation.screen.settings
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.mk.kmpshowcase.AppConfig
+import com.mk.kmpshowcase.domain.useCase.auth.LogoutUseCase
 import com.mk.kmpshowcase.domain.useCase.base.invoke
 import com.mk.kmpshowcase.domain.useCase.settings.GetThemeModeUseCase
 import com.mk.kmpshowcase.domain.useCase.settings.SetThemeModeUseCase
@@ -41,6 +42,7 @@ enum class ThemeModeState(val textId: StringResource, val mode: ThemeMode) {
 class SettingsViewModel(
     private val getThemeModeUseCase: GetThemeModeUseCase,
     private val setThemeModeUseCase: SetThemeModeUseCase,
+    private val logoutUseCase: LogoutUseCase,
     appConfig: AppConfig,
 ) : BaseViewModel<SettingsState>(
     SettingsState(
@@ -95,7 +97,10 @@ class SettingsViewModel(
     }
 
     fun logout() {
-        navigate(SettingNavEvents.Logout)
+        execute(
+            action = { logoutUseCase() },
+            onSuccess = { navigate(SettingNavEvents.Logout) }
+        )
     }
 
     @Suppress("TooGenericExceptionThrown")

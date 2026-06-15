@@ -5,6 +5,7 @@ import com.mk.kmpshowcase.domain.useCase.TrackButtonClickUseCase
 import com.mk.kmpshowcase.domain.useCase.analytics.TrackScreenUseCase
 import com.mk.kmpshowcase.domain.useCase.auth.LoginUseCase
 import com.mk.kmpshowcase.domain.useCase.auth.LoginWithTokenUseCase
+import com.mk.kmpshowcase.domain.useCase.auth.LogoutUseCase
 import com.mk.kmpshowcase.domain.useCase.auth.RegisterUserUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
@@ -59,6 +60,7 @@ val domainModule = module {
     factoryOf(::AuthenticateWithBiometricUseCase)
     factoryOf(::LoginUseCase)
     factoryOf(::LoginWithTokenUseCase)
+    factoryOf(::LogoutUseCase)
     factoryOf(::RegisterUserUseCase)
 
     // Location
