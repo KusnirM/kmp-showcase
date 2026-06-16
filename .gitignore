@@ -10,6 +10,7 @@ captures
 .externalNativeBuild
 .cxx
 local.properties
+local/
 .env
 test-server/
 xcuserdata
