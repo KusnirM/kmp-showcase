@@ -2,11 +2,13 @@ package com.mk.kmpshowcase.server.feature.user.persistence
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.mk.kmpshowcase.server.core.persistence.mapToSingleOrNull
+import com.mk.kmpshowcase.server.feature.user.service.ThemeMode
 import com.mk.kmpshowcase.server.feature.user.service.User
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.update
 
 internal class UserRepositoryImpl : UserRepository {
 
@@ -43,7 +45,21 @@ internal class UserRepositoryImpl : UserRepository {
             email = email,
             name = name,
             createdAt = now,
+            themeMode = ThemeMode.SYSTEM,
         )
+    }
+
+    override suspend fun updateThemeMode(id: Long, themeMode: ThemeMode): User? = newSuspendedTransaction {
+        val updated = UsersTable.update({ UsersTable.id eq id }) {
+            it[UsersTable.themeMode] = themeMode
+        }
+        if (updated > 0) {
+            UsersTable.selectAll()
+                .where { UsersTable.id eq id }
+                .mapToSingleOrNull { it.toUser() }
+        } else {
+            null
+        }
     }
 
     override suspend fun authenticate(email: String, password: String): User? = newSuspendedTransaction {
@@ -64,6 +80,7 @@ internal class UserRepositoryImpl : UserRepository {
         email = this[UsersTable.email],
         name = this[UsersTable.name],
         createdAt = this[UsersTable.createdAt],
+        themeMode = this[UsersTable.themeMode],
     )
 
     private companion object {
