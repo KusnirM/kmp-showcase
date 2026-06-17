@@ -131,10 +131,8 @@ enum class LanguageState(
 
 sealed interface SettingNavEvents : NavEvent {
 
-    // Android
     data class SetLocaleTag(val tag: String) : SettingNavEvents
 
-    // iOS
     data object ToSettings : SettingNavEvents
 
     data object Logout : SettingNavEvents

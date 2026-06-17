@@ -77,7 +77,6 @@ class ScannerViewModelTest {
         assertEquals("Scanned: ABC123", state.scannedResult)
     }
 
-    // === CodeFormat Tests ===
 
     @Test
     fun `CodeFormat has QR_CODE value`() {
@@ -99,7 +98,6 @@ class ScannerViewModelTest {
         assertEquals(1, CodeFormat.QR_CODE.ordinal)
     }
 
-    // === State Transitions (data class copy tests) ===
 
     @Test
     fun `mode change updates state correctly`() {

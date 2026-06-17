@@ -132,7 +132,6 @@ class CalendarViewModelTest {
     fun `multiple complete selections work correctly`() {
         val viewModel = createViewModel()
 
-        // First selection
         viewModel.onDateClick(LocalDate(2024, 1, 10))
         viewModel.onDateClick(LocalDate(2024, 1, 15))
         assertTrue(viewModel.state.value.selectedRange.isComplete)

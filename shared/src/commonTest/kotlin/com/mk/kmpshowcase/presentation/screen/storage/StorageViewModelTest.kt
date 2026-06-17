@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 
 class StorageViewModelTest {
 
-    // === StorageUiState Tests ===
 
     @Test
     fun `StorageUiState default values are zero`() {

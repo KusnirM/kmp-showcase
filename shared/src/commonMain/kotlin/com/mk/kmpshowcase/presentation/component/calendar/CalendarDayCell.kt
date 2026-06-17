@@ -130,7 +130,6 @@ private fun Modifier.rangeBackground(
         }
 
         DaySelectionType.SINGLE, DaySelectionType.NONE -> {
-            // No range background
         }
     }
 }

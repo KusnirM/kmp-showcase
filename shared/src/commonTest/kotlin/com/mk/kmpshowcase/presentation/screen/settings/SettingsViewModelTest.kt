@@ -10,7 +10,6 @@ import kotlin.test.assertTrue
 
 class SettingsViewModelTest {
 
-    // === ThemeModeState Tests ===
 
     @Test
     fun `ThemeModeState LIGHT has correct mode`() {
@@ -47,7 +46,6 @@ class SettingsViewModelTest {
         assertEquals(3, ThemeModeState.entries.size)
     }
 
-    // === LanguageState Tests ===
 
     @Test
     fun `LanguageState SK has correct tag`() {
@@ -99,7 +97,6 @@ class SettingsViewModelTest {
         assertEquals(2, LanguageState.entries.size)
     }
 
-    // === SettingsState Tests ===
 
     @Test
     fun `SettingsState default theme is SYSTEM`() {
@@ -127,7 +124,6 @@ class SettingsViewModelTest {
         assertFalse(state.showThemeDialog)
     }
 
-    // === BuildType Tests ===
 
     @Test
     fun `DEBUG build type isDebug returns true`() {
@@ -164,7 +160,6 @@ class SettingsViewModelTest {
         assertEquals(BuildType.DEBUG, BuildType.from("unknown"))
     }
 
-    // === AppConfig Tests ===
 
     @Test
     fun `AppConfig stores buildType correctly`() {
