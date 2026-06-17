@@ -31,7 +31,6 @@ class LoginViewModelTest {
         )
     }
 
-    // === Default State Tests ===
 
     @Test
     fun `default state has empty email`() {
@@ -64,7 +63,6 @@ class LoginViewModelTest {
         assertFalse(viewModel.state.value.biometricsLoading)
     }
 
-    // === Email Change Tests ===
 
     @Test
     fun `onEmailChange updates email`() {
@@ -85,7 +83,6 @@ class LoginViewModelTest {
         assertNull(viewModel.state.value.emailError)
     }
 
-    // === Password Change Tests ===
 
     @Test
     fun `onPasswordChange updates password`() {
@@ -106,7 +103,6 @@ class LoginViewModelTest {
         assertNull(viewModel.state.value.passwordError)
     }
 
-    // === Fill Test Account Tests ===
 
     @Test
     fun `fillTestAccount sets test email`() {
@@ -137,7 +133,6 @@ class LoginViewModelTest {
         assertNull(viewModel.state.value.passwordError)
     }
 
-    // === Login Validation Tests ===
 
     @Test
     fun `login with empty email shows EMPTY error`() {
@@ -215,7 +210,6 @@ class LoginViewModelTest {
         assertNull(viewModel.state.value.passwordError)
     }
 
-    // === Email Format Tests ===
 
     @Test
     fun `email without at symbol is invalid`() {
@@ -250,7 +244,6 @@ class LoginViewModelTest {
         assertNull(viewModel.state.value.emailError)
     }
 
-    // === Password Strength Tests ===
 
     @Test
     fun `password without uppercase is weak`() {
@@ -307,7 +300,6 @@ class LoginViewModelTest {
         assertNull(viewModel.state.value.passwordError)
     }
 
-    // === LoginUiState Tests ===
 
     @Test
     fun `LoginUiState default values are correct`() {
@@ -321,7 +313,6 @@ class LoginViewModelTest {
         assertNull(state.biometricsResult)
     }
 
-    // === EmailError Tests ===
 
     @Test
     fun `EmailError has EMPTY value`() {
@@ -333,7 +324,6 @@ class LoginViewModelTest {
         assertEquals(EmailError.INVALID_FORMAT, EmailError.valueOf("INVALID_FORMAT"))
     }
 
-    // === PasswordError Tests ===
 
     @Test
     fun `PasswordError has EMPTY value`() {
@@ -350,7 +340,6 @@ class LoginViewModelTest {
         assertEquals(PasswordError.WEAK, PasswordError.valueOf("WEAK"))
     }
 
-    // === Test Constants ===
 
     @Test
     fun `TEST_EMAIL is valid email format`() {

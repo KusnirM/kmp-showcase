@@ -113,7 +113,6 @@ fun LoginScreen(
             .padding(space4),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Skip button at top right
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
@@ -129,7 +128,6 @@ fun LoginScreen(
 
         Spacer8()
 
-        // Email field
         AppTextField(
             value = state.email,
             onValueChange = onEmailChange,
@@ -158,7 +156,6 @@ fun LoginScreen(
 
         Spacer2()
 
-        // Password field
         AppPasswordTextField(
             value = state.password,
             onValueChange = onPasswordChange,
@@ -183,7 +180,6 @@ fun LoginScreen(
 
         Spacer6()
 
-        // Login button
         ContainedButton(
             text = stringResource(Res.string.login_button),
             onClick = {
@@ -195,7 +191,6 @@ fun LoginScreen(
 
         Spacer4()
 
-        // Register link
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -205,7 +200,6 @@ fun LoginScreen(
             }
         }
 
-        // Biometric login
         if (state.biometricsAvailable) {
             Spacer6()
 
@@ -233,7 +227,6 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Test account section
         Box(
             modifier = Modifier
                 .fillMaxWidth()

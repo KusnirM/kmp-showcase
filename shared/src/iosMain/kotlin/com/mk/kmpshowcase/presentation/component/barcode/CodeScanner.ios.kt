@@ -49,12 +49,10 @@ actual fun CodeScanner(
             val view = UIView(frame = UIScreen.mainScreen.bounds)
             view.backgroundColor = UIColor.blackColor()
 
-            // Setup session
             val session = AVCaptureSession().apply {
                 sessionPreset = AVCaptureSessionPresetHigh
             }
 
-            // Setup video input
             val videoDevice: AVCaptureDevice? =
                 AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
             val videoInput = videoDevice?.let {
@@ -80,7 +78,6 @@ actual fun CodeScanner(
                 // Autofocus configuration is optional, continue without it
             }
 
-            // Setup metadata output
             val metadataOutput = AVCaptureMetadataOutput()
             val delegate = AVCaptureMetadataOutputObjectsDelegateProtocolImpl(
                 session = session,
@@ -108,7 +105,6 @@ actual fun CodeScanner(
                 return@UIKitView view
             }
 
-            // Preview layer
             val previewLayer = AVCaptureVideoPreviewLayer(session = session).apply {
                 videoGravity = AVLayerVideoGravityResizeAspectFill
                 frame = view.bounds
@@ -116,7 +112,6 @@ actual fun CodeScanner(
             }
             view.layer.addSublayer(previewLayer)
 
-            // Start session on main thread
             dispatch_async(dispatch_get_global_queue(0, 0u)) {
                 session.startRunning()
             }

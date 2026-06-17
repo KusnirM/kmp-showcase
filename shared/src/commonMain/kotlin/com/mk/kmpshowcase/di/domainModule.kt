@@ -63,16 +63,13 @@ val domainModule = module {
     factoryOf(::LogoutUseCase)
     factoryOf(::RegisterUserUseCase)
 
-    // Location
     factoryOf(::GetLastKnownLocationUseCase)
     factoryOf(::ObserveLocationUpdatesUseCase)
 
-    // Flashlight
     factoryOf(::IsFlashlightAvailableUseCase)
     factoryOf(::ToggleFlashlightUseCase)
     factoryOf(::TurnOffFlashlightUseCase)
 
-    // Notifications
     factoryOf(::GetPushPermissionStatusUseCase)
     factoryOf(::ObservePushTokenUseCase)
     factoryOf(::ObservePushNotificationsUseCase)

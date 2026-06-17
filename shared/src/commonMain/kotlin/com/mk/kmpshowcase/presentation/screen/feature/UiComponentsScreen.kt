@@ -145,7 +145,6 @@ fun UiComponentsScreen() {
             .padding(top = space4, bottom = floatingNavBarSpace),
         verticalArrangement = Arrangement.spacedBy(space4)
     ) {
-        // Buttons Section
         ComponentSection(title = stringResource(Res.string.section_buttons)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(space4),
@@ -190,7 +189,6 @@ fun UiComponentsScreen() {
 
         }
 
-        // Typography Section
         ComponentSection(title = stringResource(Res.string.section_typography)) {
             TextHeadlineMediumPrimary("Headline Medium")
             Spacer2()
@@ -201,7 +199,6 @@ fun UiComponentsScreen() {
             TextBodyMediumNeutral80("Body Medium")
         }
 
-        // Cards Section
         ComponentSection(title = stringResource(Res.string.section_cards)) {
             AppElevatedCard(modifier = Modifier.fillMaxWidth().padding(space4), onClick = {}) {
                 TextBodyMediumNeutral80(stringResource(Res.string.card_content))
@@ -212,7 +209,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Controls Section
         ComponentSection(title = stringResource(Res.string.section_controls)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppCheckbox(
@@ -223,7 +219,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Text Fields Section
         ComponentSection(title = stringResource(Res.string.section_text_fields)) {
             AppTextField(
                 value = textFieldValue,
@@ -234,7 +229,6 @@ fun UiComponentsScreen() {
             )
         }
 
-        // Switches Section
         ComponentSection(title = stringResource(Res.string.section_switches)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppSwitch(
@@ -248,7 +242,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Radio Buttons Section
         ComponentSection(title = stringResource(Res.string.section_radio_buttons)) {
             val radioOptions = listOf(
                 stringResource(Res.string.radio_option_1),
@@ -266,7 +259,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Chips Section
         ComponentSection(title = stringResource(Res.string.section_chips)) {
             Row(horizontalArrangement = Arrangement.spacedBy(space4)) {
                 AppFilterChip(
@@ -305,7 +297,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Sliders Section
         ComponentSection(title = stringResource(Res.string.section_sliders)) {
             AppSlider(
                 value = sliderValue,
@@ -314,7 +305,6 @@ fun UiComponentsScreen() {
             )
         }
 
-        // Dividers Section
         ComponentSection(title = stringResource(Res.string.section_dividers)) {
             TextBodyMediumNeutral80("Content above divider")
             Spacer2()
@@ -323,7 +313,6 @@ fun UiComponentsScreen() {
             TextBodyMediumNeutral80("Content below divider")
         }
 
-        // Loading Section
         ComponentSection(title = stringResource(Res.string.section_loading)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -336,7 +325,6 @@ fun UiComponentsScreen() {
             AppLinearProgress(modifier = Modifier.fillMaxWidth())
         }
 
-        // Badges Section
         ComponentSection(title = stringResource(Res.string.section_badges)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(space12),
@@ -356,7 +344,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Images Section
         ComponentSection(title = stringResource(Res.string.section_images)) {
             AsyncImage(
                 model = "https://picsum.photos/400/200",
@@ -369,7 +356,6 @@ fun UiComponentsScreen() {
             )
         }
 
-        // Snackbar Section
         ComponentSection(title = stringResource(Res.string.section_snackbar)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(space4),
@@ -428,7 +414,6 @@ fun UiComponentsScreen() {
             }
         }
 
-        // Bottom Sheet Section
         ComponentSection(title = stringResource(Res.string.section_bottom_sheet)) {
             ContainedButton(
                 text = stringResource(Res.string.show_bottom_sheet),
@@ -436,7 +421,6 @@ fun UiComponentsScreen() {
             )
         }
 
-        // Feedback Section (Dialog)
         ComponentSection(title = stringResource(Res.string.section_feedback)) {
             ContainedButton(
                 text = stringResource(Res.string.show_dialog),

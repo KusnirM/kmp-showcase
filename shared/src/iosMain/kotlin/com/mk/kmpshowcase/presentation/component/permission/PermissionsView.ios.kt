@@ -104,7 +104,6 @@ private fun checkCameraPermission(onResult: (Boolean) -> Unit) {
     }
 }
 
-// ===== Location  =====
 private var locationManagerRef: CLLocationManager? = null
 private var locationDelegateRef: NSObject? = null
 
@@ -203,7 +202,6 @@ private val locationAuthorized: Boolean
                 st == kCLAuthorizationStatusAuthorizedWhenInUse
     }
 
-// ===== Notification =====
 private var notificationAuthorizedCache: Boolean? = null
 
 private val notificationAuthorized: Boolean

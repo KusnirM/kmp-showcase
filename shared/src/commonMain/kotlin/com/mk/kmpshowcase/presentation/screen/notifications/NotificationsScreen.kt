@@ -113,7 +113,6 @@ fun NotificationsScreen(
             }
         }
 
-        // Permission Card
         item {
             val permissionText = when (state.permissionStatus) {
                 PushPermissionStatus.GRANTED -> stringResource(Res.string.notifications_permission_granted)
@@ -137,7 +136,6 @@ fun NotificationsScreen(
             }
         }
 
-        // Token Card
         item {
             val tokenText = state.pushToken?.let {
                 stringResource(Res.string.notifications_token, it.take(30) + "...")
@@ -165,7 +163,6 @@ fun NotificationsScreen(
             }
         }
 
-        // Send Notifications Card
         item {
             NotificationCard(
                 icon = Icons.Outlined.NotificationsActive,
@@ -197,7 +194,6 @@ fun NotificationsScreen(
             }
         }
 
-        // Received Notifications Card
         item {
             NotificationCard(
                 icon = Icons.Outlined.Notifications,

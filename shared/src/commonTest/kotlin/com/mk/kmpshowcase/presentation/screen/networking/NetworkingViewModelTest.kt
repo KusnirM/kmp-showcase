@@ -47,7 +47,6 @@ class NetworkingViewModelTest {
         )
     )
 
-    // === Default State Tests ===
 
     @Test
     fun `default state has empty users list`() {
@@ -67,7 +66,6 @@ class NetworkingViewModelTest {
         assertNull(viewModel.state.value.error)
     }
 
-    // === NetworkingUiState Tests ===
 
     @Test
     fun `NetworkingUiState default values are correct`() {

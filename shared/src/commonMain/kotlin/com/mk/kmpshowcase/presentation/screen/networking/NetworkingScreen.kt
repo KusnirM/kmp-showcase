@@ -88,7 +88,6 @@ private fun UserListContent(
     onRefresh: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        // Header with refresh button
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -113,7 +112,6 @@ private fun UserListContent(
             }
         }
 
-        // User list
         LazyColumn(
             contentPadding = PaddingValues(
                 start = space4,

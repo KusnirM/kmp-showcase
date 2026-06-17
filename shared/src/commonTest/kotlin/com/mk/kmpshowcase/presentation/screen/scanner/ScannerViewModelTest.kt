@@ -7,7 +7,6 @@ import kotlin.test.assertNull
 
 class ScannerViewModelTest {
 
-    // === Default State Tests ===
 
     @Test
     fun `default state has mode index 0`() {
@@ -45,7 +44,6 @@ class ScannerViewModelTest {
         assertNull(state.scannedResult)
     }
 
-    // === ScannerUiState Tests ===
 
     @Test
     fun `ScannerUiState can hold mode index`() {

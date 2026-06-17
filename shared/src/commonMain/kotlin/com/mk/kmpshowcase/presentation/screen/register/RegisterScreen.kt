@@ -112,7 +112,6 @@ fun RegisterScreen(
         TextTitleLargePrimary(stringResource(Res.string.register_title))
         Spacer8()
 
-        // Name field
         AppTextField(
             value = state.name,
             onValueChange = onNameChange,
@@ -141,7 +140,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(space2))
 
-        // Email field
         AppTextField(
             value = state.email,
             onValueChange = onEmailChange,
@@ -171,7 +169,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(space2))
 
-        // Password field
         AppPasswordTextField(
             value = state.password,
             onValueChange = onPasswordChange,
@@ -193,7 +190,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(space2))
 
-        // Confirm Password field
         AppPasswordTextField(
             value = state.confirmPassword,
             onValueChange = onConfirmPasswordChange,
@@ -218,7 +214,6 @@ fun RegisterScreen(
 
         Spacer(modifier = Modifier.height(space6))
 
-        // Register button
         if (state.isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(space12),
@@ -237,7 +232,6 @@ fun RegisterScreen(
 
         Spacer4()
 
-        // Login link
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {

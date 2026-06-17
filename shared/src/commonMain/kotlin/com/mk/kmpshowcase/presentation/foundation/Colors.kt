@@ -3,7 +3,6 @@ package com.mk.kmpshowcase.presentation.foundation
 import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 
-// Light theme colors
 val Neutral0Light: Color = Color(0xFFFFFFFF)
 internal val Neutral20Light: Color = Color(0xFFC8C8C8)
 internal val Neutral40Light: Color = Color(0xFF919191)
@@ -22,7 +21,6 @@ internal val ErrorContainerLight: Color = Color(0xFFF9DEDC)
 internal val SuccessLight: Color = Color(0xFF4CAF50)
 internal val WarningLight: Color = Color(0xFFFF9800)
 
-// Dark theme colors
 internal val Neutral0Dark: Color = Color(0xFF121212)
 internal val Neutral20Dark: Color = Color(0xFF2C2C2C)
 internal val Neutral40Dark: Color = Color(0xFF6E6E6E)

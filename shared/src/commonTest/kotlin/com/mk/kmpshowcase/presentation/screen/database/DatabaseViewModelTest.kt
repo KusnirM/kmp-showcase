@@ -86,7 +86,6 @@ class DatabaseViewModelTest {
         createdAt = 1234567890L
     )
 
-    // === Default State Tests ===
 
     @Test
     fun `default state has empty notes list`() {
@@ -131,7 +130,6 @@ class DatabaseViewModelTest {
         assertEquals("", viewModel.state.value.newNoteContent)
     }
 
-    // === Search Query Tests ===
 
     @Test
     fun `onSearchQueryChanged updates search query`() {
@@ -142,7 +140,6 @@ class DatabaseViewModelTest {
         assertEquals("test query", viewModel.state.value.searchQuery)
     }
 
-    // === Sort Option Tests ===
 
     @Test
     fun `onSortOptionChanged updates sort option`() {
@@ -163,7 +160,6 @@ class DatabaseViewModelTest {
         assertFalse(viewModel.state.value.showFilterMenu)
     }
 
-    // === Filter Menu Tests ===
 
     @Test
     fun `toggleFilterMenu opens closed menu`() {
@@ -194,7 +190,6 @@ class DatabaseViewModelTest {
         assertFalse(viewModel.state.value.showFilterMenu)
     }
 
-    // === Note Input Tests ===
 
     @Test
     fun `onTitleChanged updates new note title`() {
@@ -214,7 +209,6 @@ class DatabaseViewModelTest {
         assertEquals("New Content", viewModel.state.value.newNoteContent)
     }
 
-    // === Add Note Tests ===
 
     @Test
     fun `addNote with blank title does nothing`() {
@@ -237,7 +231,6 @@ class DatabaseViewModelTest {
         assertTrue(repository.insertedNotes.isEmpty())
     }
 
-    // === DatabaseUiState Tests ===
 
     @Test
     fun `DatabaseUiState default values are correct`() {
@@ -265,7 +258,6 @@ class DatabaseViewModelTest {
         assertTrue(state.error)
     }
 
-    // === NoteSortOption Tests ===
 
     @Test
     fun `NoteSortOption has DATE_DESC value`() {
