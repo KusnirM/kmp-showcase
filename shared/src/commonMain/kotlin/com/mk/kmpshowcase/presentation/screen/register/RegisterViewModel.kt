@@ -62,7 +62,11 @@ class RegisterViewModel(
                     it.copy(
                         isLoading = false,
                         // TODO: map ApiException(409) -> EmailAlreadyExistsException -> ALREADY_EXISTS
-                        emailError = if (error is EmailAlreadyExistsException) RegisterEmailError.ALREADY_EXISTS else null
+                        emailError = if (error is EmailAlreadyExistsException) {
+                            RegisterEmailError.ALREADY_EXISTS
+                        } else {
+                            null
+                        }
                     )
                 }
             }

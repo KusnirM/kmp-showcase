@@ -3,7 +3,6 @@ package com.mk.kmpshowcase.presentation.screen.login
 import com.mk.kmpshowcase.domain.model.BiometricResult
 import com.mk.kmpshowcase.domain.useCase.auth.LoginUseCase
 import com.mk.kmpshowcase.domain.useCase.auth.LoginWithTokenUseCase
-import com.mk.kmpshowcase.domain.useCase.base.None
 import com.mk.kmpshowcase.domain.useCase.base.invoke
 import com.mk.kmpshowcase.domain.useCase.biometric.AuthenticateWithBiometricUseCase
 import com.mk.kmpshowcase.domain.useCase.biometric.IsBiometricEnabledUseCase
