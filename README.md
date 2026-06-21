@@ -100,8 +100,6 @@ A production-ready Kotlin Multiplatform demo app showcasing modern mobile develo
 </tr>
 </table>
 
-<sub>📸 **[All screens & states →](docs/screens.md)** · regenerate: `./gradlew :androidApp:recordRoborazziDebug && scripts/generate_screenshots_readme.sh`</sub>
-
 ---
 
 ## Architecture
