@@ -1,5 +1,6 @@
 package com.mk.kmpshowcase.data.network
 
+import com.mk.kmpshowcase.contracts.ApiVersion
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.plugins.HttpTimeout
@@ -25,7 +26,7 @@ fun HttpClientConfig<*>.applyCommonConfig() {
             protocol = URLProtocol.HTTP
             host = BASE_URL
             port = BASE_PORT
-            path("api/")
+            path("api/${ApiVersion.CURRENT}/")
         }
         contentType(ContentType.Application.Json)
     }

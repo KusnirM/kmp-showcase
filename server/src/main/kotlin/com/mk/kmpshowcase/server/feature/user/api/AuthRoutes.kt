@@ -1,5 +1,6 @@
 package com.mk.kmpshowcase.server.feature.user.api
 
+import com.mk.kmpshowcase.contracts.ApiVersion
 import com.mk.kmpshowcase.contracts.auth.AuthResponseDTO
 import com.mk.kmpshowcase.contracts.auth.LoginRequestDTO
 import com.mk.kmpshowcase.contracts.auth.RegisterRequestDTO
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory
 private val logger = LoggerFactory.getLogger("AuthRoutes")
 
 internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
-    route("/api/auth") {
+    route("${ApiVersion.BASE}/auth") {
         post("/register") {
             val request = call.receive<RegisterRequestDTO>()
             val user = userService.register(request.email, request.password, request.name)

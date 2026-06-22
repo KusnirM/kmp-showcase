@@ -1,5 +1,6 @@
 package com.mk.kmpshowcase.server.feature.note.api
 
+import com.mk.kmpshowcase.contracts.ApiVersion
 import com.mk.kmpshowcase.contracts.note.CreateNoteRequestDTO
 import com.mk.kmpshowcase.contracts.note.UpdateNoteRequestDTO
 import com.mk.kmpshowcase.server.core.auth.userId
@@ -16,7 +17,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 
 internal fun Route.noteRoutes(noteService: NoteService) {
-    route("/api/notes") {
+    route("${ApiVersion.BASE}/notes") {
         authenticate("auth-jwt") {
             get {
                 val userId = call.userId() ?: return@get call.respond(HttpStatusCode.Unauthorized)

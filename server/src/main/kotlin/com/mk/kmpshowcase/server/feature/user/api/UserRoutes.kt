@@ -1,5 +1,6 @@
 package com.mk.kmpshowcase.server.feature.user.api
 
+import com.mk.kmpshowcase.contracts.ApiVersion
 import com.mk.kmpshowcase.contracts.user.UpdateLocaleRequestDTO
 import com.mk.kmpshowcase.contracts.user.UpdateThemeModeRequestDTO
 import com.mk.kmpshowcase.server.core.auth.userId
@@ -14,7 +15,7 @@ import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 
 internal fun Route.userRoutes(userService: UserService) {
-    route("/api/users") {
+    route("${ApiVersion.BASE}/users") {
         authenticate("auth-jwt") {
             get {
                 call.respond(userService.getAll().map { it.toUserResponseDTO() })

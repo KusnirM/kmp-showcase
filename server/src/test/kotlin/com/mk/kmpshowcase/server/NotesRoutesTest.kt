@@ -3,6 +3,7 @@ package com.mk.kmpshowcase.server
 import com.mk.kmpshowcase.server.config.DatabaseConfig
 import com.mk.kmpshowcase.server.core.security.JwtConfig
 import com.mk.kmpshowcase.server.di.AppDependencies
+import com.mk.kmpshowcase.contracts.ApiVersion
 import com.mk.kmpshowcase.contracts.note.CreateNoteRequestDTO
 import com.mk.kmpshowcase.contracts.note.NoteResponseDTO
 import com.mk.kmpshowcase.server.feature.user.persistence.UserRepositoryImpl
@@ -78,7 +79,7 @@ class NotesRoutesTest {
 
         val (_, token) = createTestUser()
 
-        val response = client.get("/api/notes") {
+        val response = client.get("${ApiVersion.BASE}/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
         }
 
@@ -96,7 +97,7 @@ class NotesRoutesTest {
 
         val (_, token) = createTestUser()
 
-        val response = client.post("/api/notes") {
+        val response = client.post("${ApiVersion.BASE}/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
             setBody(CreateNoteRequestDTO(title = "Test Note", content = "Test content"))
@@ -117,18 +118,18 @@ class NotesRoutesTest {
 
         val (_, token) = createTestUser()
 
-        client.post("/api/notes") {
+        client.post("${ApiVersion.BASE}/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
             setBody(CreateNoteRequestDTO(title = "Shopping list", content = "Milk, eggs"))
         }
-        client.post("/api/notes") {
+        client.post("${ApiVersion.BASE}/notes") {
             header(HttpHeaders.Authorization, "Bearer $token")
             contentType(ContentType.Application.Json)
             setBody(CreateNoteRequestDTO(title = "Work tasks", content = "Meeting at 10"))
         }
 
-        val response = client.get("/api/notes/search?q=Shop") {
+        val response = client.get("${ApiVersion.BASE}/notes/search?q=Shop") {
             header(HttpHeaders.Authorization, "Bearer $token")
         }
 
@@ -141,7 +142,7 @@ class NotesRoutesTest {
     @Test
     fun `get notes without auth returns unauthorized`() = notesTest {
 
-        val response = client.get("/api/notes")
+        val response = client.get("${ApiVersion.BASE}/notes")
 
         assertEquals(HttpStatusCode.Unauthorized, response.status)
     }
