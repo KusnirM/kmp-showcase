@@ -12,8 +12,8 @@ captures
 local.properties
 local/
 .env
-test-server/
 xcuserdata
 .claude/
+.claude/research/
 .agents/
 skills-lock.json
