@@ -1,7 +1,7 @@
 FROM gradle:8.11-jdk21 AS build
 WORKDIR /app
 COPY --chown=gradle:gradle . .
-RUN gradle :server:installDist --no-daemon
+RUN gradle :server:installDist --no-daemon -PserverOnly=true
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app

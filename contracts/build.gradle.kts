@@ -1,16 +1,13 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.kotlin.serialization)
 }
 
+// Pure @Serializable DTOs shared by mobile (iOS native) and the JVM server. No Android target:
+// the Android consumer (:shared) resolves the jvm() variant via Kotlin's androidJvm→jvm
+// compatibility (verified: :androidApp:assembleDebug builds without it). Dropping it keeps the
+// Android SDK out of the server-only build. iOS targets stay — Kotlin/Native can't use a jvm artifact.
 kotlin {
-    androidLibrary {
-        namespace = "com.mk.kmpshowcase.contracts"
-        compileSdk = libs.versions.androidCompileSdk.get().toInt()
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-    }
-
     jvm()
     iosArm64()
     iosSimulatorArm64()
