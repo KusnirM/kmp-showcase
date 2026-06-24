@@ -16,7 +16,7 @@ private val logger = LoggerFactory.getLogger("SmtpMailer")
 
 internal class SmtpMailer(private val config: MailConfig) : Mailer {
 
-    // No password (env unset, e.g. local dev) → outgoing mail is a no-op so /leads still works.
+    // No password (e.g. local dev) → mail is a no-op; /leads still works.
     private val session: Session? = if (config.password.isBlank()) {
         logger.warn("MAIL_PASSWORD not set — outgoing mail disabled (leads are still stored)")
         null

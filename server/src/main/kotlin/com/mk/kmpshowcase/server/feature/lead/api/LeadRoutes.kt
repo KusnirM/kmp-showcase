@@ -9,7 +9,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 
-// Public — the portfolio contact form posts here (replaces the Web3Forms dependency).
+// Public (unauthenticated) — the portfolio contact form posts here.
 internal fun Route.leadRoutes(leadService: LeadService) {
     route("${ApiVersion.BASE}/leads") {
         post {
