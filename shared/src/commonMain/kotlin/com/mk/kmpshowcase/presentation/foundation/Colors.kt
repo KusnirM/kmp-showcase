@@ -28,9 +28,7 @@ import com.mk.designsystem.LightSecondary
 import com.mk.designsystem.LightSuccess
 import com.mk.designsystem.LightWarning
 
-// Brand + scheme colors come from the shared design system (com.mk.designsystem, generated from a
-// single source). Material-3 container/surface extras are derived from brand primitives here until
-// the design system ships a full ColorScheme.
+// Brand colors composed from the design system (com.mk.designsystem), not defined here.
 
 val Neutral0Light: Color = LightNeutral0
 internal val Neutral20Light: Color = LightNeutral20
