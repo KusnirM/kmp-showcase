@@ -109,7 +109,7 @@ class LoginViewModel(
     }
 
     companion object {
-        const val TEST_EMAIL = "test01@test.com"
+        const val TEST_EMAIL = "test01@mkdigital.sk"
         const val TEST_PASSWORD = "Kmpshowcase1@"
     }
 }
