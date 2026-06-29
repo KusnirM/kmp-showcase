@@ -24,3 +24,4 @@ mail:
   password: "$MAIL_PASSWORD:"
   from: "$MAIL_FROM:admin@mkdigital.sk"
   recipient: "$MAIL_RECIPIENT:admin@mkdigital.sk"
+  resendApiKey: "$RESEND_API_KEY:"

@@ -3,6 +3,7 @@ package com.mk.kmpshowcase.server
 import com.mk.kmpshowcase.server.config.DatabaseConfig
 import com.mk.kmpshowcase.server.core.security.JwtConfig
 import com.mk.kmpshowcase.server.di.AppDependencies
+import com.mk.kmpshowcase.server.core.mail.MailConfig
 import com.mk.kmpshowcase.contracts.ApiVersion
 import com.mk.kmpshowcase.contracts.note.CreateNoteRequestDTO
 import com.mk.kmpshowcase.contracts.note.NoteResponseDTO
@@ -65,7 +66,7 @@ class NotesRoutesTest {
             configureSerialization()
             configureStatusPages()
             configureAuth(jwtConfig)
-            configureRouting(AppDependencies(jwtConfig))
+            configureRouting(AppDependencies(jwtConfig, MailConfig("", 0, "", "", "", "", "")))
         }
         block()
     }

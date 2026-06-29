@@ -40,6 +40,7 @@ internal fun Application.module() {
         password = config.property("mail.password").getString(),
         from = config.property("mail.from").getString(),
         recipient = config.property("mail.recipient").getString(),
+        resendApiKey = config.property("mail.resendApiKey").getString(),
     )
     val dependencies = AppDependencies(jwtConfig, mailConfig)
     configureCallLogging()

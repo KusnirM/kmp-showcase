@@ -2,6 +2,7 @@ package com.mk.kmpshowcase.server.di
 
 import com.mk.kmpshowcase.server.core.mail.Mailer
 import com.mk.kmpshowcase.server.core.mail.MailConfig
+import com.mk.kmpshowcase.server.core.mail.ResendMailer
 import com.mk.kmpshowcase.server.core.mail.SmtpMailer
 import com.mk.kmpshowcase.server.core.security.JwtConfig
 import com.mk.kmpshowcase.server.feature.lead.persistence.LeadRepository
@@ -19,7 +20,8 @@ internal class AppDependencies(val jwtConfig: JwtConfig, mailConfig: MailConfig)
     private val userRepository: UserRepository = UserRepositoryImpl()
     private val noteRepository: NoteRepository = NoteRepositoryImpl()
     private val leadRepository: LeadRepository = LeadRepositoryImpl()
-    private val mailer: Mailer = SmtpMailer(mailConfig)
+    private val mailer: Mailer =
+        if (mailConfig.resendApiKey.isNotBlank()) ResendMailer(mailConfig) else SmtpMailer(mailConfig)
 
     val userService = UserService(userRepository)
     val noteService = NoteService(noteRepository)

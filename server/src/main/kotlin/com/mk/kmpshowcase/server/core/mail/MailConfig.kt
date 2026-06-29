@@ -7,4 +7,5 @@ internal data class MailConfig(
     val password: String,
     val from: String,
     val recipient: String,
+    val resendApiKey: String,
 )
