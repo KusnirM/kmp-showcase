@@ -40,7 +40,7 @@ internal object ClientConfirmationEmail {
             appendLine()
             appendLine(s.replyLine)
             appendLine()
-            appendLine(s.tagline)
+            appendLine("$COMPANY · ${s.tagline}")
             appendLine("mkdigital.sk")
         }
     }
@@ -105,7 +105,7 @@ internal object ClientConfirmationEmail {
     private fun TD.footer(s: Strings) {
         p {
             style = FOOTER_TEXT
-            +s.tagline
+            +"$COMPANY · ${s.tagline}"
             br { }
             a(href = "https://mkdigital.sk") { style = LINK; +"mkdigital.sk" }
         }
@@ -167,6 +167,7 @@ internal object ClientConfirmationEmail {
     // Resolve only the requested locale → base (English); never the JVM default locale.
     private val NO_FALLBACK = ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES)
 
+    private const val COMPANY = "MK Digital s.r.o."
     private const val DOCTYPE = "<!DOCTYPE html>\n"
     private const val BODY = "margin:0;padding:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;"
     private const val OUTER = "background:#f4f6f8;padding:24px 12px;"
