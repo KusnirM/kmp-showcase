@@ -8,8 +8,11 @@ import kotlinx.html.TD
 import kotlinx.html.a
 import kotlinx.html.body
 import kotlinx.html.br
+import kotlinx.html.div
+import kotlinx.html.head
 import kotlinx.html.html
 import kotlinx.html.lang
+import kotlinx.html.meta
 import kotlinx.html.p
 import kotlinx.html.span
 import kotlinx.html.stream.createHTML
@@ -18,10 +21,12 @@ import kotlinx.html.style
 import kotlinx.html.table
 import kotlinx.html.td
 import kotlinx.html.tr
+import kotlinx.html.unsafe
 
 // Client-facing lead confirmation, rendered in the requester's language (falls back to English).
 // Copy lives in resources/i18n/confirmation[_xx].properties; the HTML is built with the kotlinx.html
-// DSL (type-safe, auto-escaped). Sent as multipart text + HTML; transactional tone, no images.
+// DSL (type-safe, auto-escaped). 600px single-column table layout, WCAG-contrast text, dark-mode
+// signalled, hidden preheader. Sent as multipart text + HTML; transactional, no images.
 internal object ClientConfirmationEmail {
 
     fun subject(locale: String?) = strings(locale).subject
@@ -51,8 +56,16 @@ internal object ClientConfirmationEmail {
         val rows = detailRows(lead, s)
         return DOCTYPE + createHTML().html {
             lang = s.lang
+            head {
+                meta { attributes["charset"] = "utf-8" }
+                meta { attributes["name"] = "viewport"; attributes["content"] = "width=device-width,initial-scale=1" }
+                meta { attributes["name"] = "color-scheme"; attributes["content"] = "light dark" }
+                meta { attributes["name"] = "supported-color-schemes"; attributes["content"] = "light dark" }
+                style { unsafe { +ROOT_CSS } }
+            }
             body {
                 style = BODY
+                div { style = PREHEADER; +s.preheader }
                 shell { card(greeting, s, rows) }
             }
         }
@@ -133,6 +146,7 @@ internal object ClientConfirmationEmail {
         return Strings(
             lang = bundle.getString("lang"),
             subject = bundle.getString("subject"),
+            preheader = bundle.getString("preheader"),
             greeting = bundle.getString("greeting"),
             intro = bundle.getString("intro"),
             requestHeading = bundle.getString("requestHeading"),
@@ -154,6 +168,7 @@ internal object ClientConfirmationEmail {
     private data class Strings(
         val lang: String,
         val subject: String,
+        val preheader: String,
         val greeting: String,
         val intro: String,
         val requestHeading: String,
@@ -167,23 +182,25 @@ internal object ClientConfirmationEmail {
     // Resolve only the requested locale → base (English); never the JVM default locale.
     private val NO_FALLBACK = ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES)
 
-    private const val COMPANY = "MK Digital s.r.o."
     private const val DOCTYPE = "<!DOCTYPE html>\n"
+    private const val COMPANY = "MK Digital s.r.o."
+    private const val ROOT_CSS = ":root{color-scheme:light dark;supported-color-schemes:light dark;}"
     private const val BODY = "margin:0;padding:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;"
+    private const val PREHEADER = "display:none;font-size:1px;max-height:0;overflow:hidden;color:#f4f6f8;"
     private const val OUTER = "background:#f4f6f8;padding:24px 12px;"
-    private const val CARD = "max-width:520px;background:#ffffff;border-radius:12px;border:1px solid #eaedf0;"
-    private const val HEADER = "background:#0E2A47;padding:18px 28px;border-radius:12px 12px 0 0;"
-    private const val BRAND = "color:#ffffff;font-size:17px;font-weight:700;letter-spacing:0.3px;"
-    private const val CONTENT = "padding:28px;"
-    private const val GREETING = "margin:0 0 16px;font-size:16px;color:#0E2A47;"
-    private const val INTRO = "margin:0 0 22px;font-size:15px;line-height:1.55;color:#33414f;"
-    private const val BOX = "background:#f4f6f8;border-radius:8px;margin:0 0 22px;"
-    private const val BOX_CELL = "padding:16px 18px;"
-    private const val HEADING = "margin:0 0 8px;font-size:12px;font-weight:700;color:#0E2A47;text-transform:uppercase;"
-    private const val ROW = "padding:3px 0;font-size:14px;color:#33414f;"
+    private const val CARD = "max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;"
+    private const val HEADER = "background:#0E2A47;padding:20px 32px;border-bottom:3px solid #37C2B4;"
+    private const val BRAND = "color:#ffffff;font-size:18px;font-weight:700;letter-spacing:0.3px;"
+    private const val CONTENT = "padding:32px;"
+    private const val GREETING = "margin:0 0 18px;font-size:16px;color:#0E2A47;"
+    private const val INTRO = "margin:0 0 24px;font-size:15px;line-height:1.6;color:#33414f;"
+    private const val BOX = "background:#f4f6f8;border-radius:8px;margin:0 0 24px;"
+    private const val BOX_CELL = "padding:18px 20px;"
+    private const val HEADING = "margin:0 0 10px;font-size:12px;font-weight:700;color:#0E2A47;text-transform:uppercase;"
+    private const val ROW = "padding:4px 0;font-size:14px;line-height:1.5;color:#33414f;"
     private const val STRONG = "color:#0E2A47;"
-    private const val REPLY = "margin:0;font-size:15px;line-height:1.55;color:#33414f;"
-    private const val FOOTER = "padding:18px 28px;border-top:1px solid #eaedf0;"
-    private const val FOOTER_TEXT = "margin:0;font-size:13px;color:#8a97a3;line-height:1.5;"
-    private const val LINK = "color:#37C2B4;text-decoration:none;"
+    private const val REPLY = "margin:0;font-size:15px;line-height:1.6;color:#33414f;"
+    private const val FOOTER = "padding:20px 32px;border-top:1px solid #eaedf0;"
+    private const val FOOTER_TEXT = "margin:0;font-size:13px;line-height:1.6;color:#5b6470;"
+    private const val LINK = "color:#0E2A47;text-decoration:underline;"
 }
