@@ -99,7 +99,9 @@ internal object ClientConfirmationEmail {
     // Logo = pre-rendered PNG of the canonical SVG lockup (email clients strip inline SVG), hosted on
     // the API. Shows on the navy header; alt text covers image-blocking clients.
     private fun TD.headerLockup() {
-        img(src = LOGO_URL, alt = "MK Digital — Software Studio") { style = LOGO_IMG }
+        a(href = "https://mkdigital.sk") {
+            img(src = LOGO_URL, alt = "MK Digital — Software Studio") { style = LOGO_IMG }
+        }
     }
 
     private fun TD.requestBox(s: Strings, rows: List<Pair<String, String>>) {
