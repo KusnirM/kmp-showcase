@@ -7,4 +7,5 @@ internal data class User(
     val createdAt: Long,
     val themeMode: ThemeMode,
     val locale: String,
+    val role: Role = Role.CLIENT,
 )

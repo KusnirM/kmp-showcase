@@ -17,12 +17,13 @@ internal class JwtConfig(
         .withAudience(audience)
         .build()
 
-    fun generateToken(userId: Long, email: String): String = JWT.create()
+    fun generateToken(userId: Long, email: String, role: String): String = JWT.create()
         .withSubject("Authentication")
         .withIssuer(issuer)
         .withAudience(audience)
         .withClaim("userId", userId)
         .withClaim("email", email)
+        .withClaim("role", role)
         .withExpiresAt(Date(System.currentTimeMillis() + VALIDITY_IN_MS))
         .sign(algorithm)
 

@@ -2,6 +2,7 @@ package com.mk.kmpshowcase.server.feature.user.persistence
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.mk.kmpshowcase.server.core.persistence.mapToSingleOrNull
+import com.mk.kmpshowcase.server.feature.user.service.Role
 import com.mk.kmpshowcase.server.feature.user.service.ThemeMode
 import com.mk.kmpshowcase.server.feature.user.service.User
 import org.jetbrains.exposed.sql.ResultRow
@@ -28,27 +29,30 @@ internal class UserRepositoryImpl : UserRepository {
             .mapToSingleOrNull { it.toUser() }
     }
 
-    override suspend fun create(email: String, password: String, name: String): User = newSuspendedTransaction {
-        val now = System.currentTimeMillis()
-        val passwordHash = BCrypt.withDefaults().hashToString(BCRYPT_COST, password.toCharArray())
+    override suspend fun create(email: String, password: String, name: String, role: Role): User =
+        newSuspendedTransaction {
+            val now = System.currentTimeMillis()
+            val passwordHash = BCrypt.withDefaults().hashToString(BCRYPT_COST, password.toCharArray())
 
-        val id = UsersTable.insert {
-            it[UsersTable.email] = email
-            it[UsersTable.passwordHash] = passwordHash
-            it[UsersTable.name] = name
-            it[createdAt] = now
-            it[updatedAt] = now
-        } get UsersTable.id
+            val id = UsersTable.insert {
+                it[UsersTable.email] = email
+                it[UsersTable.passwordHash] = passwordHash
+                it[UsersTable.name] = name
+                it[UsersTable.role] = role
+                it[createdAt] = now
+                it[updatedAt] = now
+            } get UsersTable.id
 
-        User(
-            id = id.value,
-            email = email,
-            name = name,
-            createdAt = now,
-            themeMode = ThemeMode.SYSTEM,
-            locale = UsersTable.DEFAULT_LOCALE,
-        )
-    }
+            User(
+                id = id.value,
+                email = email,
+                name = name,
+                createdAt = now,
+                themeMode = ThemeMode.SYSTEM,
+                locale = UsersTable.DEFAULT_LOCALE,
+                role = role,
+            )
+        }
 
     override suspend fun updateThemeMode(id: Long, themeMode: ThemeMode): User? = newSuspendedTransaction {
         val updated = UsersTable.update({ UsersTable.id eq id }) {
@@ -96,6 +100,7 @@ internal class UserRepositoryImpl : UserRepository {
         createdAt = this[UsersTable.createdAt],
         themeMode = this[UsersTable.themeMode],
         locale = this[UsersTable.locale],
+        role = this[UsersTable.role],
     )
 
     private companion object {

@@ -15,6 +15,8 @@ internal class LeadService(
     private val recipient: String,
     private val mailScope: CoroutineScope,
 ) {
+    suspend fun getAll(): List<Lead> = repository.findAll()
+
     suspend fun submit(draft: LeadDraft): Lead {
         require(EMAIL_REGEX.matches(draft.email)) { "A valid email is required" }
         require(draft.appType.isNotBlank()) { "App type is required" }

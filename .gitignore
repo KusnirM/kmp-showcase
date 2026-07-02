@@ -17,3 +17,5 @@ xcuserdata
 .claude/research/
 .agents/
 skills-lock.json
+# Lead intake — client-confidential (analyze-lead skill outputs)
+leads/

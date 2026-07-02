@@ -24,7 +24,7 @@ internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
         post("/register") {
             val request = call.receive<RegisterRequestDTO>()
             val user = userService.register(request.email, request.password, request.name)
-            val token = jwtConfig.generateToken(user.id, user.email)
+            val token = jwtConfig.generateToken(user.id, user.email, user.role.name)
             logger.info("User registered: ${user.id} (${user.email})")
             call.respond(HttpStatusCode.Created, AuthResponseDTO(token, user.toAuthUserDTO()))
         }
@@ -36,7 +36,7 @@ internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
                 val user = userService.getById(userId)
                     ?: return@get call.respond(HttpStatusCode.NotFound)
                 logger.info("Token login: ${user.id} (${user.email})")
-                call.respond(AuthResponseDTO(jwtConfig.generateToken(user.id, user.email), user.toAuthUserDTO()))
+                call.respond(AuthResponseDTO(jwtConfig.generateToken(user.id, user.email, user.role.name), user.toAuthUserDTO()))
             }
         }
 
@@ -48,7 +48,7 @@ internal fun Route.authRoutes(userService: UserService, jwtConfig: JwtConfig) {
                     call.respond(HttpStatusCode.Unauthorized, mapOf("message" to "Invalid credentials"))
                     return@post
                 }
-            val token = jwtConfig.generateToken(user.id, user.email)
+            val token = jwtConfig.generateToken(user.id, user.email, user.role.name)
             logger.info("User logged in: ${user.id} (${user.email})")
             call.respond(AuthResponseDTO(token, user.toAuthUserDTO()))
         }
